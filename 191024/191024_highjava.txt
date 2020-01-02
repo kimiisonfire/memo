@@ -1,0 +1,75 @@
+191024_highjava
+
+ibatis 시작!!
+
+프로젝트만들고 거기에 external jar로 ojdbc, ibatis 두개 추가했음
+res라는 source folder도 만들었고요
+
+
+우리는 그동안 dao에다가 쿼리문을 직접 작성해서 넣었음
+근데 작업하다보면 쿼리문을 변경하고 하는 일이 있지않겠음??
+그럼 sql문을 고치고 다시컴파일하고 다시 실행해야겠지?
+
+근데 전체 소스파일을 가지고있지 않을수도있지않음?? 
+그럼 쿼리문을 어케고쳐요
+ibatis는 쿼리문만 따로 xml 파일로 따로 관리하고 자바에서는 그파일을 읽어다가 실행하는거임
+xml 문서라는 텍스트파일을 갖다쓰는거임
+그럼 쿼리문을 언제든지 바꿔서 실행시킬수있겠지
+
+그리고 db에 연결하는 작업도 자동으로 설정만 하면 알아서 해줌
+뭐 어떤때는 statement, rs 객체도 만들고 했던거를 전혀 안쓰고
+그냥 ibatis에서 제공하는 명령으를 이용해서 쿼리를 실행하고 결과를 받아올수있음
+
+
+jdbc를 조금 더 발전시킨거다 생각하쇼
+ibatis를 사용하려면 db랑 연결한다던가 하는 정보를 ibatis한테 알려줘야해
+ibatis는 대부분 xml문서에 어떤 정보를 특정한 모양으로 넣으면 ibatis가 읽어다가 자동으로 db랑 연결하고 해주거든ㅇ
+
+res 소스폴더안에 xml파일을 만들어 
+파일 하단에 Source 탭을 누르면 직접 쓸수있게되빈듀
+대소문자 구분해서 쓰세요
+얘는 전체적인 환경설정하는 파일임 
+
+근데 쿼리문도 xml에 저장해야되거든
+그것만 저장하는 xml파일이 필요혀ㅑ
+환경설정 xml파일에다가 해당 sql문이 들어있는 xml 문서를 여기에 등록시켜줘야함
+
+
+insert 쿼리문 만들어보긩
+<insert id="insertLprod" parameterClass="basic.LprodVO">
+		insert into lprod (lprod_id, lprod_gu, lprod_nm)
+		  values (#lprod_id#, #lprod_gu#, #lprod_nm#)
+</insert>
+id :: 나중에 이 태그를 불러올 이름
+parameterClass :: sql문에 사용될 데이터가 들어갈 클래스. 보통 vo거나 자바 자료형
+values 다음에는 vo 파일에 저장된 변수명 쓰고 앞뒤를 #으로 막아줘
+
+이렇게 쿼리문을 담은 xml 파일 만들었으면
+환경설정 xml 파일의 마지막에 sqlMap 닫을때 source 옵션으로 경로랑 파일이름을 넣어줘
+
+
+delete같이 필요한 정보가 하나밖에 없을때는 그냥 타입명 써주면 댐
+<delete id="deleteLprod" parameterClass="String">
+		delete from lprod where lprod_gu = #lprod_gu#
+</delete>
+=====> 그럴때는 # # 안에 들어가는 변수명도 마음대로 써도됨
+
+
+select문일때는 select * from 테이블명 >> 하면 들어갈때 사용하는 parameterClass가 없으니까
+안써줘도 됨
+그치만 반환되는 값이 있으니까  >>  resultClass  << 를 반드시!!! 써줘야함
+대신 여러개의 리스트가 뽑힌다고해서 List<lprodVO> 라고쓰지않고
+한개으 ㅣ레코드 기준으로 해서 resultClass = "lprodVO" 로 가야댐
+
+
+
+
+
+
+
+
+
+
+
+
+

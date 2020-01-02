@@ -1,0 +1,58 @@
+190904_html
+
+
+preferences - web-HTML Files -Editor - Template 에서 
+
+
+str = str.replace("저기요","낰낰");
+:: 이렇게하면 하나만 바뀜
+
+str = str.replace(/저기요/g,"낰낰");
+:: 이렇게 해야 전부다바뀜, global이거든
+
+str = str.replace(/Korea/g,"낰낰");
+:: 이렇게하면 Korea를 찾아서 전부 바꿔주는데 대소문자는 구분함
+
+str = str.replace(/Korea/gi,"낰낰");
+:: 이렇게 gi 로 해주면 전부하고 대소문자를 ignore함! 전부바꿔주는겨
+
+=====> 이런것들이 정규식임
+
+
+~~~.innerHTML = AAA 하면 그 영역을 AAA로 변경하는거고
+~~~.innerHTML  만 하면 그안에 들어있는 값을 가져오는거임
+
+textContent랑 innerHTML이 비슷한데
+안에 HTML 태그 <br> 이런거를 실제로 적용시킬수있는게 innerHTML
+<br>을 그냥 문자로 받는건 textContent
+
+textarea로 글을 받아서 다시 div에 표출한다 했을때
+textarea안에는 태그같은거 없으니까 걍 textContent로 받고
+나중에 그걸 div에 표출하면서 엔터를 포함할땐 br태그 달아야되니까 innerHTML
+
+아 근데 input으로 입력받는거는 value임..
+div, p태그, a태그 이런데서 가져와라 = textContent
+
+
+textarea에서 입력받은애를 출력할거임
+	  txt = document.getElementsByTagName('textarea');
+	  tval = txt[0].value;
+
+	  //tval = tval.replace(/\r/g,"").replace(/\n/g,"<br>");
+		:: 이렇게하면 \n을 줄바꿈할수있음
+	  	:: n만 써도 되는데 가끔 안먹힐때가 있었다고하네요...
+	  document.getElementById('result9').innerHTML = tval;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+191025_highjava
+
+~~~~ javafx ~~~~~~
+
+이제 javafx할건데용
+자바 버전이 1.7로 돼있거든
+이거 1.8로 바꿔줄게
+
+내컴퓨터->고급시스템설정- >> 고급-> 환경변수 -> JAVA_HOME을 1.8로 고쳐주십쇼
+Path 들어가서 경로 전부 복사 --> 
+D:\B_Util\appClient;D:\B_Util\4.Oracle\app\oracle\product\11.2.0\server\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;%JAVA_HOME%\bin;C:\Program Files\Git\cmd
+
+그중에 %JAVA_HOME%\bin; 오려내서 제일 앞으로 옮겨줬음
+%JAVA_HOME%\bin;D:\B_Util\appClient;D:\B_Util\4.Oracle\app\oracle\product\11.2.0\server\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd
+
+이렇게 해준다음에 cmd에 >javac -version 하면 버전이 1.8로 바뀌었음다ㅏㅏㅏㅏ
+
+
+크롬에서 eclipse 검색 -> packages 들어가세요
+오른쪽에 more downloads에서 Eclipse 2018-12 -> 
+Eclipse IDE for Enterprise Java Developers 윈도우 다운로드!해서 b_util / 3.Eclipse 아래에 두십셔
+오른쪽버튼눌러서 같은이름으로 압축을 풀고요
+
+
+새로생긴폴더에가면 eclipse.exe 가 있다구요...!!
+얘를 바탕화면에 바로가기 만들고요 이름을 eclipse_201812 로 바꿨음다
+그리고 실행!
+
+workspace는 D:\A_TeachingMaterial\3.HighJava\workspace 로 해줍니듀
+
+실행했고 jre도 1.8로 잘 바꿔줬음
+만약에 안바뀌면 buildpath에서 add해서 java 1.8 경로 찍어주면됨
+
+
+
+
+일단 오늘은 암호화 먼저 해볼게용
+
+md5는 예전에 쓰던거라 쓰지말라고 권고한다고함
+sha256, sha512 이런식으로 되어잇읍니다 후후
+
+이거는 라이브러리를 사용하지 않고 그냥 자바에서 쓸수있는 암호화였고요
+
+???????
+
+arraycopy (var1, num1, var2, num2, num3)
+var2 변수의 num2에다가 var1의 num1부터 num3개의 개수만큼 복사해서 넣어라
+네????
+
+
+
+숙제...,, 
+board를 ibatis로 바꾸고,,.. writer를 암호화/복호화하세요...
+대신 writer의 크기가 50byte밖에 안되니까 크기를 늘려줘야겠죵
+
+
+
+
+
+
+

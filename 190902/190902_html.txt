@@ -1,0 +1,29 @@
+190902_html
+
+
+펑션이랑 펑션 사이에 다른 값같은거 써주ㅓ도 상관없음
+
+
+객체에 들어있지 않은 요소라고하더라도 객체밖에서 걍 추가할수있음
+
+
+객체 속성 만들때는 color : "red", 였다면 
+객체 생성자 어쩌고 할때는 this.color = color; 임다 
+
+
+펑션 위에는 var로 변수써도 전역변수됨
+
+
+array.splice(index, howmany, item1, ... itemx)
+index 위치에서 howmany만큼 삭제하여 item1~itemx까지를 추가해라
+
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.splice(2, 0, "Lemon", "Kiwi");
+-->Banana,Orange,Lemon,Kiwi,Apple,Mango
+
+
+
+
+
+
+

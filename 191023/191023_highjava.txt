@@ -1,0 +1,31 @@
+191023_highjava
+
+
+테이블에 있는 내용을 vo로 만들때
+오라클에서 바로 할수있음 cols 테이블 이용해서!!
+
+SELECT 'private ' ||
+        DECODE(LOWER(DATA_TYPE), 'number', 'int ', 'String ') ||
+        LOWER(COLUMN_NAME) || ';'
+  FROM COLS
+ WHERE TABLE_NAME = 'JDBC_BOARD';
+
+이렇게하면 실행 결과로
+
+private int board_no;
+private String board_title;
+private String board_writer;
+private String board_date;
+private int board_cnt;
+private String board_content;
+이렇게 나옴!!!!
+
+
+SCAN.NEXTLINE() 은 내부에 입력버퍼를 비워주는게 있어서
+다른 nextInt(), next() 를 쓴 다음에 nextLine()을 쓰려면 scan.nextLine()을 꼭 해줘야하고
+nextLine() 이게 제일 처음 나오는거면 버퍼 비워줄 필요 없엄
+
+
+
+
+

@@ -1,0 +1,173 @@
+191007_oracle
+
+숫자자료형
+
+number : 이친구로 정수/실수 다표현가능함
+number[ (p [,s]) ]
+p, s 둘다 생략될 수 있음
+p : p가 s보다 클때, 전체자릿수를 나타내기도함.
+    p가 s보다 작을때, 소숫점 이하의 자리수이면서 s-p한 값만큼 0의 개수가 나와야함
+    근데 일상생활에서는 이런식으로 잘 안쓰여짐. 주로 number[9] 이렇게만쓰지,,
+
+그냥 number 이렇게 쓰면 사용자가 입력한대로 기억해줌
+number 해주고 실수넣으면 걍 알아서 실수 저장
+
+1234.567 을 표현하고싶을때 소숫점 아래 세자리니까 
+s > 0 일떄, 소숫점 이하의 자릿수로, 넉넉하게 number(10,3) 할수있음
+s < 0 일때는 소숫점 이상 s번째에서 반올림
+
+number(n) :: n 자리수의 정수 처리. 이때 n은 정밀도가 되고, 소수점 첫째자리에서 반올림
+
+number(*,s) :: 정수는 사용자가 원하는 만큼(~38자리) 쓸수있고 
+ 	 소숫점이하 s+1번째 자리에서 반올림해서 s번째 자리까지 저장
+
+number(p,s) :: 전체자리수 p. 소숫점이하 s자리. 정수부분은 당연히 p-s
+
+근데 여기에서 이렇게 반올림 어쩌고를 해버리면 안됨
+데이터베이스는 최종적으로 자료를 처리하는게 아니고
+자료처리하는 프로그램에 정확한 자료를 넣어주는 과정이기때문이져
+
+그냥 전체자리수를 세서 충분히 저장할만한 크기로 저장하면 된다~~~
+
+
+
+SYSDATE : +, - 가능, *, / 의 대상은 되지않는다구
+TO_DATE(문자열) : 문자열을 날짜형으로 바꾸는 함수
+
+근데 (SYSDATE - TO_DATE('20190101')) 이런걸 보고싶으면 사실 테이블필요없자나
+근데 FROM절은 무조건 있어야된단말여
+이럴떄 사용하는 가짜 테이블이 DUAL <<< 입니듀 시스템이 소유하는 가상의 의사테이블
+PSEUDO
+
+변환해주는 함수 TO_DATE, TO_CHAR, TO_NUMBER
+
+
+
+
+SELECT 문
+SELECT문은 크게 세개로 나뉨 SELECT, FROM, WHERE
+
+SELECT FROM WHERE 중 SELECT와 FROM은 반드시 기술해야해
+SELECT는 화면에 나타내고자하는 컬럼을 기술, FROM은 테이블 기술
+
+실행되는 순서는  FROM > WHERE > SELECT
+테이블먼저 가져오고, 조건처리해서 결과를 내보내!
+== SELECT는 결과가 되돌려질때 표시될 결과테이블 즉 VIEW(가상의테이블)에 포함되어질 컬럼을 정의하는게 SELECT절의 역할임
+
+WHERE절이 생략되면 그 테이블에 있는 모든 행을 가져와븜
+SELECT *이면 그 테이블에 있는 모든 열을 가져와븜
+== SELECT * FROM PROD  => PROD에 있는 모든 행과 열을 가져와
+
+GROUP BY == 그룹을 만들거임 컬럼을 가지고 그룹만들거임
+HAVING == 집계함수 다섯개에 조건이 부여되는경우,, 
+	** 오라클의 집계함수 = COUNT, SUM, AVG, MAX, MIN
+    -> 합계를 구하되 합계가 100만원 이상인사람..! 이런거에는 WHERE못쓰고 HAVING 써
+ORDER BY == 순서화. 정렬. 컬럼명이나 인덱스를 기준으로 정렬. 
+
+
+
+잠시 테이블설명~~
+
+BUYER
+BUYER_ID = 거래서 ID
+BUYER_LGU = 거래처 분류코드
+
+BUYPROD
+BUY_DATE = 매입한 날짜
+BUY_PROD = 매입한 제품
+BUY_QTY = 매입한 수량
+BUY_COST = 매입단가
+
+CART : == 매출
+CART_MEMBER = 구입한 회원번호
+CART_NO = 연월일8자리+SQ5자리의 장바구니번호
+CART_PROD = 구매한 상품 번호
+CART_QTY = 구매한 상품 수량
+
+LPROD(구분) == 상품 대분류테이블
+LPROD_ID = 그냥 순서대로 주어진 번호
+LPROD_GU = 구분코드, 기본키
+LPROD_NM = 구분명
+
+MEMBER
+MEM_REGNO1 = 회원 주민번호 앞자리
+MEM_REGNO2 = 회원 주민번호 뒷자리
+MEM_MILEAGE = 회원에게 부여된 마일리지
+
+PROD
+PROD_LGU = 상품 분류번호
+PROD_BUYER = 거래처코드
+PROD_COST = 매입가격(거래처에서 사오는)
+PROD_PRICE = 판매가격(고객한테 파는)
+PROD_SALE = 할인판매가격
+PROD_TOTALSTOCK = 전체 재고량
+PROD_PROPERSTOCK = 적정 재고량 (영업을 위해 이만큼은 있어야됨~~)
+
+
+예) 상품분류테이블의 모든데이터를 조회하시오
+SELECT * 
+  FROM LPROD;
+
+예) 상품분류테이블의 분류코드가 'P400'보다 작은 데이터를 조회하시오
+SELECT LPROD_ID AS "순번",
+       LPROD_GU AS 분류코드,
+       LPROD_NM    분류명
+  FROM LPROD
+ WHERE LPROD_GU, 'P400';
+
+---> AS 해주면 출력되는 결과의 컬럼명이 AS로 설정한 이름으로 나온다구
+--->>> 	순서가 LPROD 테이블을 가져와서(FROM), 
+	그중에 LPROD_GU 열이 P400보다 큰 애들을 고르는데(WHERE),
+	출력할때 컬럼을 별칭으로 뽑아주겠습니다(SELECT)
+
+SELECT에서 설정한 별칭을 WHERE에서 쓸수있을까? 
+ => 안된다! 순서가 FROM-WHERE-SELECT니까!!
+그럼 FROM 에서 별칭 설정하면 그걸 쓸수있을까?
+ => 된다!!!
+
+
+예) 2005년 6월 회원별 구매금액 합계가 50만원 이상인 회원을 조회하시오
+    단, Alias는 회원번호, 회원명, 구매금액합계
+
+SELECT  A.MEM_ID AS 회원번호, 
+        A.MEM_NAME AS 회원명, 
+        SUM(B.CART_QTY*C.PROD_PRICE) AS 구매금액합계
+	-> 가져올 컬럼명써주고 SUM도 이렇게 잘해줘라
+
+  FROM  MEMBER A, CART B, PROD C
+ WHERE  B.CART_NO LIKE '200506%'
+	-> LIKE도 이런식으로 쓴대
+
+   AND  A.MEM_ID=B.CART_MEMBER
+   AND  B.CART_PROD=C.PROD_ID
+	-> AND 조건들도 잘 생각해보셔
+
+ GROUP  BY A.MEM_ID, A.MEM_NAME
+	-> 왜하는지 모르겠음
+HAVING  SUM(B.CART_QTY*C.PROD_PRICE) >= 500000
+	-> 집계함수에 대한 조건!은 HAVING
+ ORDER  BY 1;
+	-> 오름차순,,
+
+
+쌍따옴표는 얹제쓰나요 ??
+허용되지않는 문자 *, 공백,.. 을 포함할때 ""로 묶어줌
+
+
+
+연산자~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+오라클은 나머지연산자 읎다
+
+
+
+cmd창에서
+> d:   	==d드라이브로 이동
+> dir	== 익스포트한 파일 있나 확인
+D:\>imp KHY/java file=expall.dmp ignore=y grants=y rows=y indexes=y full=y
+
+제대로 됐는지 보려면 디벨로퍼가서 다접고 reload 하면 테이블에 추가가됐다구
+이거는 export시켰던 파일을 import한거임!!!
+
+
+

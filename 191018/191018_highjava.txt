@@ -1,0 +1,53 @@
+191018_highjava
+
+insert 한다치면 ResultSet은 없어도되긴해..!!!
+
+String sql 작성할떄 띄어쓰기!!! 꼭 잘해주고 문자열은 꼭 싱글쿼트 쓰고!!!
+
+sql문이 select절일 경우 executeQuery() 사용
+           select절이 아닐 경우 executeUpdate() 사용!!!!
+
+쿼리문을 db에 전달해주는 역할을 하는 객체 : statement, preparedStatement
+
+preparedStatement 쓸때에는 sql문 작성할때 데이터 자리에 일단 ?(물음표)로표시하고
+이후에 그 물음표에 뭐가들어가면 되는지 써주면 됨 -> 그다음에 preparedStatement 객체 생성
+String sql = "INSERT INTO BANKINFO "+ "(BANK_NO,BANK_NAME,BANK_USER_NAME,BANK_DATE) "
++ "VALUES(?, ? ,? , SYSDATE)";
+pstmt = conn.prepareStatement(sql);		--> 객체생성
+
+// SQL문의 ? 자리에 데이터를 셋팅
+// 형식) pstmt.set자료형이름(물음표순번,데이터);
+pstmt.setString(1, bankNo);
+pstmt.setString(2, bankName);
+pstmt.setString(3, bankUserName);	-> 물음표  index는 1번부터
+
+
+preparedStatement 는 여러번 반복을 한다했을때
+컴파일을 한번만하고 ? 안에 들어가는 값들을 받아주기만해...?? 무튼 빠르다
+
+statement는 보안에 취약한편! 특히 where절에 조건을 주는 경우말여
+조건을 주는 경우에는 preparedStatement를 써주셔라
+statement를 쓰고 where절에서 조건을 하나 받는경우
+"SELECT MEM_ID FROM MEMBER WHERE MEM_LIKE = '" + hobby + "'" 
+>>> 이런식의 쿼리문에서는 입력할때
+바둑 or '1' = '1'  ==> 해버리면 첫번째 조건이 무력화되고 전체 값이 출력됨
+근데 preparedStatement 는 그렇지않단말임...!
+
+
+finally에서 닫아주는순서는 
+rs를 가장 먼저, conn을 가장 마지막에 닫고
+중간에 statement들의 순서는 상관이없어!!!!
+
+
+왜 이거쓰다보면 드라이버 로드하고 커넥션객체만드는건 늘 똑같자나
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,144 @@
+191021_highjava
+
+스캐너 사용할때 버퍼 비우기 
+ :: String str = scan.nextLine() 하기전에
+scan.nextLine() 해서 버퍼를 한번 비워주십쇼
+
+
+
+지금 뭘할거냐면요
+지금 util에 있는 dbutil의 경우
+나중에 사용하는 dbms가 바뀐다거나 이프로그램 자체를 폐기하거나하면
+안에 설정했던 내용도 다 날아갈거아녀
+근데 이걸 외부 텍스트파일같은데에 필요한 정보를 적을수있게 저장해놓고
+그것만 바꿔서 사용하면 되지않겠어??
+마치 config 파일같은거임..
+
+해당 프로젝트 아래에서 새로만들기-source folder (이름은 res = resource)
+untitled text file을 만들어서 거기에 연결에 필요한 정보를 적어
+그리고 저장! 저장할때는 해당 프로젝트 아래로!!
+~~~.properties 파일로 저장
+
+>>>> DBUtil2.java <<<<
+이걸 util 패키지에서 properties 객체로 바꿔줄거임 
+properties는 map이랑 비슷한데 key, value값으로 String만 가질수있음
+글고 properties 파일을 Properties 객체로 바꿔줄수도 있음
+가져올때는 Properties 객체 변수를 만들어주고,
+properties 파일을 읽을떄 사용할 FileInputStream fis 객체 만들어서
+prop.load(fis)  이런식으로 로드해주면 prop에 키/밸류값이 알아서 착착 담긴다
+
+이걸 쓸때는 prop.getProperty("driver")   이런식으로 '=' 기준 왼쪽에 썼던걸 키로 가져오면댐
+
+>>>> 근데 요즘엔 이거 잘 안씁니다 (네?)
+
+이걸하면 예외처리를 ioexception 해야되거든.., 그게 싫으신가봐들
+
+
+ResourceBundle 객체를 이용해보기
+파일의 확장자가 properties인 파일의 정보를 ResourceBundle 객체로 읽어옵니듀
+읽어올떄는 파일의 확장자 기술하지않아. bundle은 항상 properties 파일만 읽으니까..!
+
+
+javaDoc 파일을 만들건데!!!
+/**
+ *
+ */ 
+여기에다가는 뭐 설명이라던가 author, version 등등 넣을수있고
+html 태그를 쓸수가있다!!!
+
+만든 프로젝트를 export해보겠음 
+저장하는 타입은 Javadoc로 하고
+next --> javadoc command에 내가 쓰는 JDK 버전의 javadoc.exe가 있음 
+자동으로 안써져있으면 원래 bin/ 아래에 있대
+그리고 아래에 Use standart doclet 부분에서 파일을 어디에 넣을지 선택하는거임.
+근데 기본적으로는 우리 프로젝트 하위에 doc/ 폴더에 들어가게돼있음
+next --> 넘어가!
+next --> Overview에서 VM option 다음과같이 써줄거임
+-charset UTF-8 -encoding UTF-8
+이렇게 설정하고 FINISH 하면 지가 막 오로로로로로 돌아가서 프로젝트 하위에 doc 폴더 생김
+실제로 있는 위치로 가서 index.html 누르면
+
+java api 웹페이지에 나오는것처럼 우리가 저장했던게 ㅜㅈ루루루루룰 나옵니다!!!
+
+
+
+
+
+------- MVC 패턴!!!!!!!!!!
+
+프로그래밍을 하는 여러가지 패턴들이 있더라 = 디자인패턴
+그 디자인패턴에서 MVC 패턴이라는 것이 있음 (틀 같은거임)
+
+DB랑 연결해서 하는 작업을 많이하잖아. 특히 웹에서 하면 더 그럴거임
+MVC는 프로그램하는 영역을 세분화시키는거임
+M = Model
+V = View
+C = Controller
+즉 Model - View - Controller 로 나누어서 작업하는 패턴이라는거임
+
+1. Model : 프로그램의 비지니스 로직과 사용되는 데이터를 다루는 영역
+	비지니스 로직 :: 프로그램에서 필요한 처리를 하는 로직.. 코딩내용
+	데이터랑 연관이 있는 영역이라고 보면 됩니더
+
+2. View : 최종 사용자에게 보여줄 프리젠테이션 영역
+
+3. Controller : 사용자의 요청을 받아 이를 수행하는 비지니스로직을
+	선택하고 호출하고, 비지니스 로직으 ㅣ결과를 받아서 
+	View에 전달해주는 영역
+
+비지니스 로직 예시 : 사용자의 아이디/비밀번호 검사
+사용자가 어떤 메뉴를 누르느냐에 따라서 거기에 맞는 메서드를 호출하고 실행되겠지
+비지니스로직이 실행한 결과를 컨트롤러에게 넘겨주면 view가 화면에 출력하고요
+
+앞으로는 MVC 패턴에 맞춰서 클래스를 많이 만들거임.
+어떤 역할을 하는 클ㄹ래스를 만들어줘야되니까여
+프로그램의 크기가 클수록 이 패턴으로 만드는게 좋다구
+
+이 MVC 패턴이라는거는 면접때 물어볼수있으니까 어떤 개념인지 혼자서라도 찾아보세용
+
+화면에 보여지는 부분 : VIEW
+메뉴를 누르면 다른데이터가 나온다
+컨트롤러가 어떤 메뉴를 눌렀는지 보고 DB에서 데이터를 꺼내오는 메서드 호출 = 컨트롤러
+메서드를통해 DB 에서 데이터를 뱉어줘 = 모델
+
+
+- MVC 패턴을 사용할 떄 쓰이는 class 종류
+
+1) VO, DTO  ==> 데이터를 저장하는 역할만 수행하는 클래스
+		(VO => Value Object, DTO => Data Transfer Object
+	:: 이친구들은 DB 테이블에서 "1개"의 레코드를 저장할 클래스를 말함
+
+2) DAO	  ==> 쿼리문을 DB서버로 보내서 결과를 얻어오는 역할을 수행하는 
+		class. (DAO = Data Access Object)
+
+3) Service   ==>  일을 수행하는 '중간 관리자'의 역할을 수행하는 class
+		일이 있으면 그일에 필요한 DAO를 호출해서 일을 처리한 후
+		처리 결과를 Controller에게 전달함
+
+4) Controller ==> 비지니스 로직이 시작되는 곳으로, 일을 만들어서 Service에게 일
+		을 시키고, Service가 보내온 처리결과를 화면 등에 반영시킴
+
+
+<< 처리 순서!!! >>
+
+Controller  -->  Service  -->  DAO  --> DB서버
+				:
+Controller  <--  Service  <--  DAO   <-----
+		전달되는 데이터는 보통 
+		VO나 Collection 객체를 이용
+
+컨트롤러에서 --> db단계까지 넘겨줄때는 매개변수로 넘어가고
+db단계에서 컨트롤러단계로 넘겨줄때는 return값으로 넘겨줌
+보통 넘겨주고 넘겨받고할때는 VO타입의 변수나 Collection 객체를 쓴다구
+
+콘솔에서 했을때는 Controller = View였음
+
+.
+
+
+
+
+
+
+
+

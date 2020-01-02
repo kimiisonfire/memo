@@ -1,0 +1,49 @@
+191017_ORACLE
+
+~~~~ 서브쿼리 해볼게요~~~~~
+쿼리안에 포함된 또다른 쿼리고요 조인의 개수를 줄이기위해서 사용함. 
+SELECT, FROM, WHERE절에 쓸수있음
+FROM절에 쓰는 서브쿼리는 인라인 뷰 라고하고 얘만 따로 빼와서 실행시켜도 실행돼야댐
+	== 다른데서 참조해는게 없어야된다는거임
+
+SELECT *
+  FROM ABC A, (SELECT * FROM BBB B WHERE B.ID=A.ID)
+					--- -> 여기서 A 쓸수없단거임
+
+예제가 나왔을때 메인쿼리와 서브쿼리에 뭘써야할지 구분
+화면에 보여지는 최종적인 결과 == 메인쿼리!!
+중간에 또다른 쿼리로 계산되어져야할게 서브쿼리!!!!
+
+서브쿼리를 WHERE절에 걸면 보고싶은 수만큼 WHERE절에서 서브쿼리가 돌아감
+이걸 FROM절에 적어서 참조할 별칭을 주고 그 테이블을 쓰는것처럼 하면..!!
+SELECT E.EMPLOYEE_ID AS 사원번호, 
+       E.EMP_NAME AS 사원명,
+       D.DEPARTMENT_NAME AS 부서명,
+       E.SALARY AS 급여
+  FROM EMPLOYEES E, DEPARTMENTS D, 
+        (SELECT ROUND(AVG(SALARY)) ASAL FROM EMPLOYEES) C
+ WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID
+   AND E.SALARY >= C.ASAL;
+---> 평균을 ASAL이라는 별칭을 갖는 하나의 컬럼이라고 주고
+그거를 비교하는거임...!
+
+
+원래 WHERE에서는 한줄<->한줄 비교해야하는건데
+사원테이블의 배송부의 모든 사원의 급여보다 더 많은 급여를 받는 사원정보 조회! 할떄
+WHERE SALARY > (SELECT MAX(SALARY) FROM EMPLOYEES WHERE DEPARTMENT_ID=50)
+		       ------------------	   ->>> 이렇게 MAX 써줄수도 있지만
+WHERE SALARY > ALL (SELECT SALARY FROM EMPLOYEES WHERE DEPARTMENT_ID=50)
+	         --------    ->> 이렇게 써줄수도 있어!!! 
+
+	
+
+
+
+
+
+
+
+
+
+
+

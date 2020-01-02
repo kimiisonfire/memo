@@ -1,0 +1,32 @@
+191021_oracle
+
+서브쿼리로 만들어진 부분이 각각의 절에서(FROM절, WHERE절,..) 가장 먼저 실행됨
+SELECT *
+  FROM TABLE 1, TABLE 2
+ WHERE 1.ID = 2.ID
+    AND 1.SMTH > (SELECT SMTH FROM TABLE 3);
+실행 순서 == FROM -> WHERE절의 서브쿼리 -> WHERE -> SELECT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

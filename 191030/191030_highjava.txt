@@ -1,0 +1,239 @@
+191030_highjava
+
+메뉴, 버튼 같은것들 = 컨트롤
+컨트롤들을 모아서 한데 묶는거 = 컨테이너객체,  레이아웃객체
+	레이아웃도 기능이 한가지정도씩밖에없음다
+제일 바깥쪽을 감싸는 컨테이너를 씬에 추가하고, 그 씬을 스테이지에 추가하면 모양이 만들어지죵
+
+
+이제 창을 하나 만들어볼꺼임
+창의 중간쯤에 '안녕하세요 javaFX입니다.' (1) 를 출력하고
+그아래에 글을입력받을수있는 input칸(2) 하나랑 확인버튼(3)하나
+그아래에 종료버튼(4)하나 조져볼게용
+
+
+- 우선 (1) / (2),(3) / (4) 이렇게를 묶음이라고 보겠음
+그러면 위에서부터 세로로 일렬로 배치된 모습이 아니겠음?
+저렇게 일렬로 세로로 배치하는걸 VBox 라고함 (Verticl Box)
+
+- 가운데의 (2), (3)은 옆으로 일렬 배치됐으니까
+가로로 배치하는걸 HBox 라고함 (Horizontal Box)
+>>> VBox안에 HBox 넣을수있고, HBox안에 VBox 넣을수있지
+
+그럼 우리가하려는건 일단 VBox 를 만들어야되는거니까 VBox 레이아웃 객체를 만들어
+VBox root = new VBox();	
+
+만든 박스의 크기를 설정해볼겡
+root.setPrefWidth(650);	
+root.setPrefHeight(150);	---> 이건 한꺼번에 할수도있음 ::  root.setPrefSize(650, 150);
+
+컨트롤들을 가운데 정렬할수도있지
+root.setAlignment(Pos.CENTER);
+
+배치되는 컨트롤간의 간격
+root.setSpacing(20); 			
+
+안쪽 여백을 설정하는 Insets 객체는 위, 오른, 아래, 왼 순서임
+root.setPadding(new Insets(10,10,10,10));	-> 이렇게 4개의 값이 같을때는 한개만 써도됨
+
+글자를 출력할 라벨객체를 만들어볼게용 (javaFX걸로 임포트)
+Label label = new Label();		// Label 객체 생성
+label.setText("안녕하세요. JavaFX입니듀.");
+label.setFont(new Font(20));
+
+종료버튼 만들게용
+Button btnClose = new Button();		// Button 객체 새성
+btnClose.setText("종료");
+
+가운데에 들어갈 Hbox 만들게용
+hbox, vbox 만들때 생성자에 정수값을 넣어주면 이걸 spacing 값으로 받음
+HBox hbox = new HBox(10);	
+
+간격만들어주고요 가운데정렬해주고요
+hbox.setPadding(new Insets(10));
+
+textfield 객체 만들게 이것도 당연히 javafx거 임포트
+TextField textField = new TextField();
+
+한줄의 문자열을 입출력할 수 있는 TextField 객체를 생성하고
+가로 크기 설정
+TextField textField = new TextField();
+textField.setPrefWidth(300);
+
+버튼 객체를 생성할때 초기값으로 바로 캡션을 줘버릴게용
+Button btnOk = new Button(" 확인 ");
+
+이제 hbox에 컨트롤을 추가해줘볼게용
+우선 hbox에 ObservableList 객체를 얻어볼게용
+ObservableList<Node> list = hbox.getChildren();
+list.addAll(textField, btnOk);		===> hbox에 input할 창이랑 ok 버튼 추가된거임!!
+
+이제 vbox에다가도 컨트로를ㅇㄹ 추가할게용
+root.getChildren().addAll(label, hbox, btnClose);
+
+VBopx를 루트 컨테이너로 하는 Scene 객체 생성
+Scene scene = new Scene(root);
+		
+ Stage 객체에 Scene 객체 설정
+primaryStage.setScene(scene);
+	
+primaryStage.show()   까지 해줘야 실행했을때 창이보입니다ㅏㅏㅏㅏ	
+
+------------------------------------------여기까지가 아무런 기능이 없는 그런 ... 모양만 나오는... 예..
+
+>>>>> 잠시 씬빌더로 떠나세요
+
+씬빌더의 속성 -> 대상주소복사해서 window/preferences으 ㅣjavafx에 씬빌더 이그지큐터블에 붙붙
+씬빌더를 사용한 파일을 만들때는 xml로 만들어야한대
+그래서 fxml document 로 파일을 만들고, Root Element를 우리가 쫌전에 만든 VBox로 선택하고 finish
+-==> fxml 문서가 하나 나옴
+
+파일만들어지면 우클릭해서 open with scene builder 하면 신빌더 열리고 vbox 하나 추가돼어있음!
+
+
+vbox 클릭하고 오른쪽에서 properties 열어 -> alignment를 센터로 선택 
+layout 열어 -> padding/ spacing 을 10으로 설정
+
+우리가 root 다음으로 label 만들었으니까
+왼쪽에서 label을 찾아서 화면으로 끌고와도되고, 아님 vbox에 배치시켜도됨
+hbox(컨테이너), button(컨트롤러)도 끌고와서 순서잘보고 배치시켜라
+
+이제 hbox 먼저 설정해보겠음
+-------------------------------------> 설정다했고요
+  -> save누르고 이클립스 가보면 자동으로 코딩돼있음
+
+씬빌더에 저장을했으면 꼭 fxml을 한번 열든 탭을 누르든 해서 다시 읽어줘야댐 꼭!!!!
+
+
+
+====> 아까까지 코드쳐서 만든것들을 화면으로 만들어낸거임!!!
+이렇게 만든 fxml 문서를 읽어다가 쓰고, 밑에서 객체를 넣어주고 넣어주는것만 할거임
+
+
+fxml 문서를 읽어오는법이 두개가 있는데요
+
+1)  fxml의 가장 바깥쪽 객체 = root element. 여기서는 vbox지
+VBox root = FXMLLoader.load(경로)  
+	->> 경로 쓸때는 FXMLLoader.load(getClass().getResource("상대경로/파일명"))
+	--->> load는 파일을 읽기만하는게아니고 읽어다가 객체를 만들어서 root에 넣어주는거임
+만들었으면 scene 객체만들고, stage에 scene 추가하고, 창제목있으면 그것도달고
+
+2) 이번엔 loader를 만들어서 위에꺼 우항을 넣어줘
+FXMLLoader loader = new FXMLLoader(getClass().getResource("FxmlLayout.fxml"));
+글고 걔를 vbox root에 넣어줘
+VBox root = loader.load();
+
+1)의 load는 static메서드고, 2)의 load는 인스턴스메서드임
+딱보기엔 2)가 불편해보이는데 나중에 써먹을곳이 있음!!!
+둘다 쓸줄알아야댐
+
+root element의 타입(?)을 모를때 ! 여기서는 만약에 vbox라는걸 모를때
+Parent root = loader.load();    하십쇼
+
+
+-------------------------------------------------------------------------------------------------
+AnchorPane<<<<<
+
+이번에는 창이 있으면 창 중앙에
+아  이  디 : [아이디입력하는곳]
+패스워드 :  [패스워드입력하는곳]
+   <로그인버튼> <취소버튼>
+
+이거 아까했던 vbox, hbox 컨테이너들로 해도 상관은 없거든?
+근데 한번 새로운걸 해볼게영
+이번엔 왼쪽-위쪽에서부터 떨어진 거리를 가지고 = 좌표로 위치를 나타내서 표시하는 
+앵커패인(anchor pane)을 이용해서 해볼게영
+
+자바코드로  만들어보갰음다
+--->>> 이친구들을 만들었는데
+	얘네를 다 만들어놓고 AnchorPane에 안넣어주면 하나도 쓸모가없어
+	이렇게 좌표줄수있는거는 AnchorPane 뿐이라구
+-------------------------------------------------------------------------------------------------
+BorderPane<<<<<
+
+영역이 다섯개로 나뉘어짐. 각 영역에 컨트롤러는 하나씩만 넣을수있어
+다섯개중에 하나에만 컨트롤러를 주면 나머지 영역은 화면에서 사라짐
+위 - 왼/가운데/오 - 아래
+top - left/center/right - bottom
+
+요번엔말이죠
+top :: <버튼: '첫번째'> <버튼: '두번째'>
+중간 :: textarea
+bottom :: [textfield] <버튼: '확인'>
+
+얘네는 마지막에 만들었던애들을 root.setTop(), root.setCenter() 이런식으로 넣어줘야댐
+
+-------------------------------------------------------------------------------------------------
+GridPane<<<<<
+
+정사각형 grid를 가로로 몇개 세로로 몇개 만들건지 조절해서 하는 그런거래
+그래서 어디에 뭘 넣고싶다 하면 좌표인 (2,4) 이런거 써주면 되나봄
+
+아까하던
+아  이  디 : [아이디입력하는곳]
+패스워드 :  [패스워드입력하는곳]
+   <로그인버튼> <취소버튼>
+만들어보갰음
+
+-------------------------------------------------------------------------------------------------
+
+잠시 꾸며볼게용<<<<<<<<
+
+이번에는 화면에 색깔같은거 함 집어넣어볼게영
+자바에서도 css처럼 고론고 할수있단말여
+setStyle 이용하시고요, 옵션 앞에는 -fx- 를 넣어줘라
+TextField tfId = new TextField();
+tfId.setStyle("-fx-background-color:green; -fx-text-fill:white");
+
+
+종료하는 방법은 세개가 있는데
+객체.setOnAction(ActionEvent event) {
+  @override
+  public void handle(ActionEvent event) {
+     
+    1) System.exit(0)	    -----> 이거는 stop() 메서드를 거치지않기때문에 권장 X
+    2) Platform.exit();
+    3) primaryStage.close();	    
+
+  }
+}
+
+-------------------------------------------------------------------------------------------------
+StackPane<<<<<
+
+stack처럼 컨트롤들을 쌓아서 맨위에있는거 하나만 볼수있는 형태임
+
+
+~~~ 무튼 이런 pane들이 굉장히 많다..
+FlowPane, 웅앵패인,,, 
+이것들은 씬빌더의 컨테이너에서 이름목록을 함 찾아본다음에
+걔네가 어떻게 생겼는지 인터넷에 함 검색해서 알아두고있으면 좋다고그러네ㅛㅇ
+필요할때마다 쓸수있다고 그르네요...
+
+-------------------------------------------------------------------------------------------------
+
+
+이제 이벤트 해보겠다네요
+
+이벤트를 넣을 수 있는 방법은 네가지가있음
+1) 객체명.setOn어쩌구()  해서 eventhandler 익명구현체 구현!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,109 @@
+190902_java
+
+
+기초를 잘합시다ㅏㅏㅏㅏㅏ
+
+
+call stack 자체에 기본적으로 주어지는 공간이 있는데
+재귀호출을 너무 여러번 부른다 하면 저장이 안되범..
+너무 많이 되면 stackOverFlowError 발생! 
+---> 자주 쓰는건 그렇게 좋지만은 않음..
+
+
+디버그할때 메서드안으로 들어가려면 f5 눌러야댐..!
+f8은 다음 breakpoint로 이동함!
+
+
+배열로담은 객체 Tv[] tvArr = new Tv[3]; 를 jvm 그린다 하면
+우선은 Tv 클래스의 자리를 만들고
+tvArr 참조변수를 main 메서드의 지역변수로 선언
+tvArr의 주소를 인스턴스로 만드는데 방을 세개로 나누고 기본값은 null값
+그다음 반복문에서 new연산자로 하나씩 주잖아
+		for( int i=0;i<tvArr.length;i++ ) {
+			tvArr[i] = new Tv();
+			tvArr[i].channel = i+10;
+		}
+tvArr 0번쨰 주소에 Tv 인스턴스화해주고 그걸 tvArr의주소의 0번쨰방에 대입
+
+
+
+
+
+Tv t = new Tv();  ==> 여기서 Tv() 이친구가 생성자...!
+부르는 시점은 처음 만들때 딱 한번!
+생성자는 class 안에서 
+Tv(){}
+Tv(int x){} 이런식으로 여러개 있을수있음
+우리가 생성자를 써주지않아도, 
+컴파일러가 자동으로 클래스안에Tv(){} 만들어줌 == 기본생성자.
+ ( 생성자가 한개도 없어야 만들어줌 )
+
+new Tv() :: new가 인스턴스를 만들고 생성자(메서드)를 호출하는거임..!
+
+원래 new를 해주면 t의 주소에 이것저것올라가면서 Tv() 생성자도 올라감. 그리고 그다음ㅇ데 Tv() 메서드를 호출하면서 콜스택에 올라가는거임..!
+
+생성자는 리턴값이 없어서 모두 void가 붙기때문에 걍 생략하는거임
+
+
+생성자가 한개라도 있으면 기본생성자 안만들어도됨
+매개변수를 가진 생성자를 만든다 하면
+인스턴스화할때 생성자 안에 인자를 넣어줘야댐
+
+
+Car c = new Car("red","stick",4);
+이거는 사실
+Car c = new Car();
+c.color = "red";
+c.gearType = "stick";
+c.door = 4;
+------------------> 이 4줄을 한줄로 줄인겨!!!
+
+
+만약에
+class Car{
+	String color;
+	String gearType;
+	int door;
+	Car(String  color, String gearType, int door){
+		color = color;
+		gearType = gearType;
+		door = door;
+	}
+
+이상태면 Car 생성자 안의 매개변수 color, 대입연산자의 우항 color,
+대입되는 좌항 color 전부 지역변수임.. 지금 하고싶은건 지역변수 color를
+인스턴스 변수 color에 넣어주고싶은거자나 
+지역변수와 전역변수의 조건이 같을때 지역변수와 전역변수를 구분하기위해서
+this <<< 를 붙여줌
+
+	Car(String  color, String gearType, int door){
+		this.color = color;
+		this.gearType = gearType;
+		this.door = door;
+	} 
+이렇게!!!! 이렇게하면 이 인스턴스의!!!! color 라는뜻임
+
+this는 "이 인스턴스의" 라는 뜻이니까 생성자가 아닌 어디의 메서드에서도 쓸수있어!!!!
+
+
+
+
+오늘과제 : CarTest.class JVM 그려오십쇼. 6장 연습문제 풀고.
+		이전에 과제로 내줬던거 다시풀어보십쇼...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

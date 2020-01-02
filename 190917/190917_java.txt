@@ -1,0 +1,92 @@
+190917_java
+
+
+String s = "100";
+int a = Integer.parseInt(s);
+근데 이렇게하면 저 s에 숫자가 아닌게 들어갈수도있잖아요..
+그럼 try-catch를 해줘야됨 
+이거는 개발자가 내는 에러라서 빨간줄 안뜹니다 흑흑
+
+
+String ss= "200";
+int aa = Integer.parseInt(ss, 16);
+이거는 200을 16진수로 바꿔라- 가 아니라
+200이 16진수다~ 라는 뜻임
+
+
+문자열끼리 합칠때 걍 문자열끼리 +=하면 엄청 느림
+그것보다 오조오억배 빠른게 StringBuffer, StringBuilder
+동기화를 보장하지 않는 StringBuilder가 더 빠름
+이제부턴 무조건 StringBuffer && append 사용하자! 
+성능차이가 어마어마합니다...
+
+
+
+인스턴스친구들을 import :: import java.lang.Math.*;
+근데 Math.round = 클래스친구들이니까
+클래스친구 import :: import static java.lang.Math.*;
+
+
+
+
+split은 구분자를 하나밖에 못주잖아
+StringTokenizer는 구분자를 ...
+하여튼 두개를 선택적으로 사용할수있어야함
+
+String str = "100,200,300,400";
+StringTokenizer st = new StringTokenizer(str,",")
+
+--> 근데 이렇게 자르면 1 0 0 , 2 0 0 , 이렇게 한글자씩 읽음
+그래서 토큰을 만나면 그전까지를 하나로 보고 토큰을 만나면 ~~ 이렇게됨
+
+얘는 split이랑 다르게 전체 길이도 몰라.. 그래서 출력하려면 while로 해야됨
+while(st2.hasMoreTokens()){
+	System.out.println(st2.nextToken());
+}
+이런식으로말여..!
+
+
+split이랑 둘이 다른것같지도않은데 왜 두개쓰죠??
+== split은 구분자가 , 일 경우 111,22,,,3,, 이거의 빈문자도 배열로 넣음
+stringtokenizer는 빈문자를 아예 취급을 안함
+
+++ split은 구분자로 0,를 주면 0,를 기준으로 잘라내는데
+stringtokenizer는 0,를 주면 구분자를 한글자만 갖기때문에
+0과 ,을 둘다 구분자로 갖게됨!@!!!!!
+
+
+
+
+
+10장인 Date 클래스는 한번쯤 혼자 해보면 알수있다.... 그르네요
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

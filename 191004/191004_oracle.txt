@@ -1,0 +1,113 @@
+191004_oracle
+
+
+INSERT >>>
+INSERT INTO 존재하는테이블이름[(컬럼리스트:생략가능)]
+   테이블중에 특정 컬럼에 대해서 데이터를 집어넣지않겠다는..?
+   컬럼리스트에서 NOT NULL로 설정된 컬럼명은 무조건 여기에 기술해야함
+
+VALUES(값리스트)
+   값을 집어넣는 순서와 개수는 컬럼리스트와 일치해야함
+
+
+오라클은 문자, 문자열의 구분이 없이 전부 String타입이여
+자바에서는 문자열을 ""로 묶어주는데, 오라클에서는 ' ' 로 묶어줌!
+
+컬럼리스트에 기술된 순서에 맞춰서 VALUE절을 구성해주면 되고,
+이순서는 실제 테이블 순서랑 상관없음!
+물론 컬럼리스트를 쓰지않았을 경우 테이블에 있는 순서대로 밸류를 구성해줘야함
+
+UPDATE, DELETE, INSERT 할때는 실행하기전에 먼저 데이터를 확인하고,
+실행하고, 다시 제대로 됐는지 확인허
+
+~~~ 자료를 입력해부자 ~~~
+- 컬럼리스트 전부 기술
+INSERT INTO EMPLOYEE(E_EMP_NO,E_NAME,E_ADDRESS,E_TEL_NO,E_POSITION,E_DEPARTMENT)
+   VALUES('E101','홍길동','대전시 중구 대흥동 500','10-1234-5678','사원','개발부');
+
+- 컬럼리스트 생략
+INSERT INTO EMPLOYEE VALUES('E102','강감찬','서울시 영등포구 당산동 200',
+                            '02-232-5656','부장','총무부');
+
+- NULLABLE 데이터가 NULL인경우
+NULLABLE인 번호를 넣지않겠음
+ 1) 컬럼리스트 안쓰겠다!
+INSERT INTO EMPLOYEE VALUES('E103','홍길순','충북 청주시 서원구 복대동 123',
+                            NULL,'팀장','개발부');
+------> NULL 또는 화이트포지션 '' < 이렇게 기술해주면 됨
+ 2) 컬럼리스트 쓰겠다!
+
+
+SELECT * FROM 테이블명; 
+* = ALL // 앞으로는 ALL이라고 하면 알아서 아스트릭스로 바꿔라
+SELECT * FROM EMPLOYEE;
+
+DELETE 테이블명 WHERE 컬럼ID='어쩌고';
+DELETE EMPLOYEE WHERE E_EMP_NO='E103';
+
+
+CREATE TABLE 테이블명 AS SELECT문;
+ : SELECT된걸 가지고 테이블을 만들겠다~
+예) EMPLOYEE 테이블을 EMP 테이블로 복사
+CREATE TABLE EMP AS SELECT * FROM EMPLOYEE;
+EMPLOYEE가 가지고있는 자료와 구조는 복사되지만, 기본키와 외래키는 절대 복사되지않아
+저장했던 자료들 복사되지만, 제약조건 들어가보면 암꺼또 없음
+
+
+테이블 구조 변경 처리 명령 : ALTER
+
+
+
+~~ 데이터 타입 ~~
+문자열 ::
+ - CHAR, VARCHAR, VARCHAR2, LONG, CLOB, NVARCHAR2, NCLOB 타입 존재
+ (N이 붙으면 NATIONAL = 국제 표준 문자 코드. 유니코드 형식 지원) = UTF8, UTF16
+
+CHAR : 데이터를 왼쪽에서 오른쪽으로 넣고 공간이 남으면 공백처리
+기억장소보다 긴 문자를 넣으면 오류납니다.. 안짤려요..,
+2000BYTE까진데 한글은 2000/3 만큼만 쓸수있음
+
+CREATE TABLE TEMP01(
+   COL1 CHAR(10),
+   COL2 CHAR(10 CHAR),
+   COL3 CHAR(5 CHAR));
+이렇게 만들어진 테이블에
+INSERT INTO TEMP01(COL1, COL2, COL3)
+   VALUES('ABC','대한민','대한민국 ');
+얘를 넣어주고
+SELECT LENGTHB(COL1), LENGTHB(COL2), LENGTHB(COL3) FROM TEMP01;
+이렇게해주면
+10, 16, 13 나옴
+왜죠?!
+'대한민' => 열칸중에
+대한민 = 3*3 = 9바이트
+남은 일곱칸 = 1*7 = 7바이트 => 16바이트
+'대한민국 ' => 다섯칸중에
+대한민 = 4*3 = 12바이트
+' ' => 1*1 = 1바이트   => 13바이트
+
+---> 충분히 큰 크기로 저장해주십쇼..
+CHAR은 주로 기본키 등을 설정할떄 사용. (숫자, 뭐 그런거,,)
+
+
+VARCHAR : 가변길이! 남는 공간을 잘라버려
+CREATE TABLE TEMP02(
+   COL1 VARCHAR2(4000),
+   COL2 VARCHAR2(4000 CHAR));
+INSERT INTO TEMP02(COL1,COL2) VALUES('무궁화','우리나라 꽃입니다');
+만들고 바이트길이재주면
+SELECT LENGTHB(COL1), LENGTHB(COL2) FROM TEMP02;
+9,25 나옴
+
+SELECT LENGTHB(COL1) AS "컬럼크기(BYTE)", 
+       LENGTHB(COL2) AS "컬럼크기(BYTE)",
+       LENGTH(COL1)  AS "컬럼크기(CHAR)",
+       LENGTH(COL2)  AS "컬럼크기(CHAR)"
+       FROM TEMP02;
+이렇게 AS를 해주면 컬럼이나 테이블에 별칭을 주는거임..!
+
+
+LENGTH   = 글자수
+LENGTHB = 글자가 차지하는 공간의 크기
+
+
