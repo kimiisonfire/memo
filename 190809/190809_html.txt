@@ -1,0 +1,66 @@
+8/9
+
+html
+
+스타일의 caption 태그 : margin으로 표와의 간격 조정
+			caption-side로 캡션 위치 위/아래 조정
+
+표 border는 기본으로 두줄로 되어있는데, 한줄로 합치려면
+=> border-collapse : collapse 해주면 됨. default = seperate
+
+두줄로 되어있는 표 border 사이를 더 넓히고싶으면
+=> cellspacing (px)
+표 테두리 안쪽의 내용과 표사이의 간격
+=> cellpadding (px)
+-----------------------------> cellspacing, cellpadding html5 지원ㄴㄴ
+
+
+iframe 지정 :: 웹 페이지 안에서 다른 웹페이지를 표시하는겨
+	  그 iframe 안으로 html을 실행하거나 iframe 외부의 링크를 그안으로 열리게 하거나 할수있음. iframe에 이름을 지정하고 링크의 타겟을 이름으로 설정하면..!
+    <a href="http://www.naver.com" target="ifr">네이버</a>
+	<a href="http://www.daum.net" target="ifr">다음</a>
+    <br>
+	
+	<a href="../0808/아메리카노.html" target="ifr">아메리카노</a>
+	<a href="../0808/카페오레.html" target="ifr">카페오레</a>
+	<a href="../0808/카푸치노.html" target="ifr">카푸치노</a>
+	
+	<br>
+	<iframe name="ifr" src="../0808/coffeemenu.html">
+
+
+style은 공통속성 먼저 설정 후 개별속성 설정
+
+
+
+* pre style을 매번 쓰기 귀찮으니까
+css 파일을 만들어놓고 매번 갖다씁시다
+확장자 css인 파일 만들면댐
+
+> publicstyle.css
+
+ @charset "UTF-8";
+
+pre{
+
+  background : yellow;
+  font-size  : 1.2em;
+  border-top : 2px dotted red;
+  border-bottom : 2px dashed red;
+  padding-top : 10px;
+}
+
+
+그리고 html 파일 상단에
+<html>
+
+<link rel="stylesheet" href="../css/publicstyle.css">
+
+추가! 
+
+>>>> 이렇게 외부에서 불러오는건 외부스타일
+>>>> 내부에서 <style> 태그로 설정하는건 내부스타일
+
+
+
+

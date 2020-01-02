@@ -1,0 +1,101 @@
+190830_html
+
+
+  function proc2(){
+	  x = prompt("수 1 입력 : ");
+	  y = prompt("수 2 입력 : ");
+	  
+	  add(x,y)
+;  }
+  function add(a,b){
+	  a = parseInt(a)
+	  b = parseInt(b)
+	  
+	  sum = a + b;
+	  document.getElementById("result2").innerHTML = sum;
+  }
+
+여기서 사실 add 펑션 안에 x, y를 써도 됨 전역변수라서
+
+전역변수로 쓰이면 다 같게 쓸수있는데
+펑션에서 반환하는 변수의 변수명과 다른변수들은 구분을함
+return res; =/= res = somethin 같지않다는거죳
+
+
+파라미터 없이 계산한다 :: 공용변수를  쓰겠다는 뜻
+
+  function proc5(){
+	  x = prompt("수 1 입력 : ");
+	  y = prompt("수 2 입력 : ");
+	  div();
+	  
+	  str = "두 수 나눈값 : " + res_div;
+	  document.getElementById("result5").innerHTML = str;
+  }
+  function div(){
+	  res_div = x/y;
+  }
+------> div 펑션에서 돌려주는 반환값은 없음
+------> 그래도 공용변수기때문에 proc5에서 갖다 쓸수가있음
+
+파라미터 = 매개변수
+
+
+int값끼리 더할때는 꼭 parseInt 해줍시다으
+
+
+- 함수를 호출할때 들어가는 인자=인수=실인수
+- 펑션 작성할때 쓰는 매개변수=가인수
+실인수가 매개변수보다 많으면 무시되고 모자라는 인수는 undefined됨
+
+
+파라미터는 없고 반환값만 있는 함수를 사용하게되면
+document.getElementById("result8").innerHTML = calc();
+이런식으로 반환값을 따로 변수에 저장하지 않고 바로 출력할수도 있다~!
+
+
+
+window.onload :: 0826/script4.html 
+저게 있어야 body까지 다 실행된다음에 script가 실행됨!!!
+
+window.onload = function(){ 이렇게..,
+
+
+return;		: 강제종료
+return 1;	: 1을 반환
+
+
+java와는 다르게 자바스크립트는 만약에 무한루프 안에 document.~~ 출력하는
+부분이 있으면 아예 안끝남.. java는 계속 찍으면서 무한이라면, 자바스크립트
+는 다 돌아간 다음에 document를 작성하기 때문,,
+
+
+confirm 메소드는 boolean형입니다..! 취소 또는 창을 닫으면 false임
+
+
+this!!!
+	  var myCar = { 
+			  // 속성 정의
+			  model : "bmw",
+			  speed : 100,
+			  color : "black",
+			  // 기능 정의
+			  brake : function(){
+				  this.speed -= 10;
+			  },
+			  accel : function(){
+				  this.speed += 20;
+			  }
+	  };
+저 펑션에서 speed에 대해 변화를 주고싶을때 this를 안쓰면 오류남!
+하지만 java에서는 this 안써도 된대..!!!t
+
+파라미터(매개변수)를 아까는 function proc1(여기){ 에 줬다면
+객체에서는 function(여기) 에다가 주나봄
+
+미리속성을 정해놓은다음에 나중에 속성을 추가할수도있어..! 
+myCar.name 만들어버릴수도있음 
+
+
+
+

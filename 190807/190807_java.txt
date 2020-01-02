@@ -1,0 +1,194 @@
+8/7
+
+* 이번주 금요일까지 졸업증명서, 통장사본(통장가져와서 복사해도 ok), 증명사진(파일ok)
+
+
+@@ 설치한거 집에가서 똑같이 설치하고 캡쳐해서 ppt 작성 후 설명도 다 달아서 제출(금요일) @@
+
+
+D:\/W_윈도우초반설정_전자정부 unzip
+:: A_TeachingMaterial, B_Util, C_Lib, D_Other
+
+* 반디집 설치
+D:\B_Util\1.설치 및 압축파일\그외/BANDIZIP-SETUP-KR 설치
+
+* notepad 설치
+D:\B_Util\1.설치 및 압축파일\그외/notepad 설치
+
+* java 설치
+크롬-> oracle.com -> java SE12 download :: 12버전이 최신인데 우린 7버전(통용) 씀 java1.7
+Java Archive에서 Java SE7 -> development kit (JDK <->JRE runtime env, jdk가 jre 포함)
+->> win OS 따라 X64/X86(32bit) 다운로드 ((Win-컴퓨터-속성에서 확인하십쇼))
+
+d드라이브에 이미 깔려있음 D:\B_Util\1.설치 및 압축파일\[51]JDK 이친구 install
+설치 위치는 D:\B_Util\2.Java 하위에 JDK1.7  생성해서 여기로 연결
+설치완료하십쇼 JRE 는 안깔아도됨
+
+
+
+* java 실행시 JDK 1.7 쓰게 만들도록 설정
+컴퓨터-오른쪽키 속성-고급시스템설정-환경변수-시스템변수/새로만들기 
+name : JAVA_HOME / value : D:\B_Util\2.Java\JDK1.7 
+그다음에 같은곳의 Path 변수를 편집 > 마지막에 ;%JAVA_HOME%\bin;
+
+
+* 설치 확인
+
+실행: Win+r  cmd -> (command, GUI graphic UI)
+
+> java -version
+버전 줄줄뜸
+
+java에서 컴파일 담당하는건 javac
+aaa.java -(compile)-> aaa.class -> 실행
+> javac -version  :: javac 버전확인
+
+
+* 설치 확인 2
+
+메모장에
+
+public class Hello{
+  public static void main(String[] args){
+    System.out.println("Hello java");
+  }
+}
+-->> 다른이름으로 저장 / Hello.java 
+
+바탕화면에서 Shift+오른쪽마우스/여기서명령창열기 -> 이위치에서 cmd 열림 
+아까 만든거 COMPILE
+
+> javac Hello.java :: Hello.class 컴파일파일 생김
+> java Hello
+Hello java
+
+
+
+나중에는 파일 관리가 어려워지니까 그걸 관리해주는 eclipse? 를 쓸겁니다(tool)
+
+* 다운로드
+eclipse.org 맨 아래 IDE and tools > download > more downloads 
+jdk 1.7하고 가장 호환이 좋은건 lunar/capular
+톱니바퀴달린친구로 download 누르면 다운로드 받을수있는 위치를 고를수있음 choose mirror (kakao, kaist etc)
+>> 근데 걍 다운로드 되어있음  D:\B_Util\1.설치 및 압축파일\[52]Eclipse
+걍 압축만 풀면됨다 얘를 복사해서 D:\B_Util\3.Eclipse 붙여넣고 풀어라
+그안에 eclipse 예쀼리한게 exe임 작업표시줄에 고정했다리
+
+글고 eclipse인데 톱니바퀴있는애를 마우스오른쪽키로 edit with notepad 해서 열어랏
+마지막 두줄만 신경쓰면됨 
+xms2048 / xmx2048 하면 여기에 램 2G 주는거여
+
+* 이클립스 실행 -> workspace 지정 :: D:\A_TeachingMaterial\1.BasicJava\workspace
+
+* 인코딩방식 설정 한글을 쓸수있게 바꿔줄겨
+이클립스-window-preferences / 검색칸에 encoding 치면 쭉 뜨는데 하나하나 다바꿔야댐
+Content Types-Java Archive 누르고 비어있는 디폴트인코딩에 UTF-8 누르고 update
+Text는 하위폴더가있어서 찾아서 다바꿔줘라
+>> 이거는 workspace 바뀔때마다 해줘야댐
+
+General/Workspace 에서는 textfile 디폴트돼있는거 하나 utf-8 apply
+그 다음친구들도 전부 ISO 10646/Unicode(UTF-8) apply 해주십셔
+
+* java는 깔았는데 eclipse는 압축만풀었음 이제 연결해줄겨
+preferences//Java/Installed JREs 
+더 추가해줄거면 Add/standard VM 어쩌구 해서 추가할수있음
+
+
+* java용 프로젝트 만들기
+오른쪽 위에 open perspective - java 열어랏
+
+프로젝트칸에서 새로운거 시작 ctl+n / java project (next)-> name : basicjava, use default JRE 체크 (next->  output 폴더 기억해두십셔
+
+
+src에 패키지를 만든다리 ctl+n 해서 src 하위에 package / a_variable 만들어
+
+a_vari 하위 class파일 만든다리 Hello 만든당
+
+* 글씨크기 키우기
+pref/general/appearance/colorandfonts/ basic/text font -> edit 원하는 크기로
+
+
+>>>>>>>> 저장을 생활화 ctrl+s <<<<<<<<<
+
+
+오타없이 작성만 완성하면 bin 하위에 자동으로 class 파일 생김
+src/소스코드 bin/output
+
+이클립스에서 작성하고나서 파일 눌러진상태로 ctl+f11 누르면 결과물이 아래에 뜹니다요
+한군데서 다 작성/컴파일/실행까지 가능해서 툴을 쓰는것이다
+
+
+---------------------------------- 일단 java 여기까지
+
+
+* db 관련 설치
+저장장소 우리는 오라클쓸거얌
+D:\B_Util\1.설치 및 압축파일\[53]Oracle 
+
+OracleXE112_Win64 얘를깔면 얘가 서버가되는겨
+win32_11gR2_client 얘는 접속할수있는 새럼이 되는겨
+
+* 설치
+
+우선 OracleXE112_Win64 설치 disk1/setup  / destination folder 설정해야됨
+Destination Folder: D:\B_Util\4.Oracle\
+
+
+@@@@@@@@@@@@@@@@@ 오라클 PW : java @@@@@@@@@@@@@@@@@@
+
+
+일단 여기까지하면 b_util 하위에 appClient 만드십쇼
+
+D:\B_Util\1.설치 및 압축파일\[53]Oracle\win32_11gR2_client\client setup 까십쇼
+설치할때 경로를 아까만든  D:\B_Util\appClient 
+
+
+* 오라클 사용하는 tool 설치 :: sqldeveloper
+D:\B_Util\1.설치 및 압축파일\[54]SqlDevelper
+sqldeveloper 작업표시줄에 고정함
+
+얘는 또 jdk1.8 필요해
+D:\B_Util\1.설치 및 압축파일\[51]JDK 에서 8u121 설치
+경로를 D:\B_Util\2.Java\JDK1.8\ 여기로 폴더만들고 해주십셔
+>> 1.8 깔았고 PATH 등록은 ㄴㄴ
+
+다깔았으니까 이제 경로를 1.8로 해주고 뭐뜨면 아니 안함 안함 안함 하십셔
+
+
+* DEVELOPER 실행	
+
+녹색 + 눌러서 접속이름(마음대로):kimi/이름:system/비밀번호:java
+테스트 누르면 상태:성공 됨 그러면 접속하십쇼
+
+
+>> 근데 오라클 그냥 돌아가는데만 램 1기가 넘게 먹음
+종료하겠음다 :: win+r / services.msc / oracle 달고있는애들 중지시켜 상태가 시작됨<이 아니게
+그래도 윈도우켜면 자동으로 켜지는데 이걸 수동으로 바꿔야져
+
+시작유형이 자동인 애들을 속성/시작유형/수동 으로 바꿔주고 적용
+
+
+>>>>>>>>>>>>> 이렇게하면 설치는 끝!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

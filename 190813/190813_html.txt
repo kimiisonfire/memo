@@ -1,0 +1,49 @@
+0813 html
+
+form3.html/ form3.jsp
+
+input type submit일때는 form action의 jsp 파일로 전송되는데
+input type button일때는 그딴거없다
+
+submit으로 jsp로 가면 받아들였든 것들이 name="이거" 이걸로 전송되는데
+onclick으로 받는 친구들은 form name의 ff.이거 이렇게 갑니다유,,
+
+
+html 내 <script>는 변수 타입 선언 안함
+
+
+결과 브라우저창에서 f12 누르면 뜨는 창이 개발자창, 개발자도구임
+
+
+css style은 화면을 켜면 실행되는 정적 스타일
+근데 script의 style은 입력받은 값으로 실행되는 동적 스타일
+
+script는 동적인 대화형을 처리하는겨
+
+
+체크박스에서 여러개의 값을 받아올때(in jsp file)
+String[] ck = request.getParameterValues("check");
+배열이라서 [] 붙여줘야댐다
+
+배열로 저장된걸 뽑아낼때
+    String[] ck = request.getParameterValues("check");
+    
+    
+    String frs = "";
+    for(int i=0; i<ck.length ; i++){
+    	frs += ck[i] + " ";
+    }
+이렇게하면 계속 누적돼서 나오겠쥬
+
+
+label, input 둘다 인라인 요소
+인라인 요소는 가로세로 길이를 조절할수 읍서
+
+
+
+
+
+
+
+
+

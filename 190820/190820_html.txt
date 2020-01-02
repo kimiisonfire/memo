@@ -1,0 +1,61 @@
+148p~~
+
+
+내부 css (style 태그) / 외부 css(link css 파일) 동시에 적용되는게 있다면
+우선순위가 높은 내부 css의 내용이 표현됨
+
+
+외부 css < 내부 css < 인라인 css 순으로 가중치가 높은겨
+그치만 html에서는 인라인 css를 작성하지 않는게 상도덕
+
+
+선택자 - 속성선택자
+스타일 설정할때 속성을 가지고도 고를 수 있음
+타입이나 네임을 가지고 말여..
+input[type=text]{
+  background : lightblue;
+}
+
+
+클래스 - 의사 클래스 :: 클래스가 정의된 것처럼 간주. 특정 상태에 따라 속성을 설정. >>>  선택자:클래스이름  <<< 이렇게 씁니다.. 클래스 이름을 .classname 이렇게 안쓰고 :classname 이렇게씀. 클래스 이름은 다 정해져있고 바꿀수없어
+
+
+고른 태그를 누르려고 할때 색을 바꿈미다  :: 0820/pseudoClass.html
+
+  a:link{		:: 링크 클릭하지 않았을때
+    color : red;
+    text-decoration : none;		:: 밑줄X
+  }
+  a:visited{		:: 링크 한번 들어갔다 나온 다음에
+    color : green;
+    text-decoration : underline;	:: 밑줄O
+  }
+  a:hover{		:: 마우스 올려놨을때
+    color : blue;
+  }
+  a:active{		:: 클릭하는 순간!
+    color : orange;
+  }
+
+
+
+style 설정할 떄 
+p#p1 :: p태그이자 id가 p1인 친구
+#tab2 td :: tab2 아이디를 가진 태그의 자손(?)인 td태그친구
+
+
+
+text-shadow  ::  x축의 ->방향으로 얼마나 나오는지,y축의 아래방향으로 얼마나 내려오는지, 얼마나 번지는지 설정 
+text-shadow		: 100px 50px 10px;
+
+
+
+
+
+
+
+
+
+
+
+

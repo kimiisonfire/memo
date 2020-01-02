@@ -1,0 +1,39 @@
+190828_html
+
+여러개를 동시에 스타일 주긔
+.box button, .box input[type=button]{
+	width	: 100px;
+	padding : 5px 0px;
+	border-radius	: 10px;
+	font-weight		: bold;
+	background		: powderblue;
+}
+
+
+자바스크립트에서 var 는 그다음에 나오는애는 변수다~~ 임
+
+
+parseInt, parseFloat은 더하기할때만쓴다...!
+문자형 +가 있기때문에 헷갈릴수있어서 그렇습니다
+
+공용변수 (var이 안붙는애들) 쓰더라도 걍 매번 초기화하자
+
+
+break는 만나면 거기서 바로 루프를 나오는건데
+continue는 만나면 그 회차는 건너뛰고 다음부터 쭉쭊나옴
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

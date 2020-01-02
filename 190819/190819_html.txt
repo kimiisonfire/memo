@@ -1,0 +1,28 @@
+190819 html
+
+
+fieldset - legend : 네모칸 생기는거임
+select : 여러개중ㅇ에 고를수있음
+
+<select multiple="multiple" size="6">
+ : 여러개 고를수있는데 화면상에 6개 나오게 할수있음
+
+select - option 안에 value를 주면 그값이 서버로 넘어감,
+그렇지않으면 그냥 텍스트가 변수명으로 넘어감
+input type의 value는 화면에 표시되는 문자 (라는데 그게 뭔소리징)
+>>> 이름 <input type="text" value="abc"><br>  -> 화면의 빈칸에 이미 abc가 입력되어있음
+
+placeholder :: id/pw 창에 글 써있다가 입력하면 사라지는 그거
+
+
+
+memo = memo.replaceAll("\r\n", "<br>");
+입력받을때 엔터쳐진걸 나중에 그대로 줄바꿔서 출력하려면 저렇게 하면됨
+입력할때는 그냥 엔터치는거같은데 사실은 줄의 가장 앞부분으로 커서를 옮겨서(= \r)
+그 다음줄로 줄바꿈(= \n)하는겨  ==> 커서를 앞으로 옮기고 줄바꿈한걸 <br> 로 대체함!
+
+줄그리기 :: <hr>
+
+margin : 10px auto;
+--> 위아래는 10px씩 margin 주고 왼/오는 자동으로 주는겨 == 가운데정렬
+

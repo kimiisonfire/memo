@@ -1,0 +1,64 @@
+8/13 java
+
+
+켤때 말고 이클립스에서 워크스페이스 변경
+
+file - switch workspace 
+
+
+
+- 등가비교연산자
+
+System.out.println(5<10);  => true 출력
+int a = 50;
+int b = 35;
+System.out.println(a<b);   => false 출력
+
+
+- 비트연산자는 거의 쓸일이 없을거라고 하네용
+
+
+- 논리연산자
+10<= x <= 20  
+---------------> x>=10 && x <=20
+
+
+
+
+Math.random()
+Math :: 수학연산하는 Math라는 클래스
+random() :: Math 클래스 하위 메소드
+
+
+자바는 기본적으로 <=x< 앞은 포함, 뒤는 미포함 방식임
+로또번호 뽑는다 :: 1~45까지
+Math.random 0<= x < 1 범위임 (double)
+m*45  ==> 0 <= x < 45
+m*45+1==> 1 <= x < 46  ::  1.xxxx~45.xxxx다..!
+int lotto = (int)(Math.random()*45+1);
+
+		//47(미포함) ~ 537(포함) 범위 내의 숫자
+		int rand = (int)(Math.random()*490+48);
+		System.out.println(rand);
+
+==>> 우선 포함~미포함으로 범위를 바꿔주고   47(미포) ~ 537(포) => 48(포) ~ 538(미포)
+	(int)(Math~ * (큰수-작은수) + (작은수));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

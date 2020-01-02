@@ -1,0 +1,53 @@
+190822_html
+
+height를 설정해놓고 넘치는거 = overflow
+그럼 어케할건지? :: 
+
+>> 설정할 때 overflow 스타일 주면 됩니당
+overflow : auto; 하면 스크롤이 생김. 넘칠때만 스크롤생김
+overflow : scroll; 스크롤 생기고 스크롤안생겨도 될만한친구들도 스크롤생김
+overflow : hidden;  걍 감춰버림
+
+list-style-type 했읍니다.. circle, square, none, ...
+
+
+margin : 10px auto; :: 위아래 10px이고 좌우는 자동
+
+
+  스크립트에서 html요소에 접근하는 방법
+  id 접근 : document.getElementById('id이름')
+  class 접근 : document.getElementsByClassName('class이름')
+  태그 이름 접근 : document.getElementsByTagName('태그이름')
+
+
+class, tag는 여러개 쓸수있으니까 getElement"s" 임다
+
+
+  function showtable(){
+  		tab = document.getElementById('tab2');
+  		tab.style.display = 'block';
+버튼을 누르면 테이블이 보이게 하려고 하는데용
+tab2에서 가져온 변수(?)를 tab으로 지정하고 
+tab변수의 style에서 display를 block으로 설정해줌다
+
+다시 테이블을 누르면 테이블이 사라지게 할수도있쥬
+테이블 태그에 onclick을 주고 <table id="tab2" onclick="hidetable()">
+  function hidetable(){
+	  	hide = document.getElementById('tab2');
+	  	tab.style.display = 'none';
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

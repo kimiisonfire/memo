@@ -1,0 +1,80 @@
+190821 html
+
+word wrapping : 영문의 경우 매우 긴 단어가 border에 들어갔을때 안잘라짐
+한글은 잘라지거든
+style에다가 word-wrap : break-word; 하면 다음줄로 자동으로 내려감
+
+
+- 작성하는 단을 나눠주는 column-count
+클라이언트의 브라우저를 알수없으니까 모든 브라우저에서 적용가능하게
+아래의 두 줄을 붙여주십쇼..
+ div{
+    -webkit-column-count: 3; 	<!-- /* Chrome, Safari, Opera */ -->
+    -moz-column-count: 3;	<!-- /* Firefox */ -->
+    column-count : 3;
+  }
+
+
+- 모서리를 둥글게 깎는 border-radius
+각 모서리마다 다르게 줄수있음
+왼쪽상단 -> 오른쪽상단 -> 오른쪽하단 -> 왼쪽하단 시계방향으로
+
+만약에 radius값을 네개 다 주지않으면 알아서 묶여서 됨
+3개 줄 경우 : 왼쪽상단 -> 오른쪽상단+왼쪽하단  -> 오른쪽하단
+2개 줄 경우 : 욎쪽상단+오른쪽하단 -> 오른쪽상단+왼쪽하단 
+
+
+- margin/ padding도 값을 전부 따로준다 하면 순서는 top-right-bottom-left
+두개만 써넣으면 뒤-아래, 좌우 // 세개를 써넣었다 하면 좌우, 위, 아래 순서
+
+
+- box-sizing : border-box, content-box
+div 안에 두개의 div가 있다 하면
+둘의 width를 50%씩 줄때 칸이 부족해서 아래로 내려감
+
+이때 box-sizing : border-box; 설정하면 border와 margin까지 포함한 기준으로 50%가 되어서 바깥쪽 div 안으로 쏙 들어감
+
+box-sizing : content-box; 인 경우 내용물을 기준으로 50%라서 범위를 벗어나범
+
+
+- position : relative, absolute
+relative :: 눈에 보이는 친구에서부터의 위치
+absolute :: 창 맨 위쪽에서부터의 절대적 위치
+position : relative;
+top : 100px;
+-->> 위에 있던 친구에서부터 아래로 100px 내려오는거
+
+
+
+- box-sizing & calc
+  textarea{
+    box-sizing : border-box;
+    width	: calc(100% - 10%);
+  }
+div 안의 textarea width를 물론 80% 이렇게 줘도 div 크기에 따라 조정되지만
+calc를 사용해서 항상 border 안쪽 사이즈를 넘지않게 조정해줄수있음
+100%-10% 는 border 100% 기준 항상 10%를 제외한 90%다 그거임
+
+    box-sizing : border-box;
+    width	: calc(100% - 10%);  
+    =
+    width	: 90% 
+
+
+- background-image
+
+ background-position : 화면을 기준으로 1 2 3    <- 이렇게 나뉘고
+각각 top left, center right,,	       4 5 6
+				       7 8 9
+ background-repeat : no-repeat, repeat-x, repeat-y, repeat
+			(x축으로 반복, y축으로 반복, 걍 반복)
+
+ background-attachment : 스크롤 움직일떄 그림 움직일지말지
+		fixed : 같이움직임, scroll : 안움직임
+
+
+
+
+
+
+

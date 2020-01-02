@@ -1,0 +1,268 @@
+8/12 html
+
+
+데이터를 보내는 방식에는 get/ post 있음
+get :: 입력받은 값을 url에 표시
+post :: 데이터는 입력받은 값을 헤더에 포함시켜 전송하는 방식
+
+이제 이클립스 사용할겨
+이클립스에 workspace -> d/a_teachingmaterial/2.html
+
+window-preferences/ encoding 부분 전부 utf-8 변경
+
+
+서버 만들거임 html, jsp에서 쓸 서버
+apache - tomcat 이라는 서버 설치할겨
+
+  apache - tomcat
+    jsp
+    최종프로젝트
+
+
+>>>> 과제 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+apache - tomcat 설치과정을 ppt로 작성해서 제출
+캡처해서 설명달고 초기설치랑 똑같이하면됨
+\\Sem-pc\공유폴더\html\tomcat과제 하위에 담아주십숑
+
+노트북에서 안하고 걍 이자리에서 설치하고 지우고 다시설치하십쇼
+
+지우는 과정 제외하고 설치해서 hello 출력하는거까지만 하십쇼
+
+~~~ 8/20 까지
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+설치
+
+apache.org 접속해서 밑으로 쭉 내리면 apache proj list에 tomcat 클릭
+왼쪽탭의 download에서 7.0.96 - core - 64bit win zip 다운로드
+(탭안보이면 화면크기 늘려보샘)
+
+압축파일을 D:\B_Util\5.ApacheTomcat 하위로 옮긴후 unzip
+
+이미 D:\B_Util\1.설치 및 압축파일\[58]Apache tomcat 아래에 있긴함
+근데 우린 7.0.96 쓸거라서 다운받은거 쓰십쇼
+그럼 D:\B_Util\5.ApacheTomcat 하위에 apache-tomcat-7.0.96 폴더생김
+
+D:\B_Util\5.ApacheTomcat\apache-tomcat-7.0.96\bin\startup.bat 실행해서 액세스허용 -> 그럼 아파치 서버가 실행된거임
+
+이상태에서 브라우저에 localhost:8080 치고 들어가십쇼
+
+이제 이걸가지고 서버를 만들거임 이클립스안에서 실행할 수 있도록(창닫)
+
+
+아까 bin/ 에서 starup.batch 실행했자나
+이제 shutdown.bat 실행하면 아까의 batch창이 닫힘
+----> 이거 귀찮으니까 이클립스에서 할수있게 연결하겠음
+(그냥 켜고 꺼보기만 한거임)
+
+
+설치설치!!!!!
+
+
+0.5) 이클립스 실행해서 apache 설치 경로로 지정해 들어감. window-pref-encoding UTF-8 
+
+
+1)
+
+이클립스-window-pref- server/ runtime env 선택 add 하면 apache나옴 
+거기서 apache 7.0 선택 - next
+tomecat install dir - browse - 다운받았던 경로 
+D:\B_Util\5.ApacheTomcat\apache-tomcat-7.0.96 선택하고 finish
+---> 그러면 이클립스 아래 servers 탭에서 click to create a new server 클릭
+아파치 7.0 선택하고 next , 그러면 아무것도없을겨 그거 finish
+
+tomcat v7.0 server at localhost [stopped.~~ 라고 생김
+ 
+왼쪽 프로젝트창에 서버스에 톰캣폴더들 생김
+
+
+2)
+아래쪽창에 tomcat v7.0 누르고 초록색 재생버튼 누르고 콘솔로 가면 녹색버튼이 빨간색으로 바뀜 (이거누르면 종료 다시 껐다켰다 할수 있음)
+
+(((혹시 에러나면 왼쪽창ㅇ에서 servers/tomcat~/server.xml / 65line에 포트가 8080으로 되어있는데 그게 충돌나서 그런거니까 그냥 80으로 바꾸면 됨, 저장하고 다시 서버 선택해서 start 하면 됩니다)))
+++ 65line에 URIEncoding="UTF-8" 지금 써줘도됨
+
+
+
+3) 
+왼쪽화면에서 새로만들기  -> dynamic web project
+pj name : testpro
+target runtime : v7.0 되어있을것
+nest, next 하면 웹 모듈 고르는데에서 generate web.xml 체크! 후 finish
+
+testpro가 생겼음다
+testpro / java resources / src
+testpro / wepcontent / web-inf / web.xml 
+
+web.xml(source탭) 위에서부터 이게 있으면 실행 없으면 그다음 실행 실행 하는겨
+
+
+(( 근데 만약에 프로젝트창에있는 testpro 지우면 같은거 만들려고해도 이미있다고 그럼.. 폴더가 안지워졌어 2.html 하위에 생긴 폴더도 지워야됨다 지울거면 같이지우세용))
+
+(( 프로젝트 delete할때 delete project 어쩌고 체크해주고 지워줘야댐 ))
+
+
+
+
+
+이제 html 파일을 함 만들어보겠음
+webcontent/ 하위에 html, css, javascript, image는 여기서 만드는거임
+webcontent + ctl n -> html >> 이름을 "index"로 바꾸고 next, finish
+
+여기서 HELLO 이런거 출력하는거 작성한다음에
+ctl f11 -> next(하면 뭐가 올라와있음) -> finish ->>> 서버켜지고 실행
+
+실행창에 있는 주소를 복사해서 인터넷 브라우저로 ㅁ열면 열림
+근데 이건 이클립스 내부 브라우저인거임
+
+
+
+실행하는 웹브라우저를 크롬으로 바꾸려면
+1) 크롬 등록
+window - pref - general - web browser
+지금 디폴트로 되어있음 여기서 new  - name : chrome / location :: 시작프로그램줄에있는 크롬을 오른쪽버튼, 거기에 있는 크롬에 또 오른쪽 - 속성 - 대상 주소 복붙하고 >>>>쿼테이션마크<<<< 지우십쇼, 
+여기서는 C:\Program Files (x86)\Google\Chrome\Application\chrome.exe   >>> ok
+크롬선택-apply-ok
+
+2) 크롬쓰겠다
+window - web browser - chrome
+(( 이거 지우려면 pref - general - web browser - 선택해서 remove ))
+
+3) 이상태에서 index.html 실행하면 새 크롬창이 뜸
+
+
+
+
+
+
+a_teachingmat / 2.html/images 폴더를 복사해서 webcontent 밑에 붙여넣기
+0807~0809 폴더도 webcontent 밑으로 붙여넣기!
+
+한글이 있는애들은 실행안됨
+없는친구들로 실행해보면 창이 뜹니다유..!
+
+index.html에 <meta charset="UTF-8"> 이거를 여태 만든것들 head 사이에 다 붙여넣으십쇼
+
+그리고 제목이 한글인것들도 OK하려면
+SERVERS/TOMCAT/server.xml 65line에
+URIEncoding="UTF-8" 추가하고 저장
+밑에처럼됨
+<Connector URIEncoding="UTF-8" connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443"/>
+
+>>> 그러고 실행하면 됩니듀
+
+
+2.html/testpro/webcontent에 아까 복붙한거 폴더 만들어져있습니다유..
+
+
+
+
+
+>>>>>>>> 지우기
+
+1) 아래 servers의 tomcat - delete - 둘다체크 ok
+
+2) proj창의 servers, testpro delete 체크 ok
+
+3) window - pref - server - runtime env -> remove!!
+
+
+
+
+
+
+---------------------------------------------------
+
+webcontent ctl+n > folder 0812 만드십쇼
+0812 ctl+n html > 파일명 form1 만드십쇼
+
+    입력데이터 형식 : text, password, textarea, select, radio, checkbox
+                  tel, email, date, month 
+
+	text는 한줄밖에 못쓰는데, textarea는 여러줄 쓸수있음
+	<input type="text"> 이렇게 써야하는데
+	textarea는 혼자서 태그임
+
+input, select 태그는 따로 안닫슴다
+
+  <form>
+    이름 : <input type="text"> <br>
+    아이디 : <input type="text"> <br>
+    비밀번호 : <input type="password"> <br>
+    <input type="button">
+  </form>
+
+text는 눈에 보이는 한 줄
+password는 눈에 보이지않게 입력
+button은 당연히 버튼임
+
+html은 이클립스로 만드는거고, 인터넷페이지에서 작성한것은 jsp에 저장됨!
+<form action="jsp 주소" method="전송방식 get post">
+
+만들때는 서버입장에서 만들고, 실행해서 테스트할때는 클라이언트 입장으로 테스트하는겨.
+
+
+  <form action="form1.jsp" method="get">
+    이름 : <input type="text" name="name"> <br>
+    아이디 : <input type="text" name="id"> <br>
+    비밀번호 : <input type="password" name="pass"> <br>
+   <input type="submit" value="전송">
+
+이름, 아이디, 비밀번호 칸에 넣고 전송 누르면
+jsp 안에 name, id, pass 항목에 저장됨
+
+0812 하위에 ctl + n jsp 파일만들고 이름설정
+jsp 파일에서는 java 쓸수있다구
+
+
+>>>>> 지금 이상태에서는 이름, 아이디 입력하고 전송 누르면
+jsp 파일에서 설정한 h1, h2만 나오고 끝임
+이걸 데이터로 받으려면 <% %> 이걸로 받아야됨
+
+    JSP : Java Server Page
+          html과 java를 동시에 병행해서 작성 가능
+          java 코드 작성시에는 <% %> 사이에 작성한다
+     클라이언트에서 전송되는 값을 받기 위해서는 
+    request.getParameter("name")
+
+  <%
+	// get user info 
+    String userName= request.getParameter("name");
+    String userId  = request.getParameter("id");
+    String userPw  = request.getParameter("pass");
+
+  %>
+  <%= userName   %>님(<%= userId %>    ) <span> 환영합니다.</span> 
+  <br>
+  행복한 하루 되세용.
+
+jsp만 실행시키면 입력받은 값은 null
+html 실행시켜서 넘어가야 제대로 됐는지 볼수있쥬
+
+
+post 방식일때는 주소에는 걍 form1.jsp 이렇게만 뜨고
+f12 / network / jsp 선택해서 headers 하면 헤더 form data안에 들어있음다
+하나의 jsp로 get방식 하나 post 방식 하나 이렇게도 할수있음
+
+
+get은 한글이 안깨지는데 post에서는 깨지네용
+헤더 확인해보면 안꺠졌는데 브라우저에서 깨진겨..
+jsp 들어가서 
+request 윗줄에
+request.setCharacterEncoding("UTF-8");
+써주면 한글 문제없이 나옴,,
+
+
+
+다른사람꺼 들어가서 보려고했는데, 내꺼 server.xml의 65line port가 8080으로 설정되어있어서 다른쪽에서 내꺼 못들어왔음 이거 걍 80으로 바꿔주십쇼
+
+
+
+id : 특정한 것
+class : 여러개가 같은 특징을 갖는것
+
+
+
+
