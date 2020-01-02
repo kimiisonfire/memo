@@ -1,0 +1,174 @@
+191217_jsp
+
+
+el, jspl은 jsp에서만 사용되는거임
+서블릿에서는 당연히 getParam , getAttr 이거 쓰고있잖여
+
+
+우리 자바에서 simple date, 데시멀 포맷(?) 이런거 했었거든
+그걸 태그로 만든게 국제화 fmt 태그입니다
+for문, if문을 대신하는게 c태그고
+
+자바, 자바스크립트 등에서의 정규화, 형식화
+정규화 : 입력받을때 그런 형식으로만 입력받기위한거
+형식화 : 출력할때 어떻게 표현할것인가..!
+
+
+~~~~~~~ 254p
+c:     = 자바의 구문을 없애기 위해 사용하는 태그
+fmt:  = 자바의 형식화를 없애기 위해 사용하는 태그
+
+
+오늘할거는 매우매우 중요
+
+개개개개 중요한    >> if, forEach  <<
+적당히 중요한     >> choose ,forTokens  <<
+
+
+~~~~~~~ 255p
+** if
+<c:if test="조건">
+  참일때 수행할 html 마크업
+</c:if>
+여러개쓰면 병렬if문이 되겠지
+
+** choose
+다중 if문 (else if 인거)
+<c:choose>
+  <c:when test="조건">
+    참일때~~
+  </c:when>
+  <c:when test="조건">
+    참일때~~
+  </c:when>
+</c:choose>
+
+	- 상관관계가 없는 비교가 필요할떈 병렬if
+	- 상관관계가 있을땐 다중if
+
+@@ el문 안에서의 String은 싱글쿼트로 표현
+
+
+근데 우리가 c:if를 가지고 alert문을 짜고있거든?
+근데 지금의 코드는 jsp가 주 script가 부 느낌이야
+<c:if test="${param.id eq 'kimi' }">
+	<script>
+		alert("kimi님 반갑습니다!");
+	</script>
+</c:if>
+
+<c:if test="${param.id ne 'kimi' }">
+	<script>
+	 	alert("저기요 누구시죠??");
+	</script>
+</c:if>
+이렇게말이지
+
+근데 우리가 하고싶은거는 결국 html이고 css, javascript란말이야
+script가 주가 되도록 해야해
+<script>
+	var msg = "저기요 누구신데 자꾸 오세요..";
+	<c:if test="${param.id eq 'kimi' }">
+		msg = 'kimi님 증맬 반갑습니다..';
+	</c:if>
+	alert(msg);
+</script>			--->>>> 봐봐 주가 script가 됐잖여
+
+
+choose는 순서대로 확인하고 실행하고 빠져나가고
+안걸리면 그냥 빠져나가고 그러는거임
+
+
+script에 c:choose를 담아서 하고있는중~~
+<c:when test="${param.age gt 20 }"> 이런식으로
+근데 우리 param.age를 정수형으로 준적도 없는데 
+param은 기본이 String인데 어떻게 숫자랑 비교할수있냐??
+----> el문으로 비교하면 갑자기 오지랖떨면서 거기에 맞는 타입으로 바꿔줌
+
+봐봐 우리가 age에 지금 숫자만 넣어야하는데
+만약에 param에 문자가 들어오면 어떡할겨?
+그래서 그걸 나중에 사전방지식으로 잡아줘야되는거임    ==>  유효성처리!
+
+
+방금도 choose 배우면서 choose, when, otherwise 했는데
+사실 그걸 쓰는것보단
+<script>
+	var msg = '환영헙니다!';
+	var age = ${param.age};
+	if (age > 20) {
+	} else if (age > 18) {
+		msg = '미성년자는 접근할 수 없습니다.';
+	} else {
+		msg = '청소년은 접근할 수 없습니다.';
+	}
+	alert(msg);
+</script>
+
+이렇게 자바스크립트 위주의 방법을 지향해라!!!
+
+
+~~~~~~~~~~256p
+
+**  forEach
+진짜 개개개개개개개개개중요해
+일단 반복문을 자주쓰잖아 특히 list를 확인할때라던가말여
+
+일단 스크립틀릿으로 자바 짜면 이래
+int sum = 0;
+for (int i=1; i<11; i++) {
+  sum = sum + i;
+}
+out.println(sum);
+
+이걸 태그로 돌리면 이래!
+<c:set var="sum" value="0" />
+<c:forEach var="i" begin="1" end="10" step="1">
+    <c:set var="sum" value="${sum + i }" />
+</c:forEach>
+${sum}
+--------> 여기서 i는 1부터 시작하는 인덱스고요 i는 걔를 저장하는 공간
+
+
+
+************************ 과제 **************************************
+주어진 테이블을 이용하여 리스트 페이지를 작성 (내일까지 ????!??!?!?!??)
+
+1. Board(bno[pk, seq적용], title, content, writer, regDate)
+2. MyBatis를 적용
+3. JSP 는 JSTL/EL 으로 구현
+4. MCV2 패턴으로 controller(servlet) -> view(JSP ) 적용
+5. DataSource (기존 sqlConfig.xml 적용)
+6. BoardVO, BoardDAO, BoardService 의 비지니스로직을 적용
+   BoardDAO <- BoardDAOImpl, BoardService <- BoardServiceImpl
+   의 클래스 구조 적용
+7. transaction 생략
+8. JSP_02_MVC 프로젝트 내에 구현
+*******************************************************************
+일단 테이블은 같이 만들었고요 나머지는 알아서~
+
+
+~~~~~~ 258p
+자바의 토크나이저같은ㄷ게 forTokens 
+<c:forTokens var="color" items="red,green,blue" delims=",">
+items를 , 를 기준으로 잘라서 매번 color에 넣어줍니듀
+
+
+
+~~~~ 259p
+import : 외부/내부 url을 화면에 출력시킬수는 있는데
+그냥 출력하는 버퍼만 같이 쓰는거지 뭐 그닥 쓰진않는다..
+
+url : 걍 url에 어떤 경로를 넣어서 지정해주면 거기 앞에 contextpath 붙는거
+근데 이걸 누가쓰겠냐..
+
+redirect : 리다이렉트인데 jsp가 화면결정하는게 아닌데 왜 여기서써 안써
+
+~~~ 260p
+out : 무시하셈
+catch : 우리는 에러페이지 따로만들거니까 안쓸거임
+
+
+
+
+
+

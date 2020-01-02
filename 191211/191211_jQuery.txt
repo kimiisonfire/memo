@@ -1,0 +1,106 @@
+191211_jQuery
+
+~~~ 126p
+jQuery를 이용한 ajax 아직 하고있는중입니듀
+
+성공했을경우 success 의 함수를 실행, 실패했을경우 error의 함수를 실행
+콜론 앞의 url, type, data, success, error, dataType 이라는 이름은 바꿀수없어
+dataType으로 올수있는건 xml, json, text (더있는데 거의안씀)
+
+
+
+json의 데이터 형식은 어제했고요, == Object {name:value}, Array []
+
+data = { "name" : "kimi",
+           "addr" : { "nation":"korea", "city":"daejeon"},
+           "hobby" : ["쉬기", "놀기"]  }
+----> korea에 접근  = data.addr.nation
+
+
+
+~~~ 어제는 dom객체로 ajax 했었는데 오늘은 제이쿼리식으로 ajax 하는거임
+
+어제했던거는 모든 ajax를 지원하는곳에서 쓸수있는 방식이었던거고	  @@@@@@
+오늘은 제이쿼리에서만! 쓸수있는 제이쿼리인거인거지...   	@@@@@@
+
+어제는 xhr request 만들어서 open, send 했었는데
+오늘은 $.ajax({}) 으로 합니듀
+
+
+
+$.ajax({
+    url : "../1209/test1.jsp",
+    type : "get",
+    data : {"name":vname, "tel":vtel},		// json 타입 둘중에 뭘써도 맞음
+    //data : "name=" + vname + "&tel=" + vtel,	// text 타입
+    success : function(res) { },		--> .jsp 실행 결과를 success의 res로 담아와
+    error : function(xhr) { },
+    dataType : "text"	// 얘는 받아오는 결과의 데이터타입 = res 의 타입
+})
+
+error : function(xhr) { alert('상태 : ' + xhr.status); }  
+===> 이렇게하면 결과는 200, 404, 500 나오는데, 성공했는데(=200) 왜 alert 뜨죠?
+	---> 이떄는 jsp문제. f12해서 response에 맞게 들어갔는지 보십쇼
+
+ajax는 페이지 전체를 가져오는게 아니라서 주소가 안바뀜
+= get 방식으로 해도 주소줄에 표시되지않아..!
+   주소는 f12의 네트워크에서 파일명을 확인할수있어
+
+같은걸 post 방식으로 보내면 f12 네트워크의 파일명에 표시되지않죠
+
+
+어제는 json 타입의 값이 돌아올떈 json.parse를 해줬는데
+여기서는 dataType : "json" 해주면 자동으로 parse되서 옵니듀
+
+
+
+~~ 다시 125p 직렬화!
+직렬화를 쓸때는 속성중에 name을 이용하는거임
+폼을 호출하고 name 속성을 이용해서 가는겁니듀
+$('#ff').serialize()
+
+
+~~ 다시~~
+어제는 dom 객체를 이용해서 ajax 쓰는걸 배웠음
+이런 방식은 어느 플랫폼이든 ajax를 지원하면 사용할 수 있는 공통의 그런거임
+오늘은 jquery를 이용해서 ajax를 사용해봤음
+이거는 jquery에서만 사용할수있는방법임
+ajax는 서버와 클라이언트 사이에 데이터를 교환하는 기술이고
+비동기로 응답과 요청이 1:다 관계임
+json은 텍스트 기반의 데이터 교환 기술이고
+json의 데이터 타입으로는 object{name:value}, array[~~], 가 있음
+오늘은 어제만들었던 ajax 코드를 jquery 방식의 ajax로 바꿔보았음
+
+
+~~ 128
+json = 텍스트 기반의 데이터 교환 형식
+json 단축메뉴 보면 
+$.get(url, data, success, dataType)  (type, error가 없어)
+$.post(url, data, success, dataType);
+$.getJSON(url, data, success)
+
+jquery로 만들었던 ajax 코드를 단축키 쓰는걸로 바꿔보았읍니다
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+지금부터 ibatis 설정한다... 미친....
+
+<ibatis, ibatis설정>
+==>> 지금부터 하는 내용을 문서로 만들래  ==> jQuery_ibatis_설정.pptx 만드는중
+
+sqlMapConfig.xml 에서 alias, sqlmap 설정하잖아
+이때 res인지 src인지는 중요하지않고
+그냥 적은 경로에 맞는 친구를 찾으러 갑니듀
+
+
+
+
+
+
+
+
+
+
+
+

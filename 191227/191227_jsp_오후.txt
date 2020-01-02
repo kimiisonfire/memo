@@ -1,0 +1,92 @@
+191227_jsp_오후
+
+
+페이지네이션 하는중~~ list.jsp 안에서!
+일단 제일 첫페이지, 이전페이지, 가운데들어가는것들, 다음페이지, 제일끝페이지
+버튼을 순서대로 만든답니다 후후
+
+
+
+* el문 메서드 호출 참고참고
+el문에서 일반 메서드 호출이 가능한건 톰캣 7버전, 서블릿 3.0, jsp 2.2버전
+톰캣 6버전은 웹모듈이 2.5버전 , 서블릿도 2.5, jsp는 2.1버전일경우에는
+el문에서 일반 메서드의 호출이 불가능...!!!!!!!!!
+
+
+
+~~ submit 방식을 여러개 보여줄테니 
+구현할때 그중에서 더 효율적인 방법을 사용하세용
+
+(1)
+페이징을 하다보면 필요한데이터가 꼭 form 태그가 아니라 그냥 페이지에 있을수도있음
+form에 담으려고 form태그가 엄청 위에서 시작해서 ㅇ ㅓㅁ청아래서 끝나기도해
+입력 양식들사이의 갭도 크고 하여튼 그거 너무 비효율적이다 이겁니다.. 
+
+그래서 input쪽에서 form을 잡지말고 일단 만들어
+그리고 body 끝에다가 form태그를 보이지않게 hidden으로 만들어
+거기에 action, method를 줘. 안줘도 상관없어
+
+submit할때 꼭 넘겨야할 파라미터만 input태그로 만들어서 보내
+파라미터로 넘기면 서블릿에서 잘 받을수있도록 name 잘달아주고말여
+그래서 버튼이든뭐든 submit할때는 body안에 산재되어있는것들에서 필요한 정보를 긁어와서 form태그의 val로 담아줘 나중에말여!
+
+<form id="jobForm">
+  <input type='hidden' name="page" value="${pageMaker.cri.page }" />
+  <input type='hidden' name="perPageNum" value="${pageMaker.cri.perPageNum }" />
+  <input type='hidden' name="searchType" value="${pageMaker.cri.searchType }" />
+  <input type='hidden' name="keyword" value="${pageMaker.cri.keyword }" />
+</form>
+	
+<script>
+$('#searchBtn').on('click', function(e) {
+	var jobForm = $('#jobForm');
+	jobForm.find("[name='page']").val(1);
+	jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+	jobForm.find("[name='keyword']").val($('input[name="keyword"]').val());
+	jobForm.attr("action", "list.do").attr("method", "get");
+	jobForm.submit();
+})
+</script>
+
+근데 이걸쓰면 이 스크립트가 제이쿼리 라이브러리(footer에있음)보다 위에있어서
+$(~~이거를 읽을수가없음
+그래서 이 이벤트를 onload로 감싸주던가 
+아니면 제이쿼리 라이브러리를 header로 보내주면됨. 되도록 이방법이 좋다
+
+
+근데 script 안에 event로 줬던거를 그냥 function으로 바꿔버렸어
+주소줄에 파라미터들이 나와서 그걸 post로 바꿨거든
+아니 그러면 이 함수는 page를 입력하면 그 페이지로 넘어가면서 
+파라미터들을 잔뜩 데려가는친구잖여
+그럼 이함수를 pagination.jsp 에서도 쓸수있는거아님?
+그래서 그걸 써서 list.do로 가던것들을 그 함수를 쓰는걸로 바꿔버려!
+<c:if 문으로 되어있던것도 삼항연산자 뭐 이딴걸로 바꾸고
+그리고 form 태그랑 searchList_go 함수도 그냥 pagination.jsp 안으로 옮겨버릴게
+그럼 list.jsp에는 본문내용만 생긴대
+
+그러면 이걸 브라우저에서 페이지 소스보기할떄 
+<a class="page-link" href="javascript:searchList_go(1);">
+이렇게만 뜬다 저숫자가 원래 소스에서는 el문인데 걍 저렇게만 뜬다고
+
+
+아니.. 가독성이 올라간건 알겠는데 내가 이해를 못하겠는데 어쩌란말임...
+
+하여튼 pageMaker 클래스에 만들었던 makeQuery 메서드를 저 jsp의 함수가 대체함
+
+
+어휴..
+
+
+
+~~~~ 커맨드패턴 먼저하겠다네요
+
+
+
+
+
+
+
+
+
+
+

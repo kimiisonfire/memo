@@ -1,0 +1,174 @@
+191126_jquery
+
+제이쿼리는 웹브라우저만 있으면 실행이 되긴된대
+저번에 할때 톰캣서버를 설치해서 했잖여
+이번에도 톰캣 깔아볼게용
+
+<톰캣설치, 서버설치, 톰캣서버설치>
+WINDOW-pref ->server ->runtime ->add 클릭 -> apache 7.0 next ->>
+위치 browse -> D:\B_Util\5.ApacheTomcat\apache-tomcat-7.0.96 폴더 선택 -> finish
+---> apply and close 
+
+(java EE로 되어있어야되고용) 밑에 서버탭에서 new server~ 클릭 -> 7.0 선택 -> next 
+--> finish
+=====> 왼쪽 프로젝트어쩌고에 서버생김
+
+server.xml  --> 65line의 
+connectiontimeout == 이만큼 기다려도 웹이 안되면 끄겠다 이거임
+port == 포트번호. 이대로하면 충돌돼서 안됨. 80으로 바꿀게. www웹의 기본포트가 80이거든. 1~1000까지는 시스템에서 사용하는 포트번호가 다 정해져있어. 아무거나 써도 상관은 없지만 그러면 나중에 url에 하나하나 포트번호 써줘야됨. 지금처럼 기본값써주면 안해줘도 되거든
+그리고 URIEncoding="UTF-8"  <<< 이거까지 써주면 됨!!!
+
+
+
+이클립스에 넣어놓은 서버는 그냥 이클립스에 복사해놓은거고, 실제로는 D/B./5.APACHE/ 여기 안에 들어있는거임
+근까 지금 D:\B_Util\5.ApacheTomcat\apache-tomcat-7.0.96\conf\server.xml 
+--> 얘를 복사해서 쓰고있는거임. 그니까 이클립스에서 수정해도 얘는 수정이 안된거지
+만약 원본에서 설정해놓으면 이클립스에서 바꾸지않아도 되는거..
+근데 우리는 원본 안바꿀거니까 매번 이클립스안에서 바꾸는걸로할게
+
+
+<톰캣 서버 지우기, 서버지우기, 톰캣지우기, 서버삭제, 톰캣삭제>
+서버가 안된다고 여러개 만들수도있느데,
+혹시 쓰다가 잘못돼서 지워야한다 하면 두군데서 지워야됨
+1) window -> pref -> server -> runtime 여기서 선택해서 remove 
+2) 왼쪽 프로젝트탭의 servers delete 해야되는데 프로젝트 경로까지 지우는거 체크하고지워야됨
+
+
+
+이제시작!!
+dynamic web project 만드세요
+톰캣 설정했으니까 target runtime이 선택되어있는거임 
+미리 안해놓고 프로젝트를 만들수도있는데 그럴경우에는 target runtime = none이고
+new runtime 눌러서 찾아가서 설정하면됨
+nextnext하다가 web mocdule 에서 generate web.xml ~~ 선택하고 finish
+
+
+webContent 안에다가 jsp, html, js, css, images 이런거 넣어주는거고
+		->> 이런걸 frontend
+java resources/src 여기에 java, vo, service, dao 이런거 여기넣어주는거임
+		->> 이게 backend
+
+방금 html 하나 만들어서 실행시켰더니 이클립스 내부 브라우저에 실행됐음
+이제 브라우저바꿀거야
+window -> web browser 여기에 chrome 등록해야되는데
+등록하려면 windoe -:> pref -> general -> web browser 여기에 등록하는거임
+새로 등록할때는 여기에서 new 해서 등록하는데, location은
+크롬아이콘 -> 오른쪽키-> 대상 === 이거 복사해서 앞뒤 " 빼고 붙여넣기해주면됨
+그다음에 window -> web browser -> 크롬선택하세용
+
+이렇게하면 설정은 다끝납니다ㅏㅏㅏ
+
+
+<라이브러리 추가, 라이브러리추가>
+java에서는 라이브러리 추가할때 libraries / jre system lib 여기서 buildpath 했잖여
+근데 웹브라우저에 라이브러리 추가할때는 원하는 라이브러리를 복사해서 
+webContent/WEB-INF / lib 여기에 붙여넣기하면되는거임
+
+
+
+
+JQUERY_수정.PPTX 시작했읍니다
+
+NCS 능력단위 : 화면설계, 화면구현
+처음에 했던 HTML 얘네는 NCS에 포함된거 아니고 걍 학원에서 한거래
+위에 두개가 NCS에 포함되어있는거임
+
+화면설계 = 과제 3개 = 평가과제
+	UI 요구사항 확인하기
+	UI 설계하기	------ 이거 끝나는 날짜에 맞춰서 과제받아야되는데
+			  이거 날짜 못맞춤, 나중에 설계확인하기 < 이떄 받을거야
+화면구현 = 코딩시험볼거임 = 평가
+	UI 설계 확인하기
+	UI 구현하기
+
+
+앞으로도 계속 MVC 방식은 할겁니다
+대신 화면 디자인을 html, css 이걸로 할겁니다
+jQuery 시간에 배우는게 그대로 실무라고 하여튼 중요하대 많이쓴대 
+
+
+제이쿼리 사용은 다운로드해서쓰는거, cdn 방식 두개가있음
+다운로드하면 빠르겠지 있느거를 계속 갖다쓸수있으니까
+cdn은 인터넷 연결되어있을때 실행할때마다 매번 다운로드 받아서 쓴느거임
+첫번쨰가 좋겠쥬
+
+http://www.jquery.com 여기에서 다운로드하는데
+Download the compressed, production jQuery 3.4.1
+Download the uncompressed, development jQuery 3.4.1
+이거 두개를 다운로드하면됨
+D:\A_TeachingMaterial\6.JQuery   << 여기에 저장했음
+다운로드한거는 둘다 자바스크립트파일임
+두개가 같은 파일인데 크기가 적은애는 크기를 좀 줄여놓은거임
+다운받은걸 프로젝트 안에다가 넣어서 쓸거임
+>>>
+프로젝트의 webContent 안에 폴더를 하나 만들고(general folder)
+거기에 min.js를 복사해왔음 (크기가큰건 가끔 에러가난대)
+그거를 head 안에 <script src=""/> 여기에 주소 js/jquery-3.4.1.min.js 이렇게 넣어줌
+
+
+$ 기호 = jQuery 라서 jQuery(document).~~ = $(document).~~
+스타일에서 아이디준애는 #, 클래스준애는 . 이렇게 들어가잖여
+그거를 제이쿼리의 접근제어자로 줄수있음
+$("#h1")  --> 이렇게하면 h1이라고 아이디 준애를 찾아서 제이쿼리로 불러오는거지
+
+크롬에서 f12 ->Network -> status =200 이면 ok랍니다
+
+하여튼 jQuery 할거면 파일 꼭 script에 올리고
+onload랑 같은기능인 ready 꼭 해주고
+ready 하는 방법!!!
+1)
+  $(document).ready(function(){
+	  jQuery("#hh1").css("color","blue");
+  }) 
+
+2) 
+  $(function(){
+	  jQuery("#hh1").css("color","blue");
+  })
+
+
+CDN 해보고있음다
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+이거가 구글 CDN 방식?? 그런거같은데 무튼 그걸로 해보고있음
+당연히 잘되긴하고요
+나중에 제이쿼리 써야하는데 다운로드받을수없는 상황이면 이렇게 해도 될듯??
+
+
+javaScript에서는 list = document.getElementsByTagName('h1') 이렇게 가져오면
+배열로 저장이되고, list.style.color = "red" 이렇게 줄수가없음 list[0] 해줘야되거든
+근데 jQuery에서는 list = $('h1');  list.css("color","blue"); 이렇게 해서 전체를 바꿀수있어
+h1list.eq(1).css("color","yellow");  >> 이ㅓㅀ게 해서 하나만 바꿀수도 있고!!
+
+여러개의 css를 다는법
+- 이어쓰기
+$('h1').eq(1).css("background","green").css("color","yellow");
+- 중괄호로 묶기
+h1list.eq(2).css({"color" : "white", 'background' : 'red'});
+
+위에서 계속 하는것처럼 $(선택자).액션() 이렇게 할수있음
+선택자에 원하는 요소를 넣고, 선택된 요소에 대해 여러가지 조작을 하는거임
+태그 선택 : $('h1'), $('h1, p')
+클래스 선택자 : $('.이름')
+id 선택자 : $('#이름')
+전체선택자 $('*')
+
+
+$(function(){    ---여기에 항상 내용 넣는다 생각해라-----      })
+제이쿼리에서 이벤트 넣고싶을때는
+$(선택자).on('무슨액션?', function(){   ----액션에 들어갈 내용 ------   })
+
+if ($('h1:visible'))   == 전체 h1 중에서 visible = 보이는 애들만 골라라!
+--> 그러면 h1이 전부 없어졌을때 여기로 오게하려면 if ($('h1:visible').length == 0) {}
+
+
+$()  == jQuery 함수. 이 함수의 인수로 다른 함수를 전달!하는거임.
+
+
+$() 이렇게 선택자를 선택할떄 a 안의 b를 선택해! 라고 할수있음
+$(b, a)  = b를 검색할 범위를 결정해주는거지. a가 없으면 문서전체에서 찾는거고
+$('p', this) == this 안의 p를 선택하세요 == this는 p의 부모인거지
+
+
+
+
+

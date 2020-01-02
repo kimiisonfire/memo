@@ -1,0 +1,63 @@
+191213_jQuery
+
+138p는 알아서들하고
+
+139p를 mvc1, mvc2 방식으로 해볼거임
+
+거래처 이름만 뿌리긴 뿌릴건데 id도 같이 가져와서 안보이게 숨겨놓을거임
+- mvc1 (순서상관x)
+1. buyerVO 만들기
+2. config파일 alias, 매퍼 등록
+3. 매퍼 만들기
+4. 클라이언트(html, jsp) 생성 - 요청하는 페이지
+5. 응답페이지 - jsp로 만들기	- 처리 & 출력담당
+	== 이게 mvc1인거임 mvc2는 서블릿써야돼
+-----------------------------------
+- mvc2 (순서상관x)
+1. buyerVO 만들기
+2. service, dao 만들기
+3. controller 만들기  - 요청을 받는 페이지
+		  - 처리 (service - dao)
+		  - 처리후 결과를 view페이지로 보냄 - forward, redirect
+3.5. view 페이지 생성(jsp) - 출력
+4. mapper 만들기
+5. config에 등록하기
+6. 요청페이지
+
+
+
+우리가 지금은 $.ajax({}) 이것만 쓰고있지만
+https://www.w3schools.com/jquery/jquery_ref_ajax.asp
+여기로 가보면 ajax그 가지고있는 상당히많은 메서드가 있읍니다
+
+
+ajax는 비동기인데			<ajax동기 ajax 동기화 ajax동기화>
+글을썼어 - 저장이되고 - 그다음에 리스트뿌리고  이런 프로세스가 있으면
+글쓰고 저장되지 않은 상태에서  리스트를 뿌릴수도있음 비동기니까
+아니면 로그인입력 - 로그인확인 - 화면전환이 순서대로 되지않을수있어 비동기니까
+그래서 이걸 ajax를 쓰되 응답과 요청을 1:1로 하고싶으면 
+ajax에서  >>> async : false <<<  요소를 추가하면됨
+
+
+웹에있는 부트스트랩 css 적용하기
+가져올땐 link rel = "stylesheet", script src="~~bootstrap",  적용할곳의 class 설정
+가져온거 적어줄떈 순서를  외부 -> 우리가만든거 순서로 적어줘야함
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+부트스트랩 가져올떄 이거는 고정인가봄
+
+
+
+
+~~~~ 과제
+화면설계_buyer 바탕화면의 박건호씨꺼 참고해서 하세용
+
+
+
+
+
+
+
+

@@ -1,0 +1,102 @@
+191129_jQuery
+
+~~~~~~ 50p
+hello 라는 글자가 포함된 span 태그를 검색  = span:contains(hello)
+	hello가 없는 span 태그 검색  = span:not:contains("hello")
+p태그를 포함하는 span 태그ㅡㄹ 검색 = spna:has(p)
+span 태그중에 자식 또는 텍스트가 있는 애를 골라라  = span:parent
+span 태그중에 자식이나 텍스트 암꺼또없는애 골라라 = span:empty
+
+
+~~~~~ 53p
+html(), text() 하는데 (여기에) html 코드를 포함시켜서 해보겠음
+
+이번엔 val() 이라는 칭구도 있음
+val() == 얘는 input, textarea, select option, checkbox, radio 여기서 값을 가져옴
+$('textarea').val();  = textarea에서 값을 가져옴, getter임
+$('textarea').val("와랄라라라");  = setter임
+
+html() 태그를 포함해서 가져오거나 태그를 실행시켜서 출력
+text() 태그를 글자로 생각해서 가져오거나 실행시켜라, html(), text() = span, tr, td, p 이런거
+val() 실제로 입력하거나 선택한값을 진짜로 가져오는거 input, checkbox, radio, textarea 이런거
+
+
+원래 this => 이거는 dom에서 쓰던거임
+걔를 $()로 묶어서 jQuery에서 쓸수있도록한거고요
+
+버튼에 적혀있는걸 가져오려먼 text() 로 가져와야됨
+val()은 input, txtarea.. 이런게 아니니까 가져올수없고, html()로 하면 글자를 빼고 가져오겠지뭐
+
+
+
+~~~~~~ 54p 
+자식필터..!
+해당 요소를 자식으로 갖는 부모 그룹에서 해당자식을 찾는거임
+td:first-child  ==> td를 찾아라 X , td를 자식으로 하는 >>tr<< 에서 td를 찾고 거기서 첫번째 자식을 찾아라..!
+
+기본필터의 first = 전체를 통틀어서 한개만 찾는거
+자식필터의 first = 부모의 개수만큼 나옴. td:first-child == tr 개수만큼 나오는거임
+
+자식필터에는 index 1부터시작함 0번째 자식은 없으니까
+td:first-child, td:nth-child(2) ... td:last-child
+
+li:first-child --> 이렇게쓴다고해서 li가 갖는 첫번째 자식! 이라는게 아니고
+li를 자식으로 갖는 어떤 친구에 대해서 각 첫번째 li 자식..! 이라는 뜻일걸 아마도..?
+
+
+~~~~ 57p 할게용
+enabled는 거의 안쓴댜
+checkbox:checked  ==> 선택된 체크박스요소를 선택해서 가져오는겨
+selected  ==> select 옵션에서 쓰는거임
+
+
+태그가 갖는 type, name, value, src 뭐 이런것들은 attribute = attr 임
+attr은 보통 이름="값"  이런 형태임
+prop는 값자기 값만 툭 나오는거임
+
+html(), text(), val(), attr(), prop()  <-- 이제 이친구들도 추가된거임여
+prop 는 지정한 선택자 요소 속성값을 가져오거나 추가!
+주의! prop에서의 속성은 html 입장에서의 속성이 아니고 javascript 입장에서의 속성이여..!!!!!
+
+<input type="checkbox" name="hobby" value="장기" checked>장기
+          ----------html---------------------   ----val-------  --prop--  --text, html---
+
+	<체크박스, checkbox, 체크박스가져오기>
+$(':checkbox:checked')  == checkbox 중에서 checked 된것만..!!
+
+체크된애들은 여러개니까 반복문으로 가져와야됨 ↓
+$.each($(':checkbox:checked'), function() {
+   res += $(this).val() + "\n";
+})
+
+
+input type="button"   이 친구를 선택하는 법..!
+$('input[type=button]')
+$(':button')		-> button type="웅앵" + input type="button" 고르는겨
+$('input:button')
+
+
+~~~ 62p 할게용
+attr()
+getter : $(선택자).attr("속성명")  :: 속성명에 설정된 속성값을 읽어온다
+	$('p').attr('id')  == p태그의 id값을 가져와라
+setter : $(선택자).attr("속성명", "값")  :: 선택자의 해당 속성명을 값으로 설정혀
+	$('div').attr('class', 'aaa')  == div의 class 이름을 aaa 로 설정하는겨  
+
+button 은 click이라는 이벤트를 주지만
+select 는 change 라는 이벤트를 줄수있음
+
+
+<option>개나리</option>
+이렇게하면 value="개나리" 라는 속성을 주지않아도  저렇게만쓰면 value="개나리" 가 되는거라
+html(), text(), val() 뭐로 가져와도 가져와지는거임
+
+
+~~~~ 64p
+기타필터
+
+
+
+
+
+

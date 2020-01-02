@@ -1,0 +1,13 @@
+191112_highjava
+
+RMI (Remote Method Invocation)
+
+=> 원격지에 있는 객체의 메서드를 실행하는 기술
+
+rmi에서 메서드를 제공하는 곳에서는 해당 객체의 interface를 작성해야 한다
+이 RMI용 인터페이스는 REMOTE 객체를 상속해서 작성한다
+이 인터페이스에서 선언하는 메서드들은 REMOTEEXCEPTION을 THORWS 해야한다
+이 인터페이스를 구현하는 클래스의 생성자도 REMOTEEXCEPTION을 THORWS 해야한다
+이 인터페이스를 구현하는 클래스는 UnicastRemoteObject 상속해서 작성
+
+ 

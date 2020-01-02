@@ -1,0 +1,161 @@
+191204_jsp
+
+
+오늘은 리다이렉트 함 해보겠음다!!
+
+주소줄에 response_redirect 를 요청했지만 서버에서 redirect_targer으로 가라고해서
+redirect_target주소가 열리게됨
+
+포워드는 자기안에있는걸 꺼내주는거기때무넹 밖으로 못나가
+근데 리다이렉트는 아무거나 리다이렉트를 줄수있기때문에 외부로도 보낼수있음
+우리가 들어갔던 도메인을 빠져나올수도있는거임
+주소줄에 localhost/~~ , google.com 어디든 갈수있는것처럼 
+리다이렉트에서 재요청하는 과정에서 서버가 주는 곳으로 가겠다! 라서 어딜줘도되는겨
+
+서버에서 새로운 주소를 줄수있는건
+response.sendRedirect("여기에쓸수있지")
+response.sendRedirect("http://www.naver.com")  하면 네이버로 가지는거고
+response.sendRedirect(request.getContextPath() + "/redirect_target.jsp");  하면 절로감
+
+
+url 비유적으로 얘기하자면
+JSP_01 = contextpath
+WebContext = '/'
+그래서 webcontent에 담기는 애들은 local~~/JSP_01/여기에 파일명쓰면 열리는것,.
+
+
+리다이렉트를 스크립틀릿에서하면 
+response.sendRedirect(request.getContextPath() + "/redirect_target.jsp");
+	==> 이거의 페이지 이동 주체는 서버
+그냥 스크립트안에 쓰면
+location.href = <%= request.getContextPath()  %> + "/redirect_target.jsp";
+	==> 이거의 페이지 이동 주체는 브라우저
+
+
+버튼을 눌러서 페이지를 이동하게 하려면 ↑(location) 이렇게 써주는게 좋아
+		 (=이벤트걸어야하니까!)
+여기서 location은 BOM(Brower Object ~) 임
+
+
+** 로그인하다가 비밀번호가 틀렸을때 
+    비밀번호 틀렸다! alert 띄우고 화면이동하고싶을때! 
+리다이렉트쓰면 무조건 페이지 전환돼서 안되고
+이럴때 alert 띄우고 location~~ 하면 되는거임..
+스크립트를 서블릿으로 잘 모아모아 하는도중에 리다이렉트만나면 
+아 이거 하지말라고? 하면서 버퍼를 전부 비우고 리다이렉트 실행하는겨
+그렇지않을땐 서블릿에 차곡차곡 쌓아서 클래스니까 } 를 만나면 한번에 팡 보내는거임
+그래서 alert -> 화면전환 순서로 이루어지는겨
+
+그래서 alert -> location.href -> sendRedirect 순서로 jsp를 작성하면
+순서대로 될것같지만 다 무시되고 sendRedirect 걸어놓은 주소로 바로감
+
+
+>>> response.sendRedirect() 만나면 그동안의 버퍼(=스크립트) 다 무시된다..! 기억해라!!!
+>>>> 그럴때는 리다이렉트 대신 location.href를 던져야해!!
+
+
+
+jsp에서 스크립트 주석할때 <!-- 이렇게쓰면 톰캣이 저 주석을 모르니까 일단 보내!
+보내는데 브라우저에서 해석할떄 얘가 주석이니까 주석처리해서 해
+f12 소스보기하면 소스안에는 보여
+>>>근데 <%--  이주석을걸면 톰캣이 아예 해석을 안해 소스보기에도 안보여
+
+
+~~~~~~~ pdf 112p
+jsp 처리과정 그림에서 1.1 은 없다고봐야됨
+요청이 있을때마다 jsp가 무조건 .java로 바꾸는게 아니고 최초 요청에서만 하는거임
+jsp 파일을 막 만ㄷ르어서 저장하면 Catalina 여기에 .java로 저장되지 않아!
+대신 만든파일을 브라우저에서 함 불러서 요청하면
+그때 catalina 어디에 .java, .class가 만들어지는거임
+
+
+~~~~~116p
+web-inf에는 뭐가들어가나용 ? web.xml, 라이브러리, ..
+이 프로젝트를 배포할때마다 무조건 web-inf/web.xml을 읽고 톰캣이 준비한느거임
+
+D:\A_TeachingMaterial\7.JspSpring\workspace\jsp\JSP_01\build\classes\com\jsp\servlet    이경로에 .class  파일들이 있거든
+우리는 .java만 있으면 되잖여
+무튼 그래서 이클립스가 지혼자 읽으려고 숨겨놓ㅇ든데가 저기여
+결과적으로 dynamic project는 저기의 build에 들어있는거임
+톰캣이보는건 ~~/Catalina 거기고
+톰캣이 실질적으로 실행하는 배포? 그거는 web-inf에 들어있대
+이걸 구분할줄 아는게 중요하대(??!?)
+D:\A_TeachingMaterial\7.JspSpring\workspace\jsp\JSP_01  >> 이거는 workspace고
+D:\A_TeachingMaterial\7.JspSpring\workspace\jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps   >>> 톰캣이 실행하는건 여기임!!!
+톰캣한테는 src 이런거 필요없고 얘한테는 .class만 있으면 되거든
+그거는
+D:\A_TeachingMaterial\7.JspSpring\workspace\jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\JSP_01\WEB-INF\classes\com\jsp\servlet
+여기에 들어있음!!!!
+
+>>> 자
+(1) 우리가 만드는 프로젝트, 
+(2) 이클립스에서 보이는 프로젝트, 
+(3) 실제 톰캣이 배포해서 쓰고있는 프로젝트  -----이 세개는 구성이 다르다!!! 이말하는거임
+
+
+
+우리가 프로젝트에 이름을 만들면 톰캣이 각 프로젝트를 구분해서 배포해야하는데
+그때 쓰느넥 contextPath였음
+톰캣입장에서 프로젝트를 봤을때는 배포해야할 대상이고, 얘한테 context라는 이름 붙임
+
+
+
+
+~~ 121p
+jsp를 서블릿으로 만드는 과정에서 생기는 기본객체들이 있다..
+그것을 아셔야한다는말씀.
+
+pageContext : 페이지 내의 데이터를 사용하기위한 목적으로.. 예...
+	하여튼 jsp 페이지에 대한 정보를 저장한다네요
+	페이지 내에서 공용하고 보여줄 데이터가 있다면 pageContext
+	페이지간에서 데이터를 넘기고 공유할수있는게 >request<!라구
+
+request : 페이지간에 데이터를 넘길때 필요한 객체
+
+session : 페이지끼리 데이터를 공유하는게 아니고 어디서부터 어디까지 공용되는 정보
+	로그인해서부터 로그아웃할때까지 누가로그인했는지를 알아야될거아녀
+	그 기간동안 공용되는 정보!!   
+	== 영역적 값/데이터의 공유가 필요해졌을떄!
+
+application : 시작해서 종료할때까지 필요한 데이터..!
+
+start ---------------------------------------------------------- end
+           from------------------------------------to
+                  ↗request↘  ↗request↘
+             <page>     <page>     <page>
+
+데이터의 크기는    pageContect < request < session < application    == scope
+
+
+pageContext, request, session, application 이런것들을 설정해주면
+얘네는 그곳의 attribute가 됨!  
+---->>>>>>  얘네 설정할때는 setAttribute(), getAttribute() 하믄됨
+
++ 그리고 데이터를 넣고 뺴서쓰고할때 데이터는 key, value 형태여야된다고했자녀
+ setAttribute(), getAttribute() 내부적으로는 map 형식으로 되어있음..!!
+그래서 어떤이름으로 뭘넣을건지, 어떤이름을 꺼낼건지를 정해야함
+
+setAttribute(key, value)  -> 타입 : String, Object   --> 뺄때 무조건 캐스팅해야됨.. 미친
+set할떄는 제약이없는데 대신 잘못넣으면 뺄때 다터져 미친
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

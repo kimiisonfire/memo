@@ -1,0 +1,87 @@
+191202_jQuery
+
+
+jQuery의 반복문에서
+.each(function( i ){}  << 여기에 써주는 i는 자동으로 ++됨!
+
+태그명.tagName = 태그명 가져오는거. dom 함수라서 $() 안붙임
+
+
+- 화면상에서는 보이지 않지만 :hidden, :visible 로 나뉘는것
+input type="hidden"   -> :hidden
+style="display:none"   -> :hidden
+
+visibility:hidden     => visible
+
+
+~~~~~~~~~ p70 이후부터 한느중!~
+
+input type=radio, select option은 하나의 그룹이기 때문에
+id가 같아도 괜찮다..!
+
+
+
+~~~~ p71 부터
+		~~~ append, appendTo ~~~~
+
+append()  -> 요소 내부의 마지막 위치에 content를 추가함
+$('div').append('p')  ---> div 태그의 가장 마지막에 p 태그를 추가함
+
+appendTo(선택자) ---> 새로운 내용을 선택자에게 추가함
+$('img').appendTo($('body'))  --> img 태그를 body에 추가함
+ = $('body').append($('img'))
+
+>> 대신 append/appendTo 하면 
+일치하는 요소가 본문에 있을경우 걔를 제거하고 복사해버림 == 이동  = ctrl+X
+
+
+---- 이미지를 여러개 두고 맨앞에걸 뒤로보내는 그런거..
+	  window.setInterval(function(){
+		  $('img:first').appendTo('div');
+	  }, 800);
+
+disabled는 보통 prop로 주기때문에
+태그내에서 <button type="button" id="start" disabled>돌려돌려</button> 이렇게주고
+펑션에서 $('#start').prop('disabled', false);   이렇게 prop로 골라줄수있지만
+
+<button type="button" id="start" disabled="disabled">돌려돌려</button>
+---> 이렇게 주면 attr로 disabled를 주게되는거임
+이럴떄는 펑션에서  $('#start').attr('disabled', 'disabled')  이렇게 줄수있음!!!
+
+
+		~~~ prepend, prependTo ~~~
+내부의 가장 처음 위치에 추가되는게 prepend~
+이것도 ㅇㅇ에 ㅁㅁ를 추가한다 = ㅇㅇ.prepend(ㅁㅁ)
+ㅇㅇ을 ㅁㅁ에 추가한다  = ㅇㅇ.prependTo(ㅁㅁ)
+
+
+		~~~ after, before ~~~
+after, befor = 앞 뒤로 넣어주는거임. 태그의 >>> 바깥쪽 / 외부 <<< 으로!
+ㅇㅇ앞에 ㅁㅁ을 넣어라  = ㅇㅇ.after(ㅁㅁ)
+ㅇㅇ을 ㅁㅁ앞에 넣어라  = ㅇㅇ.insertAfter(ㅁㅁ)
+
+
+~~~~ 75p ~~~
+삭제 관련된거 하고있습니다
+empty, remove
+
+remove(선택자)  == 선택자와 그안에 들어있는거 전부 삭제!
+empty(선택자)  == 선택자안에 들어있는거 전부 삭제하지만 선택자는 남아있음
+		안을 비우는거임 empty!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

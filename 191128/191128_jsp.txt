@@ -1,0 +1,185 @@
+191128_jsp
+
+<톰캣 다운로드, 톰캣다운로드, 톰캣7, 톰캣설치, 톰캣 설치>
+
+톰캣은 7버전이면 된다네요 우리 1.7jdk 쓸거니까
+이클립스에서 쓰는 톰캣은 시스템톰캣을 복사해서 쓰는거임
+우리가 쓰고있는 톰캣은 압축을 풀어서쓰는거라서 핸들링하기가 어렵읍니다
+이러면 뭐 .. 설정하기 어렵대 그래서 7버전을 받으러 떠날거임
+
+7.0.96을 다운로드했고 원래 우리가 압축풀어서 쓰는거랑 동일한버전임
+넘겨넘겨하다가 
+>>>  Configuration <<< 에서 
+ServerShutdown port -->  8005  로 바꾸세요
+HTTP/Connector Port --> 80
+Tomcat Administrator Login 이 manager gui 뭐 그런거래.. 무튼 그걸 
+  - User name/Password = admin  으로 하시고요 
+
+넘겨서 jre 위치는 jdk 1.7로 잡고
+
+넘겨서  설치되는 폴더를 설정할건데
+D:\B_Util\5.ApacheTomcat\Tomcat7.0 for jsp   이렇게해서 기존 톰캣이랑 구분을 둠
+-----> install!
+finish 하면 톰캣이 돌아간다..! 화면의 오른쪽 하단에 톰캣생겼다구..!
+톰캣 열어보면 status == Started 라고 되어있음다
+
+우리는 설치를한거라서 윈도우 시작화면-모든프로그램에 등록이되어있음
+브라우저 열어서 localhost 쳤는데 고양이가 나온다? 그럼 된거임!
+고로면 내컴터는 톰캣이 was로 돌아가고있는거임~~~~
+
+뭘 뚫어버린대
+제어판 - window 방화벽 - 고급설정 - 왼쪽상단에 인바운드/아웃바운드 규칙 이라고 있음
+내컴터에서 나가는/ 외부에서 들어오는 것들에 대한 설정임
+우리는 외부에서 내컴터에 80포트로 들어오려는걸 허락하려는거임
+인바운드규칙 -->  오른쪽상단의 새규칙 클릭 --> 포트클릭 다음 --> 특정로컬포트 : 80
+    --> 넘겨넘겨하고 이름을   tomcat 7.0 for jsp  로 바꿔주고 마침!
+
+D:\B_Util\5.ApacheTomcat\Tomcat7.0 for jsp\webapps\ROOT 여기에 backup 폴더 만들고
+(webapp 여기가 다른데한테 보내줄수있는곳임)
+거기에 원래 들어있던거 전부 넣었음
+브라우저에 localhost 하면 아무것도 안나옴! == 404
+
+
+여기에 html 파일 하나 넣어볼겡
+텍스트파일로 하나 만들고 걔를 위의 경로에 .htm 형식으로 인코딩은 utf-8로 하나 만들었음
+여기에 저장한다음에 브라우저로 localhost 하면 html파일이 확 뜹니듀...
+
+----> 지금까지 우리가 was 설치한거임! 이거는 eclipse랑 별개인거임!!!!
+
+방금 만든 htm 파일을 폴더를 하나만들고 거기에넣어주면
+이제 경로는 ~ip주소~/폴더명 하면 여기서 htm 파일이 열림
+
+근데 파일명을 다른걸로 바꾸면 http://192.168.201.32/kkk/ 이러헥 했을때 안열려1
+대신 http://192.168.201.32/kkk/mmm.htm  이렇게 하면 열려!!!
+
+----> 왜그런지 보러가겠음
+D:\B_Util\5.ApacheTomcat\Tomcat7.0 for jsp\conf 여기서 tomcat-users.xml 열면
+원래는 없던 user가 있음
+그리고 web.xml 열면 welcome-file-list 가 있고 거기에 index.html / index.htm / index.jsp 가있음
+우선적으로 얘네를 검색해서 열고 없으면 not found 404 띄워버리는거임
+
+이번엔 server.xml 열었음
+71번의 Connector에 아까 설정했던 포트 80으로 잘 되어있음다
+커넥터에 URIEncoding="utf-8"   이거 추가함!
+
+확인했으니까 backup에있던거 밖으로 빼내고 backup 지웁니다~~~~
+이걸로 localhost 하면 여기에있던 index.jsp가 자동으로 실행되는겨
+
+localhost 브라우저 화면에서 managet app 버튼누르고 admin / admin 해서 들어가봐
+그냥 보기만 하라고..
+
+
+톰캣 끄겠음 --> stop 눌러서 껐음 start 옵션?? 그거는 manual로 그냥 두세용 ㅎㅎ
+
+
+
+
+<eGov 설치, 프레임워크 설치, 전자정부 설치, 전자정부설치, egov설치>
+이제 eGov 하겠음다
+브라우즈에서 D:\B_Util\3.Eclipse 여기까지만 선택하고 extract => 압축해제중
+D:\B_Util\3.Eclipse\eGovFrameDev-3.6.0-64bit\eclipse --> 여기들어오면 이클립스 있는지 확인
+얘를 바탕화면으로 뺐읍니다,,
+
+
+<eGov 이클립스 실행>
+workspace = D:\A_TeachingMaterial\7.JspSpring\workspace\jsp  
+----> workspace 밑에 바로 안하고 jsp 하나 더 붙여서 할거임
+	나중에 jsp, spring 구분해서 쓸거라 가르는거임
+
+pref 설정
+1. content 어쩌고의 Java Class file, text 만 인코딩먼저해주고 다른거  utf-8인지확인(이미됨)
+2. general -web 브라우저에서 chrome 추가하고 external 쓰겠다고혀 apply
+3. java - installed JREs에 1.7 들어가있는지 확인
+4. server - runtime env 로가서 add -> 7.0 선택  next -> 
+	톰캣설치된 경로는 D:\B_Util\5.ApacheTomcat\Tomcat7.0 for jsp 로 설정함
+	그아래 jre는 디폴트나 1.7이나 같은거임
+5. web ->jsp file -> editor -> templates 여기에 html5를 추가해줄겁니듀
+	1) new JSP File 의 (html) 열어보면
+	   doctype = 4.01 임 = html4쓰고있는거여
+	   다 지우고 !DOCTYPE html   <- 이거만 남기면 html5 되는거임!
+	2) meta도 <meta charset="${encoding}"> 이렇게만 수정해줘라
+	3) 공백을 없애주는걸 할거래..
+	   덕타입 바로위에 <%@ page trimDirectiveWhitespaces="true" %>  추가!
+
+------------------------------------------ 설정은 여기까지!!!! -----------------------------------------
+
+서버등록할겡 -> 콘설창에서 서버- new -7.0 고르고 finish
+
+dynamic web project 만들게
+
+web project 는 크게 프론트/ 백단으로 나뉨
+ - java resources / src -> 여긴느 자바코딩하는곳임. 
+ - webContent 는 jsp, html, css, java script 만드는곳임 
+   meta는 안손대도되고 web-inf는 손댈수없음. webContent 안에다가 일단 할건데	
+   나중에는 web-inf에 만들어서 사용자가 아무것도 가져갈수없게할거임
+   jar 같은것도 web-inf 여기다가 넣으면되긴함 (매뉴얼적인 얘기긴하지만)
+
+
+프로젝트명 - properties = 이 프로젝트의 설정
+window - preferences = 이클립스의 설정
+
+index.jsp 파일을 만들고 거기다가 아무거나써서 실행시키면 브라우저에뜨고
+주소가 http://localhost/JSP_01/index.jsp  <<< 이렇게뜨거든
+우리가 만들었던 프로젝트명이 url 컨텍스트 어쩌고가됨...
+확인은 server.xml의 가장 마지막줄쯤에 context 태그로 볼수있거든
+이거 고치고싶으면 여기서고치면안됨 근데 다른방법이 있는데 안알려준대
+
+
+콘솔과 서버탭의 stop 버튼은 다릅니다
+콘솔의 stop = exit = 시스템종료 = jvm종료
+서버탭의 stop = 서버종료
+그니까 뭐 끄고싶으면 콘솔에있는거 끄지말고 서버탭에서 끄세용
+
+
+~~~~60p 부터 하고있음 ~~~~~
+
+오늘할거는 
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+------> 이거를 이해하는거임
+
+== 이친구는 " 페이지 디렉티브 " 라고합니듀
+contentType을 써야 얘가 뭘 보내는지 알수있음
+text/html = html 파일이다~
+text/plain = 걍 텍스트파일이여
+application/plain = 엇 일단 무조건 다운받자!
+이런식으로!!
+
+서버와 클라이언트는 텍스트/바이너리 스트림 말고는 주고받을수있는게 없음
+객체를 주고받을수없다는거임
+
+톰캣은 <% 가 없으면 아예 읽지를못함
+그래서 html문에서 에러가나도 톰캣에서는 모르는거임
+그걸 잡아주는건 브라우저! 우리 맨날 브라우저에서 에러 확인하자나요
+
+
+* 디렉티브
+<%@       ----> 이거를 기억하세용 이게있어야 디렉티브
+
+* 스크립트 요소
+표현식, 스크립트릿, 선언부  --> 얘를 알려면 서블릿을 알아야댐
+그래서 오늘은 스크립틀릿만 연습할거임
+
+* 스크립틀릿!
+<%  ----> 이거가 있어야 스크립틀릿
+
+
+out.  = 내장객체. 브라우저에서 출력하도록하는거임
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

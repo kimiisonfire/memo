@@ -1,0 +1,125 @@
+191211_jsp
+
+
+web.xml의 개념에대해서 한번 더 잡고갈게용
+
+  ** 순서!
+톰캣 시작 
+-> xml 설정 (context.xml, server.xml, tomcat-users.xml, web.xml) 
+      - context.xml : 각 어플리케이션의 web.xml 경로가 들어있음
+      - server.xml : 기본적인 설정, project, context path
+      - tomcat-users.xml : 톰캣을 유지보수하는 사용자의 계정과 패스워드 설정
+      - web.xml : 기본 서블릿, 디폴트 페이지 등을 설정하는곳 (각 프로젝트랑은 상관x)
+	>> 얘는 Servers/Tomcat어쩌고/web.xml
+--> 각 프로젝트로 가서 
+     각 프로젝트에 있는 web.xml을 읽습니다	
+	>> 프로젝트/WebContent/WEB-INF/web.xml
+
+ (프로젝트들은 공통의 web.xml의 내용이 먼저 적용되고 그다음에 프로젝트안의
+web.xml이 적용됨)
+
+프로젝트의 web.xml에 서블릿, 리스너, 필터를 적용하게되는거임..!
+
+web.xml 파일에서
+1. <load-on-startup>1</load-on-startup>
+   여기서 1은 한번만 돌린다(X), 로드했을때 한번 돌릴건데 얘를 몇번째에 돌릴건지!
+2. servlet-name은 그냥 이름이라 servlet-class랑 이름을 따로줘도 되는데
+   굳이...?
+3. 우리가 지금 데이터소스 초기화하는 서블릿만들고있잖여
+   거기다가 넘겨주는거를 어떻게 넘기나용?
+   web.xml의 <init-param>을 통해서 넣읍시다,,
+
+D:\B_Util\4.Oracle\app\oracle\product\11.2.0\server\jdbc\lib 여기에있는 
+ojdbc6을 복사해서 web-inf의 lib에 붙여넣기..!
+
+
+OracleDBCP2DataSource 클래스를 만들고 superclass로 datasource 찾기!
+==> 싱글톤부터함.
+==> 접근하는 방법에 대해서 pool화하겠다 = basicDataSource 변수말여
+	글고 여기서 DataSource를 extends했는데
+	그렇다기엔 딱히 dataSource를 ㅆ ㅡ지도않고
+	그래서 BasicDataSource로 extends를 바꾸고 임포트도 지우고 
+
+DataSource -> BasicDataSource -> OracleDBCP2DataSource 이순서라서
+위에거에서 한단계 아래걸 extends한거임
+결과적으로 우리가 DBCP2의 basic data source를 쓰는거임
+
+web.xml -> 서블릿로드 -> init.servlet -> dbcp2.servlet -> basicdatasource set!
+이순서라는데,..
+
+
+라이브러리 하나더검색한대..
+basicdatasource에서 로그를 출력하는데
+이때 common-logging 얘를 사용하거든
+common-logging maven 검색! 1.2 클릭! jar파일 다운로드!
+폴더열기해서 복사해서 라이브러리에 붙!
+
+결국은
+commons-dbcp2-2.4.0.jar
+commons-io-2.4.jar
+commons-logging-1.2.jar
+commons-pool2-2.4.jar
+요 네개가 세트여!
+
+
+
+mybatis의 세션 팩토리를 만드는 과정을 할거라네요
+mybatis, ibatis는 크게 차이없고 mapper만들때 ##, #{} 이렇게만드는거
+그리고 resultclass, parameterClass가 resultType, parameterType 뭐 이렇게만..
+
+mybatis 3.4 maven 검색해서 3.4.6 jar 다운로드하고 또 라이브러리에 복붙!
+
+commons-dbcp2-2.4.0.jar
+commons-io-2.4.jar
+commons-logging-1.2.jar
+commons-pool2-2.4.jar
+mybatis-3.4.6.jar
+ojdbc6.jar
+========> 이렇게 6개는 있어야 db에서 가져와서 dao 뭐 이런거 할수가있는겨..
+
+
+mybatis 함 해볼건데용
+vo만들고, config, map 만들겁니다
+일단 config xml부터 만들건데 일단은 src에 만들게용
+
+우리는 config 직접 쳐서 만들었잖여 
+근데 마켓플레이스에 mybatis 플러그인이 있어서 바로 만들수있긴하대. 근데 안좋대..
+특히 config 만들때 정말 안좋다네요... 걍 이런게 있다.,,
+
+무튼 config xml로 만들게용 -> sqlConfig 로 이름만드는데 보통 이걸로만드니까 이걸로해
+작성하는건 브라우저에 mybatis sqlconfig 검색해서 참고하면됩니듀
+
+sqlConfig의 순서는 일단 프로퍼티가 먼저인데
+우리는 .properties 파일 안만들고 서블릿으로 하니까 필요없다..!
+아 근데 뭐 jdbc랑의 차이를 본다고 db.properties 만들었음
+
+memberVO도 만들었음
+
+mapper 파일도 doctype 복사해서 붙여넣기
+mapper 파일의 namespace는 파일명과 동일하게 쓰는것이 권장사항임
+mybatis는 parameterType, resultType 임
+sql문 안에 주석넣으면 저어어어얼대안돼!!! 안돼!!!!! 안돼1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	주석은 스키마 밖에다가 넣으세용
+
+#{} = 들어오는 데이터타입에 맞춰서 싱글쿼트를 넣어주기도 안넣기도해. value에 넣어줘
+${} = 무조건 '' 붙여. 쿼리문을 만드는 예약어에 써줘
+
+
+이제 sql Session도 만들거고요
+factory에 의존하는거래. factory=요구사항을가지고 그런형태의 인스턴스를 만드는거
+그 팩토리에 sqlConfig를 넣어주면 되는거임
+이제 팩토리를 만들건데
+xml을 읽어주는 친구가 reader (읽는 주소도 따로 주고)
+그러면 reader가 sqlConfig를 쫙읽잖여. 그거를 팩토리 만들때 준대
+그러면 그내용대로 팩토리를 만드는 빌더로 팩토리를 만들고 변수에 담아
+이제 이 팩토리에서 getSession() 메서드만들면 세션이 튀어나온댜
+
+
+
+내일은 두개의 데이터소스 (mybatis-프로퍼티만들고 코드에박음, jdbc-서블릿쓸거임)
+이걸로 dao를 jdbc쪽, mybatis쪽 만들거임~~~~~~
+
+
+
+
+

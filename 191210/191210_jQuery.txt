@@ -1,0 +1,135 @@
+191210_jQuery
+
+button type=submit 인경우 정보를 어떻게 가져가나요
+submit일때 input에 있는거를 request에 담아서 가져감. post/get 상관없이말여
+
+
+post로 보낼때 f12 - network - Headers의 response, request를 확인해보면
+response는 content-type = text/html;charset=UTF-8
+request의 content-type = application/x-www-form-urlencoded
+==> response는 화면에 내보내기위한 html 칭구칭긔고
+	request는 사용자가 화면을 통해서 적어보낸..? 요청한...? 그런거라는거임
+
+근데 get으로 보낼때 f12 - network - Headers의 response, request를 확인해보면
+response는 동일한데 request의 content-type이 없어..!
+
+
+~~~~~ 120p랑 연결해볼게
+get일때는 .open(), .send() 를 통해서 요청하는데
+post일때는 open(), setRequestHeader(여기에 content-type을 설정해야해), send()
+이렇게됨.
+
+
+form태그에서 입력받고 버튼으로 전송하는 그런걸 해보고있음
+기존의 get, post 방식으로 받아서 처리하는건 했습니다
+ajax는 새로운 페이지를 만들거나 로드하지않고, 
+요청했던 페이지에 바뀐, 필요한 데이터만 집어넣는거임
+=== 출력할 부분을 만들어놓고해야겠쥬?
+
+AJAX는
+xmlHttpRequest를 DOM으로 만들어서 요청하는거임
+request를 내가 만드는건가봐...
+요청한다음에 응답 받을때는 
+.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {	state = 4 == 서버처리끝
+                res =        this.responseText;		--> responseText로받는겨
+               resjson = JSON.parse(res)    ;  
+    }
+
+--> 저 res는 jsp파일을 실행할때 출력하는 결과!를 받아오는거임
+
+/* -----readyState-----------------------
+0 : open()메서드 수행전
+1 : 로딩중			---> 로딩은 jsp파일의 로딩 말하는거임
+2 : 로딩완료
+3 : 서버처리중
+4 : 서버처리끝
+-----  서버의 처리결과status--------
+200 : 성공
+403 : 접근거부
+404 : 파일/페이지 없음
+
+------------------------------------ajax로 작성한거
+// ajax를 이용해서 전성
+$('.btn').click(function() {
+		  
+  // 입력한 이름과 전화번호를 가져온다
+  vname = $('#name').val();
+  vtel = $('#tel').val();
+		  
+  xhr = new XMLHttpRequest();	// request 만들기!
+		  
+  // 요청 - get
+  xhr.open("GET", "test1.jsp?name=" + vname + "&tel=" + vtel);	// 파라미터 넘겨
+  xhr.send();	// 보내!
+		  
+  // 응답
+  xhr.onreadystatechange = function() {	// readyState변화 감지하는거임
+     if ( this.readyState == 4 && this.status == 200 ) {	// 서버완료 및 실행성공시
+        res = this.responseText;	// test1.jsp 수행 결과를 담아서 res 저장
+        $('.result').html(res);		// 결과를 class=result 인곳에 출력!!!!
+     }
+  }
+})
+
+
+요청과 응답의 순서는 상관없대
+어차피 응답은 if 걸어서 기다리고 있으니까
+
+
+~~~ 124P
+해보고있습니듀 json 이전부분 먼저하고 json 하는중!
+
+
+==========JSON============
+https://www.json.org/json-ko.html
+
+경량의 데이터 교환 형식. ajax는 서버와 클라이언트간의 데이터 교환하는건데
+ajax가 사용하는 데이터 타입이 text, json 이라는거임..!
+json은 key, value 형태고요
+java의 컬렉션클래스가 json에 기반을 두고있다는거래.. 미친
+
+Object는 { name:value, name:value, ..} 
+Array는 [ value, value, value, ... ]
+Value 로 올수있는것들은 String, number, Object, array, true , null 
+			뭐 거의 기본/참조형아닌지
+===========================================
+
+
+json으로 응답받아올때
+xhr.onreadystatechange = function() {
+  if ( this.readyState == 4 && this.status == 200 ) {
+    res = JSON.parse(this.responseText);  
+==> jsp에서도 json으로 결과를 만들거고 
+      그거받아올땐 무조건 text로받으니까 json으로 변환
+
+
+
+하여튼 json 데이터타입은 datatype.html로 잘 했읍니다 그거나보세요
+
+
+
+~~~~ 125p
+jQuery를 이용한 ajax를 할거라네요
+그전까지 new XMLHttpRequest 객체 만들어서 했던건 dom객체쓴거라서 브라우저만 있으면 모든 언어에서 할수 있었던 그런거였어서, 이제는 jQuery를 써서 할수있게 할거래
+
+ajax는 비동기라서 데이터를 같이 보내고싶어도 지맘대로 이동해버림
+그래서 그것들을 묶어서=직렬화=serialize해서 보내는거임...!
+
+$.ajax({
+  url : 'jsp 파일',
+  type : 'get 아니면 post',
+  data : $('form').serialize(),	-> data = 보내는 데이터. data라고만써야됨
+			// 여기까지가 요청, 이아래가 응답임
+  success : function(data) {	-> data = 변수이름. 받는데이터
+		~~~ }
+  error : function() {}.
+  dataType : json
+})
+
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+191218_jQuery
+
+
+어제 회원가입 틀만 만들어놨고
+오늘은 회원가입의 실제 기능을 구현할거임
+ziptb 테이블을 만들어서 거기에 주소를 왕창넣음
+구현할 기능은 
+1) 아이디 중복검사
+2) 주소검색
+3) 회원가입
+
+
+원래 우리가 insert하면 ibatis는 결과가 object로 나와서 성공하면 null이고 
+그랬잖여.. 근데 선생님은 그거말고 insert 한다음에 select로 입력했던 아이디를
+검색해서 해당아이디가 있으면 아이디를 출력하고 없으면 null을 출력하려고함
+
+그래서 insert 쿼리문 안에 <selectKey> 태그로 입력했던 mem_id를 검색함
+<selectKey keyProperty="mem_id" resultClass="String">
+     select mem_id from member where mem_id = #mem_id#
+</selectKey>
+=============> 여기서 #mem_id#는 위에 입력했던걸 쓰는거라서
+		String이라 아무거나넣는다 그거 안되는거임
+
+
+그리고 form 태그 안의 input 태그들이 지금 
+label 의 for
+label의 텍스트부분
+input타입의 id 부분을 맞춰줬는데
+input 태구의 name="여기에 vo 또는 db에 있는 변수명으로 써줘야함
+그게 아니면 이것들을 가져올때 일일히 $('#id').val 이렇게해줘야함
+
+
+
+새창 열때는
+window.open("새창 화면 jsp 또는 html", "새로운창의 논리적이름", "새창옵션")
+논리적이름 = 아무거나 써도되고, _blank, _self 쓰면 그게 적용됨 
+새창옵션 = "width=500 height=600" 이런거
+
+모달창 열때는
+버튼 옵션에서 data-toggle="modal" data-target="#myModal"
+그리고 해당 모달을 
+<div class="modal fade" id="myModal" role="dialog">
+이렇게 하면 이 div가 modal의 콘텐트로 들어감!
+
+=== 아니 모달이 안열리는겨
+      원래 우리가 가지고있던 min.js 를 지우고 jquery.min.js 가져오니됨
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

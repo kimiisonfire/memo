@@ -1,0 +1,68 @@
+191219_jQuery
+
+
+~~~ 어제는 143p까지 구현했고요
+
+어제 잠깐했던것처럼 window.open으로 새창을 열었을 경우
+자식창(=새창)의 데이터를 부모창(=창을 열게했던 창 = opener) 에 전달하려면
+$('#부모영역의 객체', opener.document.val(보낼값) 이렇게합니듀
+
+
+근데 우리는 모달창으로 할거니까~,~
+
+모달창에 주소를 검색한 결과를 테이블로 띄웠는데
+거기서 선택한걸 가져오려면 click 이벤트를 줘야하잖아
+근데 새로 생긴 요소에 대한 이벤트니까 deligate 식으로 줘야해
+선택된 tr의 (새로 생기지 않은) 조상 = div(result)
+
+
+----> 하여튼 회원가입도 잘했습니다~~
+
+
+이제 아무렇게나 입력하지않도록 정규식 체크 작업을 함 해볼거임~~~
+정규식을 체크하는 자바스크립트를 따로팔거야
+
+야 근데 정규식 다시 공부해라.. 이거 왠지 할떄마다 느끼는건데 중요해보임
+
+
+
+  ** 잠시
+우리가 서블릿에서 넘어온 파라미터에서 하나씩 꺼내고 그걸 vo에 하나씩 세팅했잖아
+근데 이걸 알아서 해주는 라이브러리가 있대..!
+D:\C_Lib\beanUtil\commons-beanutils-1.8.3-bin\commons-beanutils-1.8.3\
+여기의 commons-beanutils-1.8.3.jar   이거!! 를 복사해서
+web-inf의 lib에 붙여넣기!
+
+그리고 D:\C_Lib\beanUtil\commons-logging-1.1.1-bin\commons-logging-1.1.1
+commons-logging-1.1.1.jar  이 파일도 lib에 붙여넣기!
+
+	MemberVO member = new MemberVO();
+	member.setMem_id(request.getParameter("mem_id"));
+	member.setMem_name(request.getParameter("mem_name"));			member.setMem_bir(request.getParameter("mem_bir"))
+	member.setMem_pass(request.getParameter("mem_pass"));
+	member.setMem_hp(request.getParameter("mem_hp"));
+	member.setMem_mail(request.getParameter("mem_mail"));
+	member.setMem_zip(request.getParameter("mem_zip"));
+	member.setMem_add1(request.getParameter("mem_add1"));
+	member.setMem_add2(request.getParameter("mem_add2"));
+이것들을 자동으로 하게될거란말임!!
+
+BeanUtils.populate(obj, map) 인데
+우리가 가져왔던 request가 map형태인건 알지? 걔를 request.getParameterMap() 
+그리고 앞의 obj는 우리가 map에 있는애를 꺼내서 넣어줄 vo를 넣어주면 돼!
+그리고 try-catch 하면 됩니다!!
+
+try {
+	BeanUtils.populate(member, request.getParameterMap());
+} catch (IllegalAccessException e | InvocationTargetException e ) {
+	e.printStackTrace();
+}			--->>> 이렇게 간단..! 
+
+
+
+
+
+
+
+
+

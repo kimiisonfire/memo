@@ -1,0 +1,144 @@
+191224_jsp_오전
+
+필터/리스너를 화면단에서 활용하는 날이 될것이다,,
+
+사이트메쉬 = 필터 / 요청이 있을때마다 ~~해야하니까
+
+- web.xml
+모든 url이 사이트메쉬 필터에 걸립니다
+- sitemesh.xml
+html parse할때 어떤걸 쓰겠냐, url 설정은 어떤걸 하겠냐 = 얘는 안바꿈
+얘한테 decorators.xml을 던져줘야하니까 파일의 경로만 주면 됨
+
+- decorators.xml
+가장 중요한 url, url에 적용할 템플릿 jsp 적용
+데코레이터.jsp 개수만큼 decorator 태그가 달립니듀
+적용할곳의 url 패턴을 쓰면되는데, 이걸 나중에 패턴화할거임
+그러니까 처음 설계할때부터 url 패턴은 짜놔야된다는거지
+여기서는 /** 이거 먹습니다 그래서 일단은 패턴에 /** 쓰겠음
+적용하지 않을 url을 excludes에 넣을건데
+---> 헤더랑 푸터가 안들어갈만한곳이 어딨을까??
+   ====>>  새창띄울때! 새글을 작성한다거나 로그인창이 새창으로 뜨거나할때
+	헤더, 푸터가 필요하겠냐 이말임다 필요없죠
+	새창을 url을 특화시켜놔야된다는거임
+
+
+
+시나리오를 줄테니 함 해보라고하시네용
+
+- login_decorator.jsp 템플릿 페이지 제작
+    ( login_header.jsp , login_footer.jsp 추가 )
+
+- login.jsp 구현 (기본 form 양식)
+- main.jsp , login.jsp 가 각각 다른 템플릿이 나오도록 하시오
+
+
+url pattern의 범위를 짤때 더 자세하게 고른애 = 우선순위가 높아져서
+/**, /login** 이런게 있고 로그인에게 login~~ url이 붙으면 => login** 이게 실행됨
+범위가 똑같으면 (둘다 /**, /**일경우) 나중거가 적용됨 오버라이드 되는거죠
+우선순위가 같으면 나중거를 적용한다! 시간적 개념이 적용되는거임 나중게 적용
+xml 파일에서 순서가 매우매우 중요중요
+
+
+
+지금부터는 서블릿으로 만들어볼거여
+앞으로 mvc2 패턴을 쓸텐데
+url 요청은 이제 .jsp가 안붙을거야
+근데 서버는 화면만 내보내는게 아니잖아 파일 다운로드도있고 그런데
+json, 파일, 이미지 그런거말여
+그걸 페이지를 요청하는 일반화면과 어떻게 구분할건지?
+
+---> 아무도 하지않는 url 패턴을 페이지요청에 부여하는거임..!    ==  >> .do << 
+	= 이미지파일이나 이런건 절대 .do가 안붙는거
+
+
+
+근데 이렇게 필터로 헤더푸터주면 css는요? js파일은?? 타이틀은 어케줌????
+그래서 header.jsp에 decorator 태그라이브러리 추가하고
+<title>
+	<decorator:title default=""/>
+</title>
+이렇게해주면 나가려는 파일에 title이 있으면 그게 나가고 없으면 디폴트가 나감
+
+봐봐 만약에 normal.jsp에서 style을 적용하면 안들어가
+왜냐! header에 스타일이 없는데 무시돼죠 당연히;
+header.jsp에 decorator 태그를 안줬으니까!!!
+
+
+
+글고 이제는 <script> 태그를 헤드에 박지 ㅁ ㅏ세요
+실무에서는 onload 안씁니다;
+그냥 밑에다가 붙입니다 글면 onload 안걸어도 되잖아유
+onload 쓰면 읽을때까지 브라우저가 기다리고있는거라서 로드되는동안 스크롤링 안됨
+
+그리고 <script>를 밑에쓸거면 당연히 <body> 태그 안에 써야함
+그래야 데코레이터 필터가 얘를 붙여주는거임
+script 태그가 바디안에있다 ? 이페이지 사이트메쉬를 썼구나~~ 할수있는거
+
+
+
+script를 body에 박는방법은 두가지가있답니다
+1) 본문에 박아버리기~
+
+2) js 파일을 만드는거ㅓㅓㅓ
+	-> 근데 js파일은 톰캣이 텍스트 그자체로 읽으니까
+	    js를 function으로 만들고 function call 해서 쓰는겨!
+
+이렇게 javascript 파일을 만들어서 하는거는 매우 손이 매우매우 많이갑니다
+자바스크립트를 설계해야되거든
+
+이거 너무 머리아프지않나요,,
+그래서 ㅌ만들기는 쉽지만 중복이 많고 무계획적인거 알려줘볼게 ( 현업에서 안씀,,)
+    --> 스크립트내용을 담는 >> jsp << 파일을 만들고
+	그거를 디렉티브 인클루드해버림ㅋㅋㅋㅋㅋㅋㅋㅋ 전혀문제안됩니다
+	(최프할떄는 이렇게 하라는건가??? 이걸 쓰라는 식으로 말하는데용)
+
+
+~~~~~ 사이트메쉬는 여기까지라네요 이제 부트스트랩할거래
+
+우선 02_MVC, SITEMESH의 lib에 있는 jar파일들 전부 복붙하고 시작합니듀
+
+
+
+
+< adminLTE 사용법, adminLTE사용법, adminLTE 다운로드, adminLTE다운로드 >
+
+--> 이 템플릿을 쓸거라네용. 얘는 모바일타겟도 다 알아서한다네용
+이름이 adminLTE인 부트스트랩입니듀..
+
+일단은 브라우저에서 adminLTE 3 버전 검색하고요 
+여기의 이런저런 템플릿을 갖다쓸거에용
+여기서 아이콘 - font awesome 이거 갖다쓰면
+이미지를 쓰는게 아니라 웹폰트를 갖다쓰는거임
+
+무튼
+adminlte의 documentation의 download를 참고해서 할겁니다
+커맨드라인 못쓰니까 latest-release -> 3.0.1의 Source code (zip) 다운로드!!!
+
+압축풀고요 
+D:\A_TeachingMaterial\7.JspSpring\lecture 그냥 내맘대로 여기다가 옮겨놨음다
+
+무튼 여기서 pages : forms, 뭐 그런게들어있는곳
+템플릿을 보고싶으면 맨밑의 starter.html 열어봐라
+이게 완전 암꺼또없는 페이지라네요,, 우리는 이거를 편집해서 쓸거래
+
+
+css, js, 이미지나 그런거는 WebContent에 resources 라는 폴더를 만들어서 넣ㄴ드대
+부트스트랩 라이브러리가 너무 커서 따로 분리해서 resources에 담아줄거래
+bootstrap, css, images, js 폴더 만ㄷ르었음
+
+우리한테 필요한건 
+D:\A_TeachingMaterial\7.JspSpring\lecture\AdminLTE-3.0.1\AdminLTE-3.0.1
+여기의 build, dist, plugins 이거를 복사해서 bootstrap 폴더에에 붙여넣기!
+
+* 혹시 에러가 자꾸 뜨나요???
+1) properties - javaScript - include path - Source - 펼쳐보세요
+excluded 더블클릭 -> exclusion patterns의 add 버튼! 
+**/resources/** 써줍니다. 여기는 javascript 검사 하지말라는거임 -> ok/finish
+2) 상단탭의 Project - clean - ok
+  ~~~~> 이렇게하고 시간지나면 에러없어진다네용
+
+
+
+
+

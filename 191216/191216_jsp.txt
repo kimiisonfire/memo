@@ -1,0 +1,162 @@
+191216_jsp
+
+
+~~~~EL문~~~~
+el문으로 표시할수있는 데이터 = 집합객체 = pageContext, request, session, application
+
+간단하기 때문에 앞서배운 표현식을 대신해서 사용하는것뿐임
+특별한 뭔가가 있는건 아닙니다
+
+${} = 표현식	함 연습해볼게용	>> JSP_01/WebContent/el
+
+
+스크립틀릿에서 선언한 변수는 그냥 지역변수지 집합객체가 아니라서
+그걸 el문으로 찍으면 안나와. null이 아니고 그냥 아무것도 안나와
+표현식은 찍을수없으면 에러
+<%  String name = null;  %>
+<%= name %>
+${ name }
+이거 찍으면 null (표현식)만 나옴
+
+쓰고싶으면 꼭 집합객체에 담아줘야함
+
+집합객체에 담았을때 우선순위는 pageContext -> request -> session -> application
+그래서 같은 key로 똑같은 값을 네개의 집합객체에 담아서 ${name}만 하면
+pageContext에 있는것만 나옴
+pageContext 주석처리하면 request에 있는거 가져옴
+request 주석처리하면 session에 있는거 가져옴
+session 주석처리하면 바로 안날아가서 session.invalidate(); 하고 주석걸면
+application에 있는거 가져옴!
+---> 참고참고
+	//pageContext.setAttribute("name", name);
+	//request.setAttribute("name", name+":request");
+	//session.setAttribute("name", name+":session");
+	session.invalidate();
+	application.setAttribute("name", name+":application");
+
+
+~~~ 246p
+무조건 pageContext부터 찾기때문에
+만약에 내가 session scope에 있는걸 가져오라고 하게하고싶어!
+el문은 저 네가지 집합객체를 영역으로 가지고있는 스코프 scope 객체를 가지고있음
+그래서 스코프를 골라주면 됨 	<h1>${sessionScope.name }</h1>  이렇게!
+requestScope.
+sessionScope.
+applicationScope.     이렇게말여..!
+
+
+~~~ 245p 수치연산자연습
+하여튼 네개의 집합객체중에 하나에 꼭 넣어라 알았음?
+
+무조건 톰캣이 해석하는거
+<% 
+액션태그 <jsp:
+el문 ${}
+
+el문에서 나누기한 결과는 무조건 double타입으로 나옴!! java와의 차이점..!
+
+
+el문은 String 문자열에 + 연산자 >>>>>금지<<<<<
+애시당초 el문에서 문자열의 연산이 필요없게 만들어라..
+필요한게 있으면 심을때 더해서 넣어라..!!
+pageContext.setAttribute("firstName", firstName + "1");  이렇게말여
+
+
+비교연산자도 역시 numbr끼리의 비교만 가능하고
+>=, == 이런 연산자 대신 ge, le, gt, lt, eq 와 같은 비교연산자를 더 자주쓴답니다
+eq, ne는 문자열에도 가능허다!
+
+
+empty
+:: null이어도 true, 집합체에 값이 없어도 true, 빈문자열도 true
+empty 연산자를 앞에다가 쓰세용..
+
+
+
+이제 파라미터를 어케 처리하는지 배워보겠음
+파라미터로 넘어온건 ${param.어쩌고} 이렇게쓰면됨
+서버에서 어떤 값을 심어 request에 setAttribute해서 심었어 memberVO를말여
+그걸 가져오려면 ${member.id}  == pageContext부터 뒤져 member라는 attr가 있는지
+찾으니까 request에 있네?? 그러면 id를 가지고 지가 get메서드를 만들어줘
+결과적으로 member.getId() 가 되는거임
+
+parameter는 클라이언트가 넘긴 데이터고
+attribute는 서버가 심어준 데이터임
+
+
+클라이언트에서 리퀘스트에 파라미터를 담아서 넘어오잖아
+서블렛이 가질수있는 데이터는
+parameter, attribute 두로 나뉘는데
+parameter를 처리할수있는 유일한 방법은 getParameter()
+attribute를 처리할수있는거 getAttribute(),. SetAttrubute()
+그래서 들어왔던 리퀘스트에다가 attr로 서블릿쪽에서 변경하거나 추가할수있는거임
+
+파라미터는 표현식 <%= 을 쓰는게 request.getParameter() 이거나 같은거임
+	근데 너무 귀찮으니까 ${param.이름}  으로 대신하는거임
+
+어트리뷰트 일단 jsp에서 setAttribute를 할이유가 없음. 
+이미 서블릿단에서 추가할만큼 추가한 attr이 넘어오는거, 
+jsp 다음은 화면인데 화면에서 뭘 어케할수있냔말임..
+그리고 attr은 el문으로 쓸때    ${속성명}     으로 대신함
+	근데 속성이 객체형태고, 객체안에 get메서드가있다면 그 메서드의 이름에서 get을 뺀 변수명을 적어주면 되는거임
+	full로 쓰면 ${xxxxScope.속성명.변수명}
+
+
+
+지금 list.jsp의 el문 쓰는거 보고있는데,
+변수를 바로 el문으로 받아주면 for문 돌릴수없잖아
+그래서 일단은 스크립트릿으로 변수로 받았고
+그걸 for문으로 하나씩뽑아서 뽑은걸 pageContext에 attribute로 담아
+그다음에 el문으로 굴려굴려
+근데 for문으로 뽑아서 pageContext에 넣는거 넘귀찮지않니??
+그걸 대신하는게 jstl임
+
+jstl이 하는건 자바의 state를 태그적으로 쓰면서 동시에 pageContext에 넣어주는겨
+바로 el문 쓸수있도록
+
+
+~~~~ 250p jstl~~~
+우선 라이브러리 먼저 다운로드!
+jstl maven 검색해서 1.2 jar 다운로드 -> webContent Web-inf/ lib 에 복붙!
+
+우리는 jstl 태그 종류중에 코어와 국제화를 해보겠음
+
+~~ 253p core
+원래 pageContext.setAttribute("~~", ~~)  이작업을 대신하는게
+코어태그의 set 으로 써보겠음
+
+태그형태로 만들어주는거라 taglib가 필요해
+디렉티브에 넣어줄거임
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  이렇게!
+이게있어야 jstl이 제대로 작동합니다
+
+* set
+<c:set scope="" var="" value="" />  이렇게 써줄거야
+pageContext는 간단히 page라고 쓸거임 이렇게!
+<c:set scope="page" var="name" value="<%= name %>" />
+	영역	   attr의 이름	실제들어갈값
+
+===> scope를 안주면 기본값이 page임!!!!
+다른 집합객체에 넣을때만 하면 되는거임
+
+>>> el문에서 ${name} 여기에 들어가는 name은 attr의 key!!!값임!!!!!!<<<
+
+
+* remove 
+원래 attr 지울때는    pageContext.removeAttribute("name");  이렇게함
+이걸 jstl로는           <c:remove scope="page" var="name"/>  이렇게!!!
+
+이떄 scope는 잘잡아줘야됨.. 다찾아다니면서 다 지워버리는거임
+set은 scope 안주면 page인데, remove는 scope 없으면 다지워버려...!!!
+
+
+* property
+만들어진 변수를 pageContext에 넣고 거기에 id, pwd 주고싶으면
+<c:set var="member" value="<%= member %>" />
+<c:set target="${member}" property="id" value="kizu"/>
+<c:set target="${member}" property="pwd" value="pwd123"/>
+
+
+
+
+

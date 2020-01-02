@@ -1,0 +1,160 @@
+191202_jsp
+
+url  =  도메인 / URI / 파라미터
+URI는 ~~에 ~~안에 ~~~ 이런 경로! 대분류--> 소분류로 
+
+오늘은 뭘하느냐>?!!>!?
+jsp는 태그형태로 다 만들고싶은데, java의 성격이 남아있는것들은 가독성이 떨어지니까
+자꾸 태그형태로 만들려고함 
+그래서 java 코드로하면 이렇게하는데, jsp에서는 이렇게한다!
+이거에 집중하세용
+
+jsp는 java냐? 기다면 기고 아니라면 아니다
+jsp는 java의 문법을 전혀 쓰고있지않음
+그치만 얘를 톰캣이 서블릿=java형식으로 바꿔서 컴파일하는거임
+
+똑같은 if문 사용에 대해서도 javaScript로 할건지 jsp(java 형식)로 할건지를
+보고 판단해서 쓸수있게되는 그런거임..!
+
+
+
+-----------------무튼 일단은 jsp에다가 자바코딩을 먼저 해보겠음
+jsp는 따로 url을 줄필요없고 그냥 만들면 이거의 파일명 자체가 url이 되는거임
+
+
+<% 가 붙으면 톰캣에 의해서 무조건 자바코드로 바뀐다!
+<%가 붙으면 out.println 이렇게되는게 아니고 그냥 메서드안에 그대로 붙음
+<% int a = 0; %>   --->  서블릿에서 int a = 0;  이렇게 갖다붙음 !!!   = 스크립틀릿!
+만약 <% 안에 없으면 out.println 으로 넣어버림!@!@@!!!
+
+그니까!!
+<% int a = 0; %>
+int b = 0; 
+----서블릿!! ------
+int a= 0;
+out.println('int b=0;')		근데 이게 좋은방법은 아니라네요..
+
+
+여기에 <% System.out.println(mem); %>  -> 쓰면 콘솔창에 뜨는데
+<% out.println(mem); %>  --> 이렇게 out. 으로하면 브라우저로보내는 그 객체를 갖다쓰게됨...!!!!!
+
+만약에
+<h1>
+<% out.println(mem); %>
+</h1>
+이렇게하면!! <% 안의 자바코드가 돌아가서 나온 결과를 h1태그로해서 브라우저에 출력!
+
+근데 이거 컨텐트타입을 text/html이 아니라 text/plain 으로하면 저위에쓴거 그대로 출력함
+마크업을 해석하지않고!
+
+
+** 표현식
+
+ = out.println(~~) 하는게 너무 길어서 줄이고싶네요..!  ->  " = " 으로 !
+<% out.println(mem.getId()); %>
+----->   <%= mem.getId() %>
+
+<%= 1+2+3+4+5+6+7+8+9+10 %>	== 표현식
+<%
+  int sum = 0;			== 스크립틀릿 (for문은 상태!니까)
+  for (int i=1; i<=10; i++) {
+  	sum = sum + i;
+  }
+%>  
+
+< 서블릿 파일 확인, jsp서블릿>
+실제로 jsp 만들고나서 이게 어떻게 서블릿이됐는지는
+D:\A_TeachingMaterial\7.JspSpring\workspace\jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\work\Catalina\localhost\JSP_01\org\apache\jsp
+이경로에서 생긴 .java 파일로 확인할수있어..!!
+
+표현식이나 out.print 되는 친구들은 ↑ 여기의 service 메서드에서 확인할수있음
+
+
+** 선언부
+
+<%! %>  = 이렇게하면 선언이됨! ↑ 저파일의 class 바로 밑에 변수가 만들어짐
+	  이 클래스의 >>> 멤버변수 <<<
+	  클래스안에 메서드 만들수있지당연히!!!
+	  변수나 메서드에 제한자(private, static 이런거) 걸수있지!
+	  
+
+<% %>   = 이렇게 스크립틀릿으로도 변수선언할수있는데
+	  얘는 service 메서드의  >>> 지역변수!!! <<<
+	  이안에 메서드 만들수 없어!!! 메서드안에 메서드 어케만들어!!!!!
+	  제한자 걸수없지!!!!!!
+	  
+
+
+~~~~~~ 76p 리퀘스트으으으으으으!!!!
+파라미터 읽기 기능<< 이게 정말 중요하다네요..
+
+
+모니터에서 서버로 보내는겨
+모니터에서 사용자의 요구사항과 브라우저의 세션 정보를 url에 담아서(get)
+request를보내는데 여기서의 리퀘스트는 걍 진짜 요청임
+
+받은 리퀘스트가 서버로 넘어올때 파라미터로 넘어온 ?id=kimi&pwd=kii 
+이거를 톰캣이 읽어서 그걸 request 객체로 만들어줌
+&을 기준으로 잘라잘라해서 id, pwd = form 태그 내의 input이든 뭐든의 name 속성을
+key값으로 한 map 형식으로 넘어왔던 파라미터를 저장해 == HTTPServletRequest
+애를 어떻게저렇게한게 HTTPServletResponse --> 얘를 사용자한테 보내는겨
+
+
+>> form 태그가 url 주소를 가지고 파라미터를 만듭니듀 <<
+
+
+파라미터로 넘겨서 map에 담을때의 key에 해당하는게
+input 태그의 name 입니듀
+localhost/JSP_01/login?id=mimi&pass=mimiPwd
+--> 여기서 물음표부터 시작하는게 파라미터임
+여기서 key를 만드는게 name!입니듀
+단순히 input만이 아니고 select, textarea 이런데에서도 name이 key! 라고요
+
+form의 action은 URI를 만드는곳이고요
+form action="login"    이렇게하면 현재위치에서 / 하고 login으로 가는거이!
+
+지금 이렇게 만든 form 태그의 (form.jsp) submit으로 넘어간 url을 보면
+http://localhost/JSP_01/login?id=kimi&pwd=1234
+이렇게!! 파라미터 만들었잖아!
+
+form 태그에서 action=login 했으니까
+Servlet 만들때 어노테이션에 /login 해주면됨!!!!
+
+그러면 컨텍스트어쩌고/form.jsp 를 브라우저에서 로드하면
+어노테이션이 /login 인 서블릿을 호출!하는거임
+
+-----<> 그럼 이걸 jsp로 만들어볼궤
+login.jsp를 만들어서 내부는 역시 request.getParameter("키값") 으로 부르되
+기존의 form.jsp에서 form action="login.jsp" 이걸로 바꿔주면됨!!!
+
+
+사용자는 원래대로라면 url에 파라미터를 담아서 보내야해
+근데 그게 너무 번거로우니까 form 태그를 이용하는거임
+form 태그 내에서 입력받는애들은
+톰캣친구가  name 속성을 key로 하는 map에 담고
+해당 내용을 파라미터로 해서 서버로 보내! = HTTPServletRequest request 로 담아
+request.getParameter("키값") 으로 받ㄷ았던 value를 우리한테 줘!
+그걸 어떻게 쓰느냐는 우리몫이고요
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

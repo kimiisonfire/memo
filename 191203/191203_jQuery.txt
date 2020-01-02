@@ -1,0 +1,92 @@
+191203_jQuery
+
+
+remove할때 이벤트도 같이 사라짐!
+만약에 온클릭 이벤트가 걸려있는 p를 가지고 pp = $('p').remove() 한다음에
+pp 를 다른곳에 append 하면 p는 오지만 이벤트는 오지않아서 클릭해도 이벤트안생김!
+
+detach는 이벤트가 사라지지않아..!
+똑같이 온클릭이벤트있는애를 가지고 detach하면 없어지지만 걔를 append 하면
+텍스트랑 이벤트가 전부 같이옴!!
+
+
+detach는 잘 안쓰는데, remove / empty 는 자주쓴다네용,,
+
+
+~~~~ 75p 아직하는중~~
+복사메서드하고있음
+clone() -> 요소 복사하는거임
+clone(true) --> 이벤트처리기 포함해서 복사하는겅미
+
+clone() 만 하면 ctrl+c 만 하고 말아버리는거임
+얘를 어디에 붙여넣어야 복사한걸 붙여넣는거지
+
+html(), text(), val(), attr(), prop()  <<- 이거 잘 구분할줄알아야됨 진짜루
+
+
+~~~~ 76p 
+우리 필터배잖여  :어쩌고
+기본필터 even odd first last 
+내용필터 contains has empty has
+자식필터 first-child last-child nth-child
+상태필터 disabled selected checked
+visibility 필터 visible, hidden
+
+
+$('p').eq(1) 이나 $('p:eq(1)') 이나 하는일은같은데
+: 으로 쓰는게 훨씬 효율적임
+
+end() = 선택을 한단계 앞으로 돌린대,, 뭔소리여
+	==> 얘는 선택을 되돌리는거임 = 선택자의 선택을 되돌리는거!
+ 
+ $('div').filter(':odd').eq(0).css('background', 'lightblue').text('모라고요')~~~
+		.end()  == eq(0)을 선택했던거 이전으로 = odd로 돌아가는거임
+		선택 이후에 무슨일을했던 상관없음 그냥 선택자의 이전!
+
+
+~~~ 80p 찾기메소드
+원래 형제는 +, ~ 이걸로 찾았잖아
+근데 찾기메서드에서는
+내 다음 형제 == next(), nextAll()
+내 이전 형제 == prev(), prevAll()   이렇게 찾을수있고
+
+$('li:eq(1)').nextUntil($('li:eq(5)'))  == li태그의 >>>2번째<< 인덱스부터 >>4번째<<까지!
+prev는 뒤에서부터 앞으로 찾으러가는거니까
+$('li:eq(5)').prevUntil($('li:eq(1)')) == li 태그의 >>4번째<< 인덱스부터 >>2번째<< 까지!!
+
+siblings() = 모든 형제찾는거
+parent() = 부모찾기
+parents() = 조상찾기
+parents(요소) = 조상 중에 '요소'를 찾아라
+ㅁ.parentsUntil(ㅇ) = ㅁ부터 ㅇ 사이의 모든 조상찾아라
+
+====> parents(요소)  << 이거 자주쓴다네용
+
+contents(), children() = 자식찾기
+find() = 후손찾기
+
+원래 여러개 선택할때 $('span, p') 이렇게썼었는데  $("h1").add("p").add("span")
+
+더 자세한건
+https://www.w3schools.com/jquery/jquery_ref_traversing.asp
+참고하슈
+
+
+찾기메소드 + end() 해서 좀 해봤음다
+
+
+
+~~~~~83p
+contents()  = 자식엘리먼트들(=태그)과 문자열(=태그가아니여도)을 반환함
+children() = 자식엘리먼트(=태그)만 반환!
+
+
+
+
+
+
+
+
+
+
+

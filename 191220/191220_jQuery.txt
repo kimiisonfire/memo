@@ -1,0 +1,51 @@
+191220_jQuery
+
+
+~~~ 어제하던 정규식 마저함
+
+휴대폰번호와 생년월일은 정규식-길이체크 할 필요 없음
+공백과 정규식만 체크하는걸로
+  - 공백체크    = if ( hplen <= 0 )
+  - 정규식체크 = reghp= /^\d{3}-\d{4}-\d{4}$/; 
+    . 정규식에서 숫자는 \d로 시작
+    . 생년월일 정규식에서 한자리 또는 두자리의 숫자가 가능하게 하려면 \d{1,2}
+    . 이메일의 정규식 : sw_sese@nnnn.com 또는 sese@erw-aa.co.kr 식의 형식 고려
+		@앞 = [a-zA-Z0-9_-]+   (영문자, 숫자, '_', '-' 가 하나이상)
+		@뒤 = @[a-zA-Z0-9_-]+     (    "    ) 
+		. 뒤  = (\.[a-zA-Z]+){1,2}  ( .영문자 가 하나 또는 두개 올수있음)
+    . modal창에서의 동(dongvalue) 입력 정규식 체크 
+	= regCheck.js 말고 member.html의 $('#okdong') 이벤트 안에서 실행
+
+
+
+~~~~ 아코디언으로 게시판 만들고 댓글 기능까지 추가할예정
+0. 공유폴더/jQuery/정보.txt 파일 참고해서 db에
+create table board1, create table reply, 외래키 수정, 시퀀스 생성, insert생성 후 커밋
+
+1. ajax를 담은 board.js 를 js 폴더에 생성
+(1) db에 저장된 글의 목록을 가져오는 listServer(cpage) 펑션 생성
+    listServer(2) = 두번째 페이지에 해당하는 글 목록을 가져온다.
+(2) 아코디언.html의 <div class="panel panel-default">를 board.js로 가져와서 
+    코드 안에 가져온 json 결과값을 넣어주기
+    항상 $.each(res, function(i)  로 줘서 res[i].~~ 했는데
+    $.each(res, function(i, vres)  하면 res[i] = vres 가 됨!!
+    
+
+2. BoardList 서블릿 만들기
+Java Resource의 src 안에 kr.or.ddit.board. controller, dao, service, vo 패키지 생성
+BoardList 서블릿 생성 (doGet 메서드만 있음)
+ (1) 클라이언트에서 전송된 cpage 값을 받아 int로 형변환
+ --- 일단 service, dao, vo를 먼저 만들러 가보겠음
+
+3. 화면 출력하는 list.jsp 작성
+결과를 json으로 출력
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,28 @@
+191107_highjava
+
+애니메이션 마저하겠음
+
+지금 만들고있는 AniMain 보면 
+Stackpane "위"에 Borderpane이 쌓여있는거임 또 그위에 borderpane이 쌓인거고
+stack이니까..!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

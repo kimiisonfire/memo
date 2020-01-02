@@ -1,0 +1,69 @@
+191205_jQuery
+
+
+~~~~~~ 92p
+$('#btn1').click(function () { ~~내용~~ })  == 이벤트핸들러!
+
+모든 이벤트의 정보를 event 객체로 제공하고, event를 파라미터로 쓸수있음
+.click(function(event) {})  <<-- 이렇게말여!
+
+pageX, pageY  == 브라우저 기준으로 클릭한 지점의 x,y좌표
+screenX, screenY  ==  모니터기준으로 클릭한 지점의 x,y 좌표
+button -> 마우스이벤트지만, 클릭이벤트에서는 할수없음. 
+	오른쪽키나 마우스휠은  우리가 조절할수없잖여 시스템에서 제공하ㅡㄴ거니까
+	0: 마우스왼쪽키, 1: 마우스휠또는휠클릭, 2: 오른쪽키
+
+
+**태그안에 스타일을 직접 주는거 = 인라인스타일
+html5에서는 인라인스타일을 권장하지않음
+
+
+click = 마우스 눌렀다가 때는거
+mousedown = ㅁㅏ우스 누르는거
+mouseup = 마우스 떼는거  		mousedown+mouseup = click
+
+mousemove = 마우스를 움직이는거
+mousemove할때 x,y를 찍고싶은데, 우리가 만드는 문서는 document객체에 있으니까
+$(document).mousemove  이렇게가면됨
+
+
+~~~ 95p
+이벤트 핸들러 = 이벤트 처리기
+
+bind
+요소.bind(이벤트타입(mouseover그런거), data(우린지금없음, 파라미터임), function(){})
+unbind(타입, 펑션) = 해제
+one(타입, 데이터, 펑션) = 한번만
+trigger(타입, 데이터) = ?.. 뭔말이죵
+
+$('div').click(function~~
+$('div').on('click'~~~
+$('div').bind('click', function~~	= 세개가 다 같은말이래
+
+
+toggle()  == show(), hide() 번갈아가며 실행
+hover(펑션1, 펑션2)  == mouseover, mouseout 번갈아가며 실행
+event.stopPropagation()  ==  버블링을 막습니듀
+event.preventDefault()  == 기본동작을 막습니듀 -> a태그는 기본적으로 다른페이지로 넘어가고싶어하는데, a의 클릭이벤트 안에서 event.preventDefault() 하면 페이지가 안넘어가는겨
+
+
+a태그에서 페이지 안넘기고싶을때 href="#" 하믄댐
+
+
+dblclick  =  더블클릭   $('img').dblclick(function~~, $(img).on('dblclick',~~)
+
+
+버블링 & 캡쳐링
+버블링 : 안쪽에서 밖으로 확산되는거
+캡쳐링 : 밖에서 안쪽으로 확산되는거
+자식에서 이벤트가 발생했을때 부모에게 영향을 주지않게하는거 = 버블링을 막는다
+=== event.stopPropagation
+
+
+
+
+
+
+
+
+

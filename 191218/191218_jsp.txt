@@ -1,0 +1,58 @@
+191218_jsp
+
+
+~~~~~ fmt 태그부터 하겠음~~~~ 261p~~~~~
+
+formatNumber 태그
+정수 또는 숫자를 화면에 어떻게 표현할거냐~ 지 값이 절대 바뀌진 않음
+자바의 DecimalFormat
+fmt 태그를 줄거니까 디렉토리 줍니듀
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+데시멀 포맷에서 했던것처럼
+0 = 이 자리수에 값이 최소한 있어야함
+# = 해당 소수점 자리수까지 반올림해서 보여줌
+
+
+일단 이걸 보여주려고 fmt formatnumber 하고있는데
+이걸 굳이 이렇게하지말고 나중엔 subString 쓰는게 빠름
+받을때는 하이픈 없이 받고 표현할때는 자리수에맞게 끊어내세용
+
+
+이 format number는 적당하게 많이쓰이고요
+앞으로 쓸 format Date는 개개개개개개많이씀!!!
+
+<c:set var="date" value="<%= new Date() %>" />
+<fmt:formatDate value="${date }" pattern="yyyy-MM-dd"/>
+이런식으로 씁니듀 pattern에 - 이거는 . , / 암거나 써도됨
+
+
+서블릿에서 try-catch 돌릴떄 catch 부분에서 에러페이지를 골라줄건데
+여기서 throw new IOException(); 을 던집니다
+sql때문에 안되는건지 서비스에서 에러가났을지 알게뭐란말임
+그래서 그거에 해당하는 ioexcep만 내보내면되거든
+
+
+야 버튼은 위에다가 만들어라
+
+
+openSession을 했으면 반드시 close() 해야하고요
+openSession은 자동커밋이 안됩니다.
+SqlSession session = factory.openSession(true);
+====> 이렇게할때 반드시 true 써줘야함  = close() 할때 자동커밋
+
+
+
+
+
+~~~~~~~~~~~~~~~과제~~~~~~~~~~~~~~~
+board insert 해오세요!!!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+

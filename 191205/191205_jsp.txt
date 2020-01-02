@@ -1,0 +1,217 @@
+191205_jsp
+
+
+3.6 대신 지금 쓰이는 3.2를쓸거래...
+그래서 3.6 다날리고 3.2 간다고합니듀
+
+
+
+
+- 우선 egov 3.6 지우기
+1. 바탕화면에서 지우고
+2. b_util/eclipse 3.6도 지우고
+3. D:\A_TeachingMaterial\7.JspSpring\workspace\jsp  여기에서 jsp_01만 남기고 다지워
+그럼 워크스페이스는 그대로 가져가되 나머지는 날리는거임
+
+
+
+- 톰캣도 다시설치할거임...
+  (1) 원래있던거 지우기
+ 제어판 ->보기기준 범주 -> 프로그램제거 -> apache tomcat 7.0 제거!
+
+  (2) 7.0.47버전 다운로드!
+https://tomcat.apache.org/ -> download 의 7 --> archives  가세요
+egov3.2버전은 7.0.47까지밖에 지원을 안해!
+우리는 7.0.47을 깔건데 얘가 버그가좀있대, 무튼 bin 들어가서
+apache-tomcat-7.0.47.exe    ---> 얘를 다운로드!
+
+nextnext 하다가
+configuration에서 connector = 80,  user/pass admin으로 주고 next
+jre를 1.7 줘야하니까   D:\B_Util\2.Java\JDK1.7
+Destination folder --> 새폴더로 D:\B_Util\5.ApacheTomcat\Tomcat7.0 for jsp\  가세용
+install!  체크박스 다해제하시고용
+
+>> 설정을 좀 바꿔야될게있어서 톰캣한테 가보겠음
+D:\B_Util\5.ApacheTomcat\Tomcat7.0 for jsp  여기가서 conf 가
+server.xml  -> 70line에 URIEncoding="utf-8" 추가
+context.xml -> 22번째줄에 <Loader delegate="true" /> 추가!!!
+	(최신버전은 이런거 안해줘도된대.. 얘가 구려서그럼)
+
+시작버튼에서 configuration tomcat을 여세용 --> started 됐는지 확인
+그러고 웹브라우저에서 localhost 치면 고양이나와야됨
+managet app 에서 admin/admin 했을떄  어쩌고 매니저 나오면 잘된거임
+그러면 브라우저닫고 configuration stop하고 매뉴얼인지보고 확인!
+
+>>>>> 시스템톰캣 설치는 끝났다
+
+
+
+- egov 3.2 다운로드
+egov download 검색해서 3.2버전을 다운받으면되는데 넘느리니까 주신다네요,, 주셨내요..
+destination folder browse!!  --> D:\B_Util\3.Eclipse  여기까지만선택 
+D:\B_Util\3.Eclipse 여기 가보면 3.2 폴더 생겼읍니다..!
+D:\B_Util\3.Eclipse\eGovFrameDev-3.2.0-64bit\eclipse 들어가서
+여기의 .exe를 바탕화면에 바로가기만드세용
+
+eGov 열어서 워크스페이스 잡으세용
+D:\A_TeachingMaterial\7.JspSpring\workspace\jsp  -> 여기까지만 잡아라
+
+
+그다음에 설정해야하는건 뭐 똑같지
+인코딩하고, 웹브라우저설정하고, jre 버전 확인하고, server에서 tomcat 경로잡고,
+web->jsp->editor->template 의 new jsp file 고쳐주고
+서버탭에서 서버 골라서 start 해주고
+잘돌아가는거보고 서버 종료
+
+-----------------------------------------------설치는됐다
+
+이제 원래했던거 임포트하겠음
+general -> existing `~project 
+D:\A_TeachingMaterial\7.JspSpring\workspace\jsp\JSP_01 선택!
+같은 워크스페이스가 아니라면 options에 copy를 선택해야함
+우리는 그게아니라서 그냥 바로 finish!
+
+서버탭에서 서버 오른쪽키 -> add remove -> 추가할 프로젝트 추가하세용
+그상태로 서버 start하고
+서버를 더블클릭하면 overview/module 뜨는데 모듈탭에서 지금프로젝트가 contextPath로
+잡혀있고 reload가 enabled면 잘되는거임!
+
+브라우저에서 하나 실행해보면 잘될거임
+
+------------------------------------------------------------설치및확인 ㄲㅡㅌ!
+
+
+
+~~~ 125p  
+pageContext, request, session, application 이 각각의 객체는
+속성인 set, get 다있고요 각각 키와 밸류로 나뉘고 key= String, value = (String, Object)
+
+나중에 el문을 사용할 수 있게되는것도 저 네개덕분임
+뒤에서는 각객체가 session Scope 이런식으로 다 스코프로 바뀝니다유
+
+
+--- 127p에 있는 메서드들은 우리가쓰는건 아니고 톰캣이 쓸애들임
+	서블릿형태로 바꿀때 쓰이는것들이거든
+
+~~~ 128p
+application은 서블릿 컨텍스트랑 유사하거든요
+나중에 서블릿할때 많이 사용하게될것임
+jsp할떄는 별로안쓸거여. 
+
+--- 129~130p 거의 안쓸거임
+
+
+~~~ 131p
+getRealPath() 이것도 많이쓰는애긴한데 jsp에서는 거의 안쓸거임.. 서블릿에서 할게
+
+
+
+
+~~~~~~~~ 134p
+목차 잠시
+jsp include, forward를 좀 볼거고요. jsp include / include 디렉티브의 대조적인 차이
+/ 데이터공유에 대한 이야기도 있을것임
+
+
+모듈 = 덩어리로 묶는게 모듈임
+모듈로 묶어서 하나의 페이지를 만들면되는데, 그거는 템플릿이있음
+템플릿에는 타일스(타일붙이듯이 추가하면서 요소넣는거 하는거), 사이트메쉬(화면을 먼저 분할하고 컴퍼넌트를 넣는 방법. 타일스랑 반대죠)
+
+화면이 공통적인 형태를 띈다면 사이트메쉬, 화면마다 다 다르고 그러면 타일스..
+
+하튼 우리는 사이트메쉬를 할것ㅂ니다
+
+
+>>>>>>>>>>>> jsp:include
+jsp 내부에 서브 jsp를 넣고싶을떄 jsp:include라는걸 한다고합니도
+
+일단 우리는 헤더, 컨텐트, 푸터로 나뉘는 jsp를 만들겁니다
+header.jsp, content.jsp, footer.jsp  이렇게말여
+그리고 main.jsp 까지!!!실제로 사용자에게 나가는건 main이지만 
+그안에 우리가 이것저것요곳들을 담아ㅓ 보내는거야
+
+
+
+이제는 webcontent안에 막 만들지않고
+폴더 - 파일들 이렇게 만들거임
+
+
+main - header, content, footer 만드는중..,
+
+flush ==> 버퍼에대한거라서 기본값 false고요 (뭐 흘려보내는 그런거라서..)
+
+jsp:include 의 page 옵션 == 톰캣이해석하는 url. 
+절대경로로 주면 / (<컨텍스트경로) 하면되고 상대경로로하기도하는데
+헷갈리니까 절대로만 주겠음
+
+일단 main.jsp 보고있는데요
+style 줄때 min-width는 420정도로 줘라 그게 모바일화면 고려한거라서말여
+
+
+무튼 이렇게해서 만들었을떄는 화면에 하나로 나오지만
+4개의 jsp가 독립적으로 실행되고있음
+== 4개의 파일에서 선언된 각각의 >>>>> 변수는 공유 <<<< 되지않아..!
+--------> header.jsp에서 선언한 변수는 main, content, footer에서 쓸수가없다는거임
+
+--> 그치만 버퍼는 같이쓴답니다. 그래서 한화며에 나오는거임
+
+브라우저에서 500코드가 나오는거 = 톰캣이 터져서 그거를 브라우저에 내용 보낸거임
+
+
+** 잠시 전역변수/지역변수 얘기중
+전역변수 = 하나의 특정값을 다른 영역에 똑같이 배분. 공유가 아니고요 배분의개념이래
+지역변수 = 같은 변수가 코드별로 다른값일수있기때문이라는데요...?
+
+
+무튼 main에다가 변수를 하나 선언하고
+그거를 다른 jsp 파일에서 받아서 써보겠음
+넘길때는 일단 한번 스크립틀릿으로 선언하고
+jsp:param name="키값" value="밸류값"  해서 넘기고
+받을때는 request.getParameter("키값") 이렇게 각 jsp 에서 꺼내면됨
+
+---> jsp의 include는 여기까지래용
+
+
+이번엔 디렉티브의 include를 해보겠음 위에서했던 include랑은 완전달라
+jsp의 include는 출력버퍼를 같이쓰면서 파라미터 넘겨주고 넘겨받은쪽에서는 본인거 출력한거를 버퍼에담고 그다음거 쭉쭉하면서 버퍼에 담기면서 되는.. 그런거였단말여
+
+이번엔 ~2.jsp 파일을 만들어서 디렉티브 인클루드 해볼게유 main2.jsp
+
+원래 jsp:include 하던 자리에서 지우고 
+<%@ include file="" %> 이걸 ㅆ ㅓ줄건데 저 경로는 파일의!!!! 경로야 파일!!!!!!!!!
+근데 이걸 d\부터 찾을수없으니까 여기선 상ㅇ대경로 쓸거야!!!!
+
+main2에서 name을 넣어놓고 
+<div id="header">
+	<%@ include file="./header2.jsp" %>
+</div>
+이렇게해주고 header2에서는 <h2><%=name %> heeyoung</h2>
+이렇게했는데 됨...
+
+얘는 버퍼에 저장하는게 아니고
+main2가 자기몸에(?) 그걸 저장한다는데..?
+include 다음에 나오는 jsp를 main으로 가져와서 한꺼번에 컴파일하는거래!!
+가져온상태로 .java를 만들고 컴파일하는거래 캬
+서블릿이 만들어지기전에 jsp를 자기한테 데려온다음에 서블릿단계로 넘어가는거여!
+header2.jsp만 봤을때ㅡㄴ 에러가나는데 실행할때는 전혀 문제가없단말임..!
+=====> 변수를 공유할수있다~,~
+
+
+만약에 로그인을 했다쳐
+굳이 jsp:include 를 쓰겠다고한다면 로그인정보를 각 jsp마다 일일히 넣어줘야돼
+근데 디렉티브 include를 쓰면 다같이 쓸수가있다말여!
+그래서!!!! >>>> 디렉티브 include를 주로 쓰게될것이여 <<<<
+
+
+
+~~ 다시조금앞으로가서 jsp:forward  138p
+a.jsp를 요청했는데 b.jsp가나가 = forward
+>>>> 주소줄은 바뀌지안아..!!  <<<<
+
+포워드 현상만보고 마무리할게 설명은 내일...!ㅜㅜ
+
+
+
+
+
+

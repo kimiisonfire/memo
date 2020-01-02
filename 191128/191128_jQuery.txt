@@ -1,0 +1,62 @@
+191128_jQuery
+
+
+html(), text() 의 개념을 잘 기억하세용
+
+~~ 28p부터 합니듀
+body 태그 안에 있는 요소들을 계층구조로 그린거 = dom tree
+
+속성선택자 p39 복습하세요... 서브웨이때문에 못봤습니다...
+
+
+jsp로의 전송기능을 갖는 칭구칭긔들
+input type=image
+input type=submit
+button type=submit
+button
+
+<button type='button'  --> 얘는 아무기능이 없어
+<button>  -----> 얘는 submit 기능이 있고요
+
+전송기능을 막고싶으면 onsubmit="return false;"   이거 써주면됨
+
+~~~~~ 지금까지 선택자했다
+1. element 관련 선택자. id, class, 태그이름, 형제, 부모자식후손 으로 선택할수있었음
+2. 속성 관련 선택자. input[type=button]  이런식으로 부르는겨
+3. form 양식 선택자   --> form 안에서는 간단히 선택자를 부를수있음 :이름 이렇게
+
+
+
+~~~ 44p 하겠음
+선택자:필터  >> 이렇게해서 더 정밀한 선택을 할 수 있음
+
+64p에 기타필터 잠깐 먼저했음
+:hidden, :visible  
+$('h1:hidden') = 감춰진 h1을 선택해서~
+$('h1:visible')  = 보여지는 h1을 선택해서~
+
+다시 45p 기본필터
+선택자:필터   <<<--- 이렇게해서 원하는걸 검색함
+<li> 태그에서 고른다고하면
+'li:first, li:last'  /  'li:eq(5)'  / 'li:gt(3)'   이런식으로?
+인덱스는 무조건 0부터시작이고 크같/작같이 아니고 크다/작다임
+
+'li :first'  -> 이렇게하면 li의 후손중에 첫번째가된대.. 띄어쓰기 조심혀
+아래의 body에서
+<li> two <strong>첫번째자식</strong> <strong>두번째자식</strong></li>
+이걸가지고 script하면
+$('li :first').css('font-size', '15px').css('color', 'blue');  -> li의 후손중에 첫번째! 인거임
+
+
+
+
+
+
+
+
+
+
+
+
+
+

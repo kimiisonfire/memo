@@ -1,0 +1,51 @@
+191101_oracle
+
+OUT 매개변수를 써서 결과를 리턴하는 저장프로시져~~~!~!!~!
+
+일반적인 실행명령으로는 OUT매개변수에 담긴 값을 확인할수없어.
+그래서 프로시져를 실행할때 익명블록을 만들어야댐 그걸로 값을 확인하는거임
+
+CREATE OR REPLACE PROCEDURE PROC_MEMBER02(
+  P_MEM_ID      IN  MEMBER.MEM_ID%TYPE,		--> 프로시져 IN
+  P_MEM_NAME    OUT MEMBER.MEM_NAME%TYPE,	--> OUT!
+  P_MEM_MILEAGE OUT MEMBER.MEM_MILEAGE%TYPE)
+IS
+BEGIN
+  SELECT MEM_NAME, MEM_MILEAGE INTO P_MEM_NAME, P_MEM_MILEAGE
+    FROM MEMBER
+   WHERE MEM_ID=P_MEM_ID;
+
+-------->>>> IN한테 준 값에 해당하는 컬럼을 OUT 매개변수에 담아주기만하면
+	RETURN이라던가 다른거 필요없이 걍 얘가 이 프로시져 밖으로 던져주는거임
+
+==> 위 프로시져를 실행한 결과는 익명블록으로 받을수있는거임
+출력되는 결과를 변수에 담아줘야하니까!!	
+
+프로시져를 익명블록에서 쓸때는 EXEC 안쓴다!!!!!!
+
+가장 큰! 가장 작은!! 을 구할떄 MAX, MIN 대신 의사컬럼 ROWNUM을 적극 활용하세용
+
+
+야야 프로시져할때도 쿼리부터만들어라
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

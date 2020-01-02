@@ -1,0 +1,99 @@
+191204_jQuery
+
+
+~~~83p
+자식중에
+contents() ->  태그가 있건없건 내용만 가져오는거
+children()  ->  태그가 있는것만 가져오는거
+
+contents()를 가져올때 태그이름을 가져와서 뭘 하는데,
+태그이름이 없을때는 this.tagName이 undefined라고 뜸
+근데 이건 진짜 태그이름이 undefined인게 아니고 그냥 저렇게 띄워주기만하는거야
+그래서 이걸 검사하려면
+if ( typeof this.tagName != 'undefined' )  이렇게 typeof 을 써서 비교해야됨
+
+
+  ** html(), text() 다시 잠깐 비교
+
+<div style="width:550px;"> 배고파!
+<p> 대전도시락 어서오세요</p>
+<span> 오늘 점심은 뭔가요
+	<span> 얼마나 짭쫄할 예정이신지</span>
+</span></div>
+
+↑ 이런 마크업태그가있다고했을때 얘네를 전부 불러오잖아
+그떄 text()로 불러오면
+배고파! 대전도시락 어서오세요 오늘 점심은 뭔가요 얼마나 짭쫄할 예정이신지 <<< 이렇게
+
+근데 이걸 html()로 불러오면
+배고파! 대전도시락 어서오세요 오늘 점심은 뭔가요<span> 얼마나 짭쫄할 예정이신지</span> <<< 이렇게 불러짐...!
+
+=====> html은 태그를 포함해서 가져온다!
+
+
+
+하여튼 parent(), parents(), parents(요소), find() 이걸 ㅈ가장 자주씁니다`~~
+
+
+~~~~ 84p
+prop()를 가지고 get, set 하는거 했습니듀
+열심히 들었는데 귀찮아서 안썼습니다..
+
+
+~~~ 86p
+css()도 get/set을 할수있다
+$('this').css('color')   ==> this의 color 속성을 가져와라..! 인거임
+$('this').css('color', 'green')   ==> 여태 하던 설정임
+
+addClass(class)  = 클래스를 추가해라
+hasClass(class)  = 클래스가 있나용
+toggleClass(class)  = 클래스가 이미 있으면 remove, 없으면 add
+removeClass(class)  = 클래스를 지웁니듀
+파라미터의 class는 클래스이름임..
+
+addClass, removeClass로 css를 추가할수있는데
+class로 추가하면 none이나 css가 없는걸 고려하지않아도되는데
+그걸 따로 css로 주면 css를 없애는걸 고려해야됨
+
+>> toggle << 쓰면 하나의 동작으로 두개의 기능을 수행할수있어..! 엄청 유용할거같으네..
+  $('p').click(function() {
+	  $(this).toggleClass('pBorder');
+  })
+
+
+
+
+~~~ 88p
+attr() 도 get/set 헙니다
+다른건 이미 다해봤고요
+function 사용하는걸 해보도록할게요
+
+img에서 src를 읽어와서 거기서 필요한 부분만 뽑아내서 img의 title로 달아주는거
+$('img').attr('title', function() { 	  
+     title = $(this).attr('src');
+      idx1 = title.lastIndexOf('/') + 1;
+     idx2 = title.lastIndexOf('.');
+    	  
+     vtitle = title.substring(idx1, idx2);	  
+     return vtitle;
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
