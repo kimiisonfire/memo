@@ -1,0 +1,29 @@
+200103_jsp_오후
+
+<핸들바 다운로드, 핸들바스 다운로드, handlebars 다운로드 >
+이제 핸들바 쓸겁니다
+우선 핸들바 js 가져와야해 
+직접 다운로드해서 쓸수도있고, 해당 주소를 cdn 형식으로 쓸수도있고
+handlebars 검색 -> Installation -> CDNs 클릭
+cdnjs 클릭 -> amd가 없는
+https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.5.3/handlebars.min.js
+얘를 복사해서 코드에 <script src="~~~"></script> 이렇게 복붙
+
+
+이제 템플릿을 만들것입니다 허허 선생님이 주셨고요 reply_js.jsp에 붙여넣었음
+
+핸들바에는 우리가 만든 함수도 핸들바 컴파일러에 심어서 쓸수있음
+대신 함수에 파라미터를 넣을때는
+{{함수명 들어가는파라미터}}  이렇게 써줘야해  -->  {{functionname param}}
+
+
+** adminLTE에서 모달창을 지원하는데 그냥 hidden 안줘도 일단은 안보이게해줌
+
+
+
+
+
+
+
+
+

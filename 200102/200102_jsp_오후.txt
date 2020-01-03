@@ -1,0 +1,99 @@
+200102_jsp_오후
+
+
+아니 왜 수정하고난다음에 확인버튼을 리다이렉트했죠???
+--> 수정버튼을 눌렀을때 뜨는화면에서 새로고침하면 이전화면이 나와서는 안되니까..!
+
+만약에 새창이 아니라 페이지 전환식으로 한다면, redirect 했을때 detail을 다시 요청해야 변경된 내용이 가서 변경된내용이 detail에 표시가되지않겠음???
+그럼 detail에서 다시 list로 화면을 전환해야할경우 detail이 몇번째페이지인지알아야 그걸 리스트에게 전해줄테니까, modify가 detail을 넘길때 (이때는 무조건 리다이렉트니까) 무조건 파라미터로 담아줘야함!!
+
+파라미터로 담아야해서 리다이렉트가 아니고,
+modify에서 detail화면을 forward 할수도있는데 그렇게되면 url은 modify고 화면은 detail이고 modify의 내용이 맅퀘스트에 남아있는거잖아
+그래서 리퀘스트를 갱신하려고 리다이렉트를 한거임
+근데 리다이렉트를 했을때 정보를 넘길수있는 방법은 파라미터뿐이라서 그런거임
+
+
+
+아까하던 수정 마저하겠음
+일단은 수정을 위해서 boardVO를 다쓰는건 좀 그래서
+request 패키지에 저번에 등록할때 만들었던것처럼 modifyBoardRequest 객체 만듬
+
+
+이제 remove 할건데용
+redirect나 forward하면 중간에 alert문 띄울수없으니까
+url = null로 주고 시작할게용
+
+
+글 crud는 마쳤습니다
+이제 댓글 해볼게용 ajax 써서 비동기로할거여
+댓글은 form으로 안합니다 그냥 input태그로된걸 가져와서할거임
+
+
+** 잠시 ajax 이야기
+ - url : 브라우저가 해석하는부분이다
+  앞에 / 이렇게 절대주소로 시작할때는 context path가 있어야하고
+  상대주소 이용할거면 안그래도되고
+ - 보내는거가 url, data, type이고 그거의 응답 = callback에 대한 처리도 해줘야겠지?
+  200이 아니면 전부 error라고 본다고허네요
+  오는 응답에대한 처리 중 200 = success , 200이 아니면 error, 
+  응답에 상관없이 마치 finally처럼 한번 실행하고 나가는게 complete
+  근데 complete은 잘 안쓰고 이거 대신에 $.ajax({~~~}).done(function(){}); 을 많이쓴대
+  ajax 자체가 실패할수도있으니까!
+$.ajax({
+  url  : "",
+  data : data,
+  type : "post",
+  contentType : "서버로 보내는 데이터의 타입"
+  dataType : "서버에서 돌아오는 데이터의 타입",
+  success  : function(res) {	},
+  error : function(xhr) {   },
+  //complete : function() { success, error이 끝나면 무조건 도는거}
+}).done(function() {ajax가 실패해도 무조건 한번 도는거} );
+
+
+json으로 객체를 만든다고해도 그 객체를 java로 보낼수없어
+java의 클래스를 javaScript로 보낼수없는것처럼말여
+그래서 json 데이터를 만들어도 String화해서 보내야함
+근데 이걸 그냥 String으로 만들면 { ~~ } 이모양 그대로 받아가버림
+근데 json 데이터를 넘길순없으니 json.stringify(여기에 json 데이터넣기) 이렇게하는겨!!!
+    >>>>   JSON.stringify   <<<<<
+얘가 json을 String으로 바꿔주는애여. 문자였던 변수가있으면 "" 이거 찍어주는거야
+
+그렇게 String으로만 넘기면 서버에서 해석할수가 없습니다;
+그걸 파라미터형식으로 바꿔주는 잭슨이라는 친구가 있습니다...!
+
+
+--> JACKSON-DATABIND
+json 데이터를 String으로 넘겼을떄 그걸 바로 vo로 받을수있는? 그런거다
+json의 키값이 vo의 변수명(자세히말하면 set 메서드를 만들려는 이름)과 같아야해
+
+원래 우리가하던것도 틀린건아니래
+근데 json 데이터를 일일이 뽑아서만들던거를 막 array로 뽑고 그랬던거를말여
+return replylist 하면 바로 json으로 나가게 하고싶다고! 
+그럴수있는게 jackson-databind라고!!
+
+대신에 jsp에서 액셔너로 넘길때 꼭 String화해서 넘겨주는게 우선시돼야된다는거
+
+
+<잭슨 다운로드, jackson 다운로드>
+jdk 1.7에서  쓸수있는 
+jackson databind maven 검색 -> 2.7~ 버전 클릭 -> bundle 다운로드!
+jackson core maven 검색 -> 2.7`~~~ 버전 클릭 -> bundle 다운로드!
+jackson annotation maven 검색 -> 2.7~ 버전 클릭 -> bundle 다운로드!
+
+
+
+봐봐
+아까 stringify 해서 String 형태로 보냈던걸 
+request.getReader().readLine()  sysout하면 
+String 형식으로 {"bno":"7174","replyer":"mumu","replytext":"eeee"} 넘어와
+근데 그거를 거기에 매핑되는 vo 타입으로 넣어주는거임
+key 읽고 set메서드 만들어서 value 꺼내서 넣어준다고요
+ReplyVO reply = mapper.readValue(request.getReader(), ReplyVO.class);
+이렇게말여
+
+
+reply는 ajax 요청해서 데이터만 주고받는거니까
+액셔너단에서 화면은 없다!
+
+
