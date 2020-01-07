@@ -1,0 +1,51 @@
+200107_jsp_¿ÀÈÄ
+
+
+memberVO¿¡ String picture·Î µÇ¾îÀÖ´Â º¯¼ö°¡ÀÖ´Âµ¥
+¿©±â¼­ °íÀ¯ÀÇ ÆÄÀÏ¸íÀ» ¹Þ¾Æ¼­ ÀúÀåÇÒ°Å¿©
+
+
+¿ì¸®°¡ ¸¸µé°íÀÖ´Â jsp ÆÄÀÏµéÁß¿¡ Æ¯Á¤ ±â´É¸¸ »Ì¾Æ¼­ ¸ðµâÃ³·³?¸¸µå´Â
+aaaa_js.jsp ÀÌ·¸°Ô ¸¸µé°íÀÖÀÝ¾Æ
+ÀÌ·± ÆÄÀÏµéÀº jsp·Î ÇØµµ ±¦Âú°í, js·Î ÇØµµ ±¦ÂúÀº¾ÖµéÀÌ¶õ¸»ÀÌÁö
+±Ùµ¥ js´Â ÀüÃ¼ ÄÚµå°¡ ÀÏ´Ü ºê¶ó¿ìÀú¿¡ ÇÑ¹ø ÀüÃ¼ ·Îµå°¡µÇ°í
+±×´ÙÀ½ºÎÅÍ´Â ½ÇÁ¦ÄÚµå°¡ ¾Æ´Ï¶ó ºê¶ó¿ìÀú¿¡ ÀúÀåµÈ°É ¾²°Åµç
+±×·¡¼­ ÀüÃ¼¸¦ ·ÎµåÇÏ´Â ´ÜÁ¡ÀÌ ÀÖ¾î¼­ jsp·Î  ¾²°íÀÖ´Â°ÅÀÓ
+
+
+<input ÀÔ·Â ÇÑ±ÛÀÔ·ÂÁ¦ÇÑ, ±ÛÀÚ¼öÁ¦ÇÑ>
+<input name="id" 								  onkeyup="this.value=this.value.replace(/[\¤¡-¤¾¤¿-¤Ó°¡-ÆR]/g, &#39;&#39;);
+	   if(this.value.length>13) {
+	      alert('13±ÛÀÚ¸¦ ÃÊ°úÇÒ ¼ö ¾ø½À´Ï´Ù.'); 
+	      this.value = this.value.substr(0,13);
+  	   } "
+  type="text" class="form-control" id="id" placeholder="13±ÛÀÚ ¿µ¹®ÀÚ,¼ýÀÚ Á¶ÇÕ">
+~~~~>> ÇÑ±ÛÀ» ÀûÀ¸¸é ¹é½ºÆäÀÌ½ºµÅ¼­ Áö¿öÁö°Ô. 
+	±ÛÀÚ¼ö°¡ 13ÀÚ¸¦ ÃÊ°úÇÏ¸é 0~12ÀÎµ¦½º±îÁö¸¸ substrÇÏ±â
+
+
+jsonÀ» stringify ÇÏ¸é StringÀ¸·Î ³Ñ¾î¿Í¼­ objectmapper ÇØÁà¾ßÇÏÁö¸¸
+jsonÀ» (1depthÀÏ°æ¿ì) ±×³É ³Ñ±â¸é °Á ÆÄ¶ó¹ÌÅÍ·Î ³Ñ¾î¿É´Ï´Ù;
+¿ì¸® jQuery Çß´ø°ÍÃ³·³¸»¿©
+
+
+°°Àº name ¼Ó¼ºÀ» °®´Â ¿©·¯°³ÀÇ ÅÂ±×(?)µéÀÌ ÀÖÀ¸¸é
+[name="phone"] °¡Á®¿Ã¶§ ¹è¿­·Î°¡Á®¿Í...!!!
+±×·¡¼­ ¾ê³×´Â getParameterValues ·Î ¹ÞÀ¸¸é µË´Ï´Ù String[] ÀÌ°É·Î...!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

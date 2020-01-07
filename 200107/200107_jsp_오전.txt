@@ -1,0 +1,57 @@
+200107_jsp_오후
+
+
+사진 삭제하는중임
+뭐 잘삭제됐습니다..
+
+
+이제 멤버 등록할거임 멤버등록할때는 사진을 넣을수있도록 할거임
+
+파일을 추가하고싶은경우에는 
+input type=file 하면 버튼이 지맘대로 이상하게 생겨버려서 그거쓰기싫으니까
+그걸 클릭하면 내용이 hidden의 form에 담기는 label에 클릭이벤트를 줘버림
+
+파일선택하고 업로드버튼을 눌러놓으면 그때의 파일정보를 oldFile이라는데에 저장해놔
+그리고 submit할때 현재 업로드처리되어있는파일과 oldFile을 비교해서
+얘가 중간에 나몰래 바꾸지않았는지 확인하는거야
+아이디 중복검사도그래 일단 중복검사가 완료되면 그아이디를 hidden으로 저장해놨다가
+submit하기전에 다시 확인해봐 혹ㄱ시 중복검사만해놓고 다른아이디로 가입할수있은게
+
+
+업로드 버튼 = 라벨을 선택하면 아래에 hidden인 form의 input 태그 #inputFile이
+선택(?) 된거거든? 근데 이거 input태그나 select, checkbox 등 이런거는 
+속성이 change 된거라고 볼수있음
+
+
+사진을 업로드하면 div태그에 심을거임
+div 태그에 background로 넣을거야 ! 왜냐 background는 position 기능이 있거든
+cover, contain 기능이 있어서 얘를 비율에 맞게 확대/축소/이동이 가능혀
+
+
+ajax에서 form을 보내는방법
+1. 시리얼라이즈 [파일이 없는경우] : 파라미터형태로 날아감
+2. 파일이 있으면 시리얼라이즈 불가능하므로
+   해당 폼을 form 객체 데이터로 만들어
+   ajax에서 보냅니듀
+
+
+폼데이터를 ajax로 보낼때
+ - 필수
+type : "post",
+processData : false,
+contentType : false,
+ - 선택
+ cache : false,
+ enctype : "multipart/form-data",
+
+
+
+
+
+
+
+
+
+
+
+
