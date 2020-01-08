@@ -36,3 +36,7 @@ session.setMaxInactiveInterval(60*6);
 <a href="mailto:${loginUser.email }">email : ${loginUser.email }</a>
 
 
+액셔너 안에서 javascript로 화면전환하면 뭐가 타탁 ㅇ하고 지나가
+redirect처럼 깔끔하게 가질 않고요..
+그래서 끼어들기를 할겁니다 야매라네요..
+jsp로 포워드를 치고 거기서 redirect를 할겁니다
