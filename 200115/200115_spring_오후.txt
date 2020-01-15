@@ -1,0 +1,75 @@
+200115_spring_오후
+
+
+뭐 거의 몸통부분같은 느낌의 user_template.jsp 를 마저 쓰는중입니듀
+
+사이트메쉬처럼 디렉티브 인클루드로 줄수가없어서
+태그라이브러리로해서 tiles:insertAttribute 이런식으로 가져올거다
+스타일이나 그런것들도 여기서 주는중이고
+jQuery도 cdn으로 쓰려고하는데 우리가 쓸 adminLTE3이 jQuery 3.4.1이거든?
+근데 jQuery가 1,2,3 버전별로 뭐 크게 다른건 아니고
+브라우저 지원 여부정도가 다르단말이여
+우리는 거의 모든 브라우저를 지원하는 1버전을 쓸겡
+
+
+그럼 이제 컨트롤러 만들어야되지않겠음?
+servlet-context.xml에서 base package를 com/spring으로 했으니까
+그 경로로 컨트롤러 클래스 만듭니듀
+클래스에는 꼭 어노테이션을 붙여줘야해 컨트롤러니까 @Controller 해줬음
+그리고 RequestMapping에 "/member" 한번 해주면
+여기의 메서드는 전부 member/ 다음이다~ 가 되는거래...?
+
+@Controller
+@RequestMapping("/home/member")
+public class MemberController {
+	@RequestMapping(value="/list",method=RequestMethod.GET)
+	public void list(){}	
+}
+------> 이렇게하면
+얘는 Controller고요
+/home/member 에 해당하는 메서드들이다고요
+/home/member/list 하면 이 메서드 실행하는거고 
+근데 annotation으로 주는 경로랑 실제 jsp가 있는 경로가 같은경우에는
+void로 해도 걔랑 동일한 경로에 있는 칭구칭긔의 jsp를 부른다!
+
+
+
+사이트메쉬처럼 title을 설정해서 다른데서 바꿔주고 이런게 타일스이서는 안된다네요..
+그 문서 안에서 document.title = "이렇게" 바꿔주는정도만 할수있겠죠,,
+
+
+
+url의 depth가 4개까지있는것은 정말 비추천입니다... 그렇게까지 나온다면 의심해보십쇼
+
+<definition name="*/*.page" extends="base">
+	<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+</definition>
+===>> tiles.xml 에서 home/*/* 이렇게하면 home/member/list 뭐 이런식인거고
+*/*.page 이렇게하면 member/list.page 이렇게가는거임
+그리고 하나의 * 를 value에서 들어오는 순서대로 {1번ㅃ째}, {2번째} 이렇게 읽음
+
+
+사이트메쉬에서 header는 화면의 header이지만
+타일스의 header는 본문의 header라네요,,
+
+
+컨트롤러의 메서드에서 @RequestMapping("/")  이렇게해주면
+get, post 상관없이 다 얘로 받는거임	
+
+
+service는 spring container에 들어있거든
+그래서 이걸 autowired에서 가져올수있어
+이거 좀... 좀 잘알아야될거같은데
+원래대로라면 service 안에서 private service 선언하고 그거의 set메서드를 만들어야하는데 이거를 @autowired를 통해서 이미 bean에 등록되어있는걸 찾아서 갖다준대
+비교는 타입으로 한대!!!! MemberService 얘가 타입이잖여@autowired가 메서드에 붙으면 파라미터의 타입을읽는댜. 그래서 그걸 파라미터에 넣어준다고허네요..
+@autowired가 있으면 컴파일할때 set메서드를 만드는거임... 그걸로 가져오는거래
+== 이거랑 같은 기능을 하는게 @Resource
+얘는 id로 찾아오는거임 @Resource(name="serviceDAO")
+     => 이 이름의 인스턴스 데ㅕ오는거야
+
+
+
+
+
+
+

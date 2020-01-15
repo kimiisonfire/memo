@@ -1,0 +1,97 @@
+200115_Spring_오전
+
+
+
+주제별로 하나씩 프로젝트 만들어서 연습하고 그걸 spring_bootstrap 에 적용할거래
+타일즈 연습할거라고하네용
+
+
+Resolver를 여러개 만들어서 할거임. 재활용성을 높일거야
+근데 만들기가 까다롭다고하네요..
+타일즈는 구식이지만 그래도 매우 많이 쓰인다고하네요
+
+필터가 아니라 리졸버 할겁니다!! 필터아닙니다!!!!
+
+1) context.xml 옮기고 web.xml 수정
+우선 src/main/webapp/WEB-INF/spring/ 여기에있던 root-context, servlet-context 얘네를 src/main/resources 여기로 옮길게
+이거 중요한파일인데 웹단에 있으면 날아갈수도있고 우리가 자주쓸거라서 빼는거래
+--> web.xml에서 root-context, servlet-context 경로 수정
+
+2) pom.xml에 tiles 추가하기
+pom.xml에서 spring dependency 끝나는 부분에 tiles dependency 추가할거야
+우선 properties에다가 apache.tiles-version 추가했습니듀
+가독성을 위해서 그룹명.어쩌고-version 이렇게 할거야
+properties에 썼으면 그걸 갖다가 dependency에 추가해줘야지
+tiles는 tiles extras, servlet, jsp 이렇게 세개 써주면됨
+이렇게해주고 저장하면 빌드되면서 tiles에 해당하는 .jar가 Maven Dependencies에 와르르 생깁니다..
+
+2.5) src/main/resources/servlet-context.xml 수정
+여기에 tiles 부분을 추가해줄거임~~!
+그리고 pom.xml의 springframework 버전을 3.1.1에서 3.2.3으로, java-version 1.7로!
+여기서 설정하는 tiles.xml 얘가 사이트메쉬의 decorator같은 역할을 하는 친구가 될거임
+보여줄 view를 리턴할 tilesViewResolver! 이것도 뭐 설정할거임 얘는 타일즈가 들어간 버전의 view resolver인거야
+근데 밑에도 resolver가 하나ㅣ 있거든? 
+만약 tiles.xml에서 정의한 페이지가 아니면 다음의 기본 리졸버로 넘기는거임!
+기본 리졸버로 가면 타일즈가 적용이 안되겠지?
+그래서 우리는 무조건 우리가 설정한 리졸버->기본리졸버 순서로 가게 되도록해야해
+그래서 beans:property name="order" value="이걸로 순서결정하면됨"
+우리가 만들 tilesResolver = 우선순위 2 / 기본리졸버 = 우선순위3
+1번은 따로 있다고하네요 나중에할거래
+근데 지금은 
+<beans:bean id="tilesViewResolver" class="org~~~.UrlBasedViewResolver">
+    <beans:property name="viewClass" value="org.~~~.TilesView" />
+    <beans:property name="order" value="2" />
+</beans:bean> 
+이렇게 되어있는데 이거 그냥 namespace에서 "p" 쓰겠다고 하겠다 하면
+<beans:bean id="tilesViewResolver" class="org~~~.UrlBasedViewResolver"
+         p:viewClass="org.~~~~.TilesView"
+         p:order="2"
+/>
+이렇게도 할수가있음
+
+====> 내가 어떤 resolver를 줬는지 알고싶을땐 servlet-context.xml을 확인하면됨
+참고로  resolver는 총 4개 달 예정임다
+
++ base-package의 .tiles도 지웠음다
+
+3) servlet-context.xml에 지정된 tiles.xml 경로에 tiles.xml 만들기
+xml 만들고 tiles3 doctype 검색해서 doctype 같다붙이십쇼
+이게 우리 decorators 하던거랑 비슷하다구.. 템플릿 jsp 정해주고 그런거말여
+사이트메쉬는 decorator.jsp 에서 taglib 써서 header footer 설정해줬잖여
+근데 타일스는 tiles.xml 여기서 그걸 설정해야된데
+
+tiles 안에서 definition으로 이것저것 만들고있거든
+근데 여기서 put-attribute name="이름~" 여기서 정한 이름은 실제로
+user_template.jsp, admin_template.jsp 와 같은 곳에서 쓸수있는 이름인거임
+
++ 사실 definition의 name="home/*" 이거가 url이라고했는데
+사실은 url이 아니고요 resolver로 넘어오는 화면의 이름이래 (??)
+그니까 우리가 String url 해서 url 리턴하잖여 그 반환되는 url이 home/list.do 뭐 이런식
+
+4) tiles.xml에서 규정한 jsp 파일 만들기~,~
+일단 몸통의 template 먼저 만들고있는데
+사이트메쉬는 디렉티브include로 했지않습니까?
+근데 타일즈는 그렇게 안함
+tiles 태그 라이브러리를 사용해서 할거야!! tags-tiles 로 태그라이브러리 주고요
+
+
+나머지는 이제 슬슬 오후부터 할것임
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
