@@ -1,0 +1,140 @@
+200113_jsp
+
+
+커맨드패턴하면서 썼단 사이트메쉬는 필터로 이루어진거거든?
+근데 Spring mvc할때 쓸 타일즈는 필터가 아닙니다. 그래서 제한적으로 쓸수있게될거임
+타일즈는 resolver로 구현하게될거거든,,
+어렵다면 사이트메쉬써라 그치만 회사갔는데 타일즈쓴다 하면 쓸줄은 알아야하니께
+
+
+js를 왜 footer에 두나요?
+뭐 위에 둬도 괜찮다고 합니다 근데 그렇게하면 화면에서 렉이걸린대
+그래서 일단 보여주는거에 필요한 css, ㅁㅏ크업들을 먼저 로딩하고
+동작에 관련된 친구들은 나중에 로딩해도 괜찮겠다 해서 아래로 내린거임~
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+이제 진짜 스프링간다 따흑흑,,,
+
+스프링을 웨 쓰냐? -> 스프링 mvc떄문이라고하면 안됩니다 선생님
+
+
+자바는 객체지향이라고는 하지만 실상 객체를 만들어서 조립하거나 할때
+클래스만 따로 구분되어있지 조립자체가 너무 어렵더라고요
+왜 우리 InitBeanListener 할때 파라미터를 하나씩 읽고 인스턴스를 하나씩 만들어서 주입
+이거 너무 어렵고 수고롭습니다.. 이게 진짜 객체지향일까요..?
+이게 좀 쉬워져야되는거아닌가? 해서 발탁된게 스프링 1.x 였습니다
+
+~~~ 스프링의 history ~~~
+
+>> 스프링 1.X << 버전에서 의존 주입 (결합도를 낮추고 응집도를 높이는) 
+결합과 조립을 수월하게 해주려고 나왔습니다
+인스턴스를 생성하는게 아니라 받아서 쓰게끔 코딩이 되어있어야하는게 스프링의 전제임
+new 해서 객체 만들어쓰는거 의미가없고요
+set메서드로 객체를 반환하거나 조립하는 메서드가 꼭 있어줘야합니다
+
+근데 이것도 xml로 조립하고 해주는것이 참 번거로웠다 이말입니다...
+그래서 >>> 스프링 2.x <<< 버전에서 의존주입을 annotation으로 할수있는걸 설계하고
+스프링 mvc 모듈이 나오게 되었습니다...!
+기존의 service-dao 연결은 문제가 없었는데
+컨트롤렁 - service를 연결하는데 그걸 하나하나 xml로 주입하기가 번거로워졌다이거임
+그래서 2버전대에서부터 정확히 2.5버전부터 Web 단이 만들어지게되었고
+Web 과 bean을 연결시키는 @Autowired 어노테이션을 만들게되었음
+bean을 유동적으로 가져와서 쓸수있는것이라구
+2.5가 Autowired, Spring mvc 나오고 대부분의 Spring Annotation이 만들어진 때입니듀
+
+>> 스프링 3.X << 으로 오면서 뭔가 대폭 개선되었습니드
+"jdk 7" 버전으로 바뀌면서 전반적으로 관점지향적인 그런것이 되었다..
+관점지향(AOP), Aspect 이런것들이 중점적이라고허네요
+bean에 트랜잭션을 연계하려고 했더니 아니 중복코드가 너무 많은거야
+그래서 얘네를 연결하기위한 AOP, ASPECTS 가 만들어진 시기입니다
++ MVC 개편
+
+* Spring 4.x는 jdk 8이 타겟입니다 알아두십쇼
+
+
+=== 그래서 우리는 가장 기본이 되는 Spring 1.x 로 시작해서 -> 2.x -> 3.x로 갈거임
+AOP라는 관점은 나중에생긴거라는거 알고계쇼
+
+
+~~~ Spring issues ~~~
+Spring 1.x -> 의존주입 (DI). 생성의 역전 (IOC)
+개발자마다 각자 가지고있던 의존주입을 버리고, spring에서 만드어ㅜ는걸 ㅓ서
+개발자의 역량차이를 해소하는 역할을 합니듀
+오늘은 우리 의존주입이 뭔지 살펴볼거임
+컨트롤러 연결은 스프링 2.x 할때, 코드중복없애는건 스프링 3.x할때 하겠음다
+
+
+
+우리가 InitBeanListener / web.xml로 하던 조립조립을
+Spring context로 해보게될것입니다 
+
+
+
+이제 스프링 한다진짜!!! 잌르립스에서!!!
+workspace를 spring으로 바꿔줄것입니듀
+그러면서 인코딩, 웹브라우저, 서버, 등등 preferences 수정했습니다
+
+preferences 에서 바꿀거 다 바꿨으면 우측상단의 open perspective에서 spring 선택!
+하면 server가 콘솔있는곳에서 분리되고요
+project explorer -> package explorer가 됩니다
+그래서 이제 프로젝트의 단위가 패키지단위가 된다 이것입니다...
+패키지명을 뭘로하냐가 매우 중요하비다
+
+
+패키지익스플로러에서 오른쪽 마우스 -> new를 보면
+Spring starter project = 스프링 부트용. 대규모프로젝트에 적합하지않음
+우리는 Spring project 요거 쓸겁닝다
+
+이해를위해서 일단 웹프로젝트가 아닌 java + maven + Spring context 를 할겁니다
+simple java : java + Spring
+simple Spring maven : maven + spring context
+Simple Spring Web maven : servlet web project
+Spring MVC project : mvc web model
+
+우리는 두번째거인 Simple Spring Maven 을 가지고 프로젝트를 만들거임
+프로젝트를 만들자마자 build가 시작됩니다유 요청한적도 없는데말여
+pom.xml 함 열어보시면요 (repositories,) properties, dependencies 이순서로 있대
+지금은 repositories 가 없는데 얘가
+<repositories>
+  <repository>
+    <id></id>
+    <name></name>
+    <url></url>
+  </repository>
+</repositories>
+이렇게 생겨야하고요. 가져와야하는 외부 jar같은것들..?을 적어주는것같음
+
+dependencies는 필요한 jar의 버전정보를 관리하는건데 
+그정보는 properties에 다 적혀있어
+그래서 properties에 적혀진 버전정보를 ${} 이걸로 가져와서 해당하는 정보를 읽어옴
+우리가 maven에서 jar파일 받을때 아래에 dependency를 적어주거든
+그래서 그거 복붙하면됩니다
+
+여기에 있는 jar파일들은
+C:\Users\PC-15\.m2\repository
+이경로에서 확인할수가있습니다,,
+만약에 jar를 날렸거나 하잖아? 그럼 pom.xml을 위에 * 생기게 조금 고쳤다가 원복해
+그러면 지가 알아서 build됩니듀
+글고 pom.xml에서 <java.version>1.6</java.version> 얘를 1.7로 고치십쇼
+
+이제는 뭐 버전 바꾸고싶으면 그냥 pom.xml에서 버전만 고쳐주면돼
+뭐 spring framework version을 4.1.2로 바꾸고 저장하면 그거에맞게 build하고
+C:\Users\PC-15\.m2\repository\org\springframework\spring-context
+이경로에도 4.1.2가 생기고 그럽디다..
+Maven Dependencies에도 바뀐목록이 있고요
+
+근데 jar끼리 겹치거나하면 흐리멍텅하게 표시됨 근데 100퍼 믿진 마시고요,,
+
+
+아니 근데 자꾸 빨간 에러나거든?
+java compiler 1.7로 다시 올리고
+project facets 의 convert 들어가서 거기서 java의 버전도 확인하세요
+근데 아직도 pom.xml에 artifactId 어쩌고 에러나있더ㅏㄴ말여
+가보니까 아까내가 프로젝트명 바꿨는데 여기서는 아직 안바뀌어있어서 그래
+반드시 프로젝트명과 artifactId를 맞춰라
+
+
+Spring perspective는 패키지명으로 구분합니다 내부적으로~~ 걍알고만계셔
+
