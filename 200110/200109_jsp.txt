@@ -1,0 +1,65 @@
+200109_jsp
+
+
+자료실하는중~,~
+
+개발 순서
+테이블 만들기 -> VO -> mapper -> sqlconfig -> dao -> service ->
+
+우리가 pds(자료실) 게시판을 만드는거지 attach 게시판을 만드는게아니잖아
+뭐 attach를 수정하고 내용을 등록하고 그러는게 아니라
+pds에 글을 crud 하는거라서
+dao는 pds에 대해서도 만들겠지만
+service는 pds에 대해서만 하겠읍니다..
+
+
+error 페이지 만드는중~
+에러페이지용 jsp를 만들고(나중에 부트스트랩 적용할수도 있음)
+그걸 web.xml에 적용할거임
+
+web.xml에는 에러 코드와 exception 타입별로 에러 페이지를 줄수있어
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/WEB-INF/views/error/500.jsp</location>
+  </error-page>
+----> 이렇게하면 500 에러일때 저화며ㅑㄴ을 보여주는거
+
+  <error-page>
+  	<exception-type>패키지명.익셉션</exception-type>
+  	<location>에러페이지경로</location>
+  </error-page>
+-----> 이렇게하면 웅앵패키지의 익셉션일때 에러페이지보여주는겨
+
+만약에 500 만들고 nullpoint 익셉션에대한거 만들면 범위가 좁은 null의 에러페이지줌
+
+근데 보통은 코드에대해서만한다 익셉션을 사용자에게 알려줄 필요가 있음??? ㄴㄴ
+
+
+sitemesh에서 head 태그는 여러개 있어도됨
+지가 알아서 찾아서 걔를 헤드부분에 넣어주거든
+근데 body는 꼭 하나만 있어야해!
+그래서 디렉티브인클루드할때는 body 태그 없이하고 인클루드를 body에넣어야해
+
+
+첨부파일 등록할건데
+이번에는 div 안에 input 태그를 심어서 할거임 <<< 최고 심화과정이라네요
+우리가 json으로도 해봤고, form 데이터로도 해봤고 이게 마지막!!
+var input = $('<input>').attr({'type':'file', 'name':'uploadFile'}).css('display', 'inline');
+var div = $('<div>').addClass("inputRow");
+div.append(input).append("<button style='border:0;outline:0;' class='badge bg-red' type='button'>X</button>");
+div.appendTo('.fileInput');
+
+이런식으로 할겁니다!
+
+
+
+
+
+
+
+
+
+
+
+
+
