@@ -1,0 +1,124 @@
+200116_spring_오전
+
+
+~~~ autowired 하면서 스프링 전반적인 구조 설명했음 ~~~
+(1) tomcat 돌아가면서 spring container 만들고 bean 넣어봅니듀
+web.xml은 리스너와 context-param을 포함하고
+context-param 에서는 root-context.xml을 포함하고요
+root-context.xml에서는 다른 context 파일을 import 헙니다
+
+tomcat(WAS)이 한번 구동되면 톰캣에서 listener를 실행시키고
+listener의 init() 메서드가 ContextLoader를 구동합니듀
+contextLoader는 ,Application context를 돌리면서 spring 컨테이너에 bean을 만들어둠
+
+결국 spring 컨테이너를 만드는건 application context이고
+얘를 context-loader가, 걔를 리스너가, 걔는 톰캣이 돌리는거임
+Autowired는 spring 컨테이너에서 타입을 비교해서 만들어져있는 bean을 가져오는겨
+
+(2) 서블릿에 load on startup하는 dispatcher 서블릿 한번 수행할때!
+wdb.xml의 <servlet>에 등록되어있는 dispatcher servlet을 init-param과 함께
+load-on-startup으로 한번 실행시킴
+이때 dispatcher servlet의 init() 메서드가 servlet-context의 base-package 경로의
+controller를 ApplicationContext("여기") 에 넣어줍니듀
+그니까 application context를 component-scan에서 다시 호출해서
+새로운 객체를 new로 만드는거고 그떄 ApplicationContext("여기") 해서 
+Annotation들\을 찾아다니면서 bean을 spring 컨테이너에 등록하는거여
+여기의 컨테이너는 리스너가 실행됐을때 만들어진 컨테이너친구랑은 또 다르다
+service/dao같은건 리스너 스프링 컨테이너에 들어있는거고
+commoncontroller같은건 이단계에서 스프링컨테이너로 들어가는거임
+
+@Controller
+public class CommonController {
+  @autowired
+  private MemberService service;
+}
+이렇게 하잖여
+그러면 Controller라는 어노테이션을 통ㅅ해서 이 CommonController 클래스를 
+스프링 컨테이너(서블릿 한번 돌리는단계에서 만들어진 스프링 컨테이너임)에
+일단 Controller로 등록하는거고요 그럼 얘만의 bean이 만들어졌겠지?
+그러면서 얘가 autowired로 요청한 MemberService 타입이고 변수명을 사용하는 set 메서드가 만들어짐
+(컨트롤러bean).setService(MemberService service) 가 만들어짐
+물론 컴파일하는 과정에서 말여!
+그래서 autowired 할때 setService(MemberService service) 여기의 service에
+리스너때 만들어진 스프링 컨테이너에서 MemberService 타입의 변수를 가져와서
+service 변수 자리에 넣어줘!!!!!!
+
+야 ㅋ 스프링 컨테이너 걍 map이다 이자식아,, 쫄지마..
+
+
+
+@Autowired 했던거가 application-context.xml에 없으면 아 터집니다
+근데 bean에 없으면 내가 넣어주려고한다 하면
+@Autowired(required=false) 해주면 bean에 없어도 안터지는거임
+그러면
+@Autowired(required=false) 
+private MemberService service;
+public void setService(MemberService service) {
+  this.service = service;
+}
+
+
+
+글고 ApplicationContext는 인터페이스거든?
+그래서 xml읽을때는 GenericXmlApplicationContext가 읽고
+annotation 읽을때는 Annotations~~~ApplicationContext가 읽는거임
+autowired는 xml만 읽을줄아는애란말이여
+그래서 만약에 application-context에 MemberDAO를 없애고
+MemberServiceImpl에 @Autowired private MemberDAO 해주면 터진다
+memberDAO가 없다고 터져!
+왜냐면 @Autowired 쓰려면 클래스에 @컴포넌트 달아줘야되거든
+autowired 라고 무조건 읽어주는게 아니고
+@Service 이런 컴포넌트를 MemberServiceImpl에 달아주고
+또 servlet-context.xml에서 com.spring.controller를 com.spring으로 바꿔주면
+service 패키지에서도 컨텍스트를 갖다쓸수있고
+MemberServiceImpl을 컨테이너에 등록하면서!!! 원래있던 컨테이너에서 가져올수있어
+
+
+annotation 쓸때는 꼭 base-package 확인하셔라
+
+
+viewResolver에서 (이거 우리가안만든거임 스프링거여)
+redirect:/~~~  이렇게하면 절대경로로 날아갑니다유 그게아니면 상대경로
+절대경로 = context를 포함한다는거임. /붙이면 contextPath 안붙여도되는거임
+
+
+화면 넘길때 tiles / resource 로 넘기는거 두가지잇습니듀
+그니까 tiles를 양옆에 달고나갈건지, 아니면 그런 템플릿 없이 inner resources 로 나갈지
+
+
+filter에서 internal view resolver 쓸수있나 ? 안된다
+spring context가 만들어진 다음에 internal view resolver 쓸수있거든
+필터에서 화면전환이 필요하다면 직접 해야하고
+service, dao가 필요하다면 context를 강제로 로딩해야합니다
+GenericXMLAppliation~~ 그거써가지고말여
+
+
+
+loginCheck 필터 달아줬음다
+
+encoding 필터는 이번엔 스프링걸 쓸게용 저번에 서블릿으로는 apache꺼쎴고요
+
+
+가끔 검증된곳 (가져온 bootstrap같은..)에 띄용한 에러가 뜰때가 있거든요
+보통 javascript 에러임 for( ~ of ~ ) 이런거 쓰면 바로 에러나거든
+프로젝트 properties -> source -> exclude -> exclusion add ->>
+**/resources/**   이렇게하면 resources에서는 에러나도 표시안하는거임
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

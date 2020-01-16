@@ -1,0 +1,106 @@
+200116_단위테스트
+
+sql dataSource 자체에 결함이 없어야 sqlSession을 바로 잡을수있고
+sqlSession 결함이 없어야 dao, service 등이 제대로 만들어지겠지
+이렇게 다음과정을 수행하기 전에 이전과정에 대한 테스트를 해서 
+문제를 사전에 방지하고 문제가 발생한 곳을 쉽게 찾을수있도록 하는거
+
+
+단위테스트는 원래 하던 main에서 하면 안되고
+src/test/ 하위에서 해야함
+
+단위테스트를 위해서는 시나리오를 꼭 짜고
+이게 다른데서 기인한 결함인지 그런것들 쓰고
+결함대장에 이러이러한 결함이 있었다고 쓰고 확인한다음에 이력남기고
+
+단위테스트에서 패키지는 미러링해서 똑같이 잡으세요
+임의로 만들기도 해야하고요
+테스트하려는 대상의 클래스에는 앞에 Test <<- 라는 말을 꼭 붙이십쇼
+메서드명은 체크하려는 메서드명 앞에 test <<- 라고 붙이세용
+
+
+>>>> 하기전에 <<<< (이거 꼭 하세요 )
+우선 pom.xml에서 junit 의 버전이 4.12여야합니다
+그리고 dependency에서 spring-test가 있어야되고요
+근데 얘는 테스트용이니까 <scope>test</scope> 라고 써줘
+이러면 배포할때 얘는 안나가는거임...
+배포할때 maven이 scope가 test인 친구들은 안내보냅니다
+
+
+
+~~ 이제 클래스 만들게용 ~~
+패키지는 junit으로 만들 필요가 없어 얘는 java꺼거든
+우리는 spring이니까,,
+class로 만들되 annotation을 달아주는식으로 할거임
+
+이 클래스는 junit 클래스다 = 
+@RunWith(SpringJUnit4ClassRunner.class)
+
+우리는 dataSource 테스트할건데 (그럴거같음)
+context를 긁어올겁니다
+@ContextConfiguration("classpath:/com/spring/context/dataSource-context.xml")
+==> 이렇게하면 가상의 spring 컨테이너를 만들어줍니듀
+컨텍스트를 직접 만들면 그거자체가 noise가 될수있거든
+
+
+
+결과를 예상하고 하는것 = 화이트박스 테스트
+결과를 예상하지않고 일단 돌려서 결과가 나오면 하는거 = 블랙박스 테스트
+
+우리가 하는 단위테스트는 화이트박스 테스트를 지향해야함
+
+우리가 어떤 소스를 가져와서 소스리뷰없이 일단 실행하잖여
+이게 어떻게나온거지 하면서 쫓아가는게 블랙박스 테스트인거임
+오픈소스 리뷰할때는 블랙박스 테스트를 합니다 보통
+내가만든걸 할때는 당연히 화이트박스 테스트 해야하고요
+
+
+dataSource를 받을거고요 connection을 가져올겁니다 = 사전준비. before
+@Before ==> before의 결과는 전체결과에 반영되지않음 
+
+테스트에 진행되는 메서드들은 반드시 public이어야하고 return은 없어야합니다
+함수랑 exception은 맘대로하시고요 exception나면 fail이 아니고 error로 납니다
+test 자체가 잘못된거니까여
+
+
+@Test  ==> 실제 결과에 반영됨
+test들은 순서가 없지만 before 는 무조건 test에 대해서 선행됨
+각각의 테스트는 독립적으로 발동되어야하기때문에 순서가 상관없는거임
+각 테스트가 다른 테스트에 기인하는 경우 정확한 테스트가 아니라고 할수있겠습ㄴ디ㅏ
+
+
+junit으로 출력할수있는 메서드는 syso 말고 따로있다고하네용
+
+Assert = ~~일거라고 예측된다 = 화이트박스 -> 결과가 tester로 넘어감
+- Assert.assertThat(actual, matcher)
+actual :: 실행결과
+matcher :: 실행결과랑 비교할 친구. 뭐 큰지, 작은지, 같은지 그런거? jar 필요함
+	hamcrest all maven 검색 -> 1.3의 dependency
+- assertNotEquals(기대치, 실제값)
+  ==> 다를거라고 예상한다. 실제값이 기대치가 아닐거라고
+
+**********이 matcher인 hemcrest는 junit 에ㅐ서도 가져와버리거든?
+	그래서 junit에서 exclusions 하고
+	hemcrest를 가져와야함
+
+
+*** 실행은 junit debug로 해야합니더
+Run -> Run as Junit test
+클래스오른쪽 -> run -> run as -> junit
+ctrl f11 -> junit				--> 성공하면 초록불!
+
+
+Connection conn = this.conn;
+Assert.assertNotEquals(null, conn);
+conn이 null과 같지 않으면 성공 ----> 초록불떴음다~
+
+단순히 success, failure 이런게 중요한게 아니고요
+이 결함이 실제로 내가 의도한 결함인지 알고있어야합니듀.. 시나리오를 잘짜야해
+
+
+
+
+
+
+
+
