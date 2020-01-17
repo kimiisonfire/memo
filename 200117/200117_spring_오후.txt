@@ -1,0 +1,95 @@
+200117_spring_오후
+
+
+만약에 dao는 아직 덜됐는데 service를 테스트해보고싶으면
+목업(?) dao를 만들면 됨
+그니까 db에 가서 자료를 가져오는 그런걸로 하면 dao/service 둘중에 어디서 에러났는지 알수가 없으니까
+dao가 그냥 데이터를 가지고있고 멤버변수로, 걔를 서비스에 반환하는
+그런식의 dao를 만들면 되겠지???
+
+* 목업이 뭐죠..?
+ = 양산하기전에 시험적으로 하나 만들어보는거임 
+
+
+이번엔 컨트롤러를 테스트할거임다
+컨트롤러는 화면전환하고 리퀘스트에 papram 심는역할을 하지않음??
+
+사용자의 요청에 대한 시뮬레이션이 된 결과가 나와야된다
+변인을 통제하고 말여...
+무튼 그걸 해주는 애가 MockMvc
+얘를 만들어주는게 MockMvcBuilders , 사용자의 요청을 시뮬레이션 해주는애
+
+mockmvc.perform(get("/logout").param("", "")) --> 사용자가 주소줄을 요청하는 부분
+   .andExpect(status().isOk())		--> andExpert : 컨트롤러에 리턴이 돌아올때 
+				404, 500 뜨지않고 200인가요? = isOk()
+   .andExpect(view().name("commons/logout"))  --> return에 view,request 들어가거든
+   .andExpect(model().attributeExists("msg"));   --> 뭘 담는곳을 model이라고한대
+====>
+ 사용자가 logout이라는 주소줄에 이러이런 파라미터를 담아서 넘길거고요
+이걸 돌렸을떄 404/500 에러는 안뜨길바라고요, 화면 view는 commons/logout이
+됐으면 좋겠고요, request의 attr에는 msg가 담겨있었으면 좋겠네요~ 라는뜻
+
+
+컨트롤러 만들때 테스트하려면 set 메서드가 필요하거든
+그래서 컨트롤러에는 autowired 하지말고 set메서드 쓰래 (?)
+
+<파일 업로드 테스트는 실제로 보면서들 하십쇼>
+<리다이렉트는 성공하면 302입니다..>
+
+무튼 컨트롤러 하고있는데용
+WebApplicationContext ctx;
+... 잘 모르겠네용...
+
+
+원래대로라면 테스트를 먼저 만들어놓고 내용이 맞게 나오면 그걸 컨트롤러에 넣어야함
+테스트 시나리오대로 코드 구현 할줄 알아야하고요
+service도 마찬가지고요 dao도
+
+시나리오를 만들어 놓고 클래스를 만들어가면서 테스트하는게 참 좋은 방향입니다
+
+
+~~~ 컨트롤러 테스트 ~~~ 
+@WebAppConfiguration 이걸 달아놓으면
+WebApplicationContext 얘가
+@ContextConfiguration("classpath:com/spring/context/*-context.xml") 여기있는
+애들을 챙기면서 bean으로 등록함
+=== 이게 결국 dispatcher servlet 하는일을 대신해주는거임
+
+tomcat이 할수있는일을 대신 맡아주는 애가 MockMvc
+Mock이 web application을 가지고있어야 요청이 올때 해당 컨트롤러를 실행하지않겠어?
+tomcat에서 서블릿을 갖는것처럼, mok이 그 context를 갖도록
+위에서 말한 WebApplicationContext ctx를(그 비슷한 가상 어쩌구 서블릿같은놈) 갖도록 하는거임..!
+이걸 mock한테 심어주는 애가 MockMvcBuilders 얘고..!
+결과적으로 컨텍스트가 심어진 mockmvc를 우리는 tomcat이라고 생각하면됨
+mockmvc 는 WAS에 디스패처서블릿에 컨트롤러가 달려있는샘이라고보면됨
+
+컨트롤러를 CTX가 가지고있잔여
+걔한테 니가갖고있는애들중에 CommonController 타입의 친구좀 줘보라고 
+ctx.getBean(CommonController.class);  이렇\게함
+그러면 거기다가 우리가 만든 무결한 서비스로 set해줘버려
+controller.setService(new MockMemberService());
+이렇게 서비스까지 조립된 상태로 아래처럼 was를 돌리는거임
+mockmvc = MockMvcBuilders.webAppContextSetup(ctx).build();
+
+mock한테 url로 /commons/logout 요청하는데
+ 그거는 결국 commonController에 있는거를 주소줄로 요청하는거랑 같은거야
+그니까
+mock 컨트롤러에서 주소로 /commons/logout 요청!
+     CommonController에 /commons/logout 주소줄이 날아온거야
+         @RequestMapping(value="commons/logout") 인 메서드가 실행되는거임!!!
+    - commoncontroller에 주소줄을 요청한다음에 넘겨받았던 화면이
+      맞는지 확인하는게 status()
+    - 화면이 이런 이름으로 왔는지? name()
+    - 파라미터 잘 넘어왔는지? model(), request(), ...
+ 
+
+
+
+
+
+
+
+
+
+
+

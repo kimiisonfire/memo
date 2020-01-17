@@ -1,0 +1,64 @@
+200117_spring_오전
+
+
+hamcrest가 안돼서 선생님이 repository 주었읍니다,, 예..,
+ham넣고 pom.xml 수정하고 프로젝트 오른쪽키 -> maven -> update proejct
+ 
+
+Test의 어노테이션이 어떻게 동작하냐면말이죵
+Before 실행 -> Test 실행 -> After 실행
+중심은 Test고요 이 메서드가 실행될때마다 before/after가 한번씩 실행된다는거임
+
+이번엔 session을 써서 mybatis를 테스트해봤슴다
+jdbc가 내부에서 어떤식으로 닫히고있는지는 콘솔의 log로 확인가능헙니다
+잘 됐네요,,
+
+이번엔 dao 해서 getmember, select list 해볼겁니다
+dataSource랑 dao를 다 가져와야되거든요
+root context 가져오면되지않느냐?하는 사람도 있겠지만
+그러면 노이즈가 생겨버린다고하네요
+이걸 그럼 어케 가져오느냐
+두개를 contextConfiguration해서 가져와야되잖습니까? 이걸 그래서 배열로 가져올검다
+@ContextConfiguration({"classpath:com/spring/context/dataSource-context.xml",
+		"classpath:com/spring/context/application-context.xml"})
+근데 이때 contextConfiguration 외에 부가적인 속성을 줘야한다(name, value)하면
+@ContextConfiguration(locations={"classpath:com/spri  << 이렇게 locations를 줘야함
+우린 그게 아니니까 안줘도 되는거고!
+
+
+왜 Assert 계속 임포트하기 귀찮잖습니까?
+그러면 import할떄 import static org.junit.Assert.*;  이렇게 임포트하면
+Assert 클래스에있는 애들이 스태틱 메서드라 static하는거고
+무튼 그 하위에 메서드랑 스태틱 변수가 전부 임포트가 되는거란말이쥬
+저렇게 임포트하면 바로 메서드명만 칠수있다..!
+
+@TransactionConfiguration
+@Transactional
+데이터소스에있는 transacion manager를 가져옴
+내가 필요할때만 rollback 하고싶으면 디폴트롤백을 false로 하면됨
+rollback이 필요한 테스트메서드는 그 어노테이션 밑에 롤백 false하면된다규1!!!
+얘를 실제로 쓸거면 @Transactional도 있어야됨!!
+--->
+이거를 쓰면 insert 테스트를 하더라도
+테이블에 영향없이 rollback 시킬수있다는거임. 자동 커밋이 안되는거임
+insert 테스트를 하고 롤백해서 원상태를 유지시켜버림
+
+---------------->>> ㅇㅣ것을 트랜잭션이 알아서 해주는겨
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
