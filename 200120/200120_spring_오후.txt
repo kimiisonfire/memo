@@ -1,0 +1,141 @@
+200120_spring_오후
+
+
+파일 업로드할겁니다 흑흑.,,
+
+패키지 새로팔거여
+permgem 뜰수도있으니까 톰캣에 들어있는거 비우고 빈상태로 한번 돌리고요 예
+
+패키지를 새로파면
+pom.xml에서 spring 버전 3.2.3으로 바꾸고 java 1.7로 바꾸고
+바꾸면 properties의 javva compiler 1.7로 바꾸고
+project facets의 web module 3.0, java 1.7, runtimes의 톰캣 선택 후 apply
+
+참고로 pom.xml 고치는동안에는 톰캣 쓰지말아라.., 다터진다
+그리고 pom.xml의 서블릿부분도 고쳐줬음
+
+
+파일업로드니까 commons 1.3.1을 maven에서 dependency 가져왔음
+
+
+*** form으로 파일업로드하고싶으면*************************
+1. form은 반드시 post, multipart/form-data 해줘야해
+2. servlet context에 multipartResolver 달아줘야해
+3. commons fileupload 1.3.1 maven에서 디펜던시 가져와서 pom.xml 추가하고 
+fileupload, io jar 총 2개 생기는지 보세용
+4. 파일명 깨지지않게 produces="text/plain;charset=utf-8" 추가
+***************************************************************
+
+
+컨트롤러의 역할이 화면을 하나 리턴해주는걸로 끝내는. 있으나마나한경우에
+이걸 대신할수있는게 하나 있다
+디스패쳐한테 직접 주는거임..!
+이걸 직접 컨트롤러에 쓰면 그걸 handler mapper를 통해서 잡히거든
+근데 그냥 매퍼한테 안넘기고 바로 view이름으로 디스패쳐갈수있는거래
+
+디스패쳐 서블릿이 읽는 servlet-context에다가
+이 url이 오면 이 화면 리턴해! 하는거를 추가할거임
+<view-controller path="/file/fileUploadForm" view-name="file/fileUploadForm"/>
+이렇게하면 디스패쳐서블릿이 직접 이 url을 챙기는거임ㅋㅋㅋㅋ
+mapper한테 물어보지도않아
+대신 이렇게하면 request, model에 뭘 심을수가 없긴하쥬..
+서버를 돌려보면
+SimpleUrlHandlerMapping  <<- 여기서 해당 url을 챙기는걸 볼수있다
+그냥 이렇게도 할수있구나 알고계십쇼
+
+
+아 그리고 우리가 base-package 이름을 controller로 바꿨거든?
+그래서 기본으로 돌아가는 패키지가 저걸로 된건데
+resources의 log4j.xml에서 logger의 경로 바꿔줘라
+
+그리고 logger를 쓸거면
+컨트롤러에서 Logger 선언해줘야하는데 이때 전부 org.slf4j 로 임포트해줘야됨
+private static final Logger logger = 
+	LoggerFactory.getLogger(FileController.class);
+
+------>
+logger 쓸거면 log4j.xml 패키지 추가해줘야하고요, 클래스안에서 logger 써줘야함다
+
+
+
+~~~~다시 파일업로드~~~~
+multipart로 form data를 보낼때
+클라이언트에서 파일을 보내면 body에 file이 실리거든?
+근데 file명은 header에 담겨서와
+우리가 필터로 걸었던 인코딩은 body영역에 해당하는거라서
+파일명에 인코딩처리를 필터로 할수가없어! 그래서 파일명이 터지고 깨지고 난리남
+그걸해결할수있는 RequestMapping의 속성이 있다구
+@RequestMapping(value="/multipartFile",method=RequestMethod.POST,
+		>>>> produces="text/plain;charset=utf-8"  <<<<<<)
+헤더에 넘어오는 파일명을 utf-8로 바꿔서 준다구...!!
+
+
+
+우리 파일 받을때 예전에는
+isformfield 확인해서 각각의 경우의수로 스위치를 돌리고 어쩌곻 ㅐㅆ는데
+여기서는
+form태그가 name=title인 input[text], name=file인 input[file] 가 있으면
+public ModelAndView uploadMultipartFile(MultipartFile file,
+	String title, ModelAndView mnv) throws Exception{
+	String uploadPath = this.uploadPath;	
+	String fileName = UUID.randomUUID().toString().replace("-", "")
+	+ "$$" + multi.getOriginalFilename();		
+	File file = new File(uploadPath, fileName);
+	if ( !file.exists() ) {
+		file.mkdirs();
+	}	
+	multi.transferTo(file);
+------>>> 이걸로 업로드가 끝난다 미친...
+
+
+근데 지금한건 파라미터에 파일을 담아서 보낸거야
+그래서 회원가입할때 회원사진 하나 업로드하는 그런거할땐 이걸쓰면되겠지??
+
+근데 파라미터가 여러개인 회원가입양식같은건 어쩔거여??
+그래서 request에 담아서 보내는것도 했습니다
+MultipartHttpServletRequest 이렇게했고요
+근데 이건 또 getparameter해서 너무 힘들어요
+그래서 이걸 한꺼번에 담아서 왔다갔다하는 커맨드객체를 쓸거임
+
+
+여태 동기 방식으로 했습니다
+
+
+~~~~~이제 ajax 업로드도 연습할겁니다,, 흑흑 ~~~~~
+드래그드롭해서 하는 그런걸로 해볼거라고 하네요...
+
+
+// 드롭하는거
+$('.fileDrop').on("drop", function(event) {
+  var files = event.originalEvent.dataTransfer.files;
+               -------(1)---------- -----(2)----- --(3)-
+(1) : 제이쿼리 이벤트를 자바스크립트 이벤트로 변환
+(2) : 넘어오는 파일을 가져오는거
+(3) : 배열로 만들어줌
+
+
+
+
+
+지누진우
+오늘저녁에 형민쌤에게 프로젝트 수행계획서 보여드릴거임
+요구사항정의서도 한번 컨펌 받긴해야하는데 그거 형민쌤에게 받아야함
+일단 형민쌤이 에러잡을때 착수하라고해서 파일들을 주는거긴한데
+이게 수업보다 우선시되어선 안됨.
+산출물을 만들 시간적 여유가 있으면<<!!! 
+요구사항정의서, 모델링(erd), 화면정의서 정도를 먼저해봐라
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

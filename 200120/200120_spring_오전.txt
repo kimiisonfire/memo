@@ -1,0 +1,148 @@
+﻿200120_spring_오전
+
+
+오늘부터는 controller에 집중허겠어
+
+board 위주로 함 볼건데 일단 화면단을 보면 = views
+list.jsp는 .page로 가야하고
+새창으로 열리는 detailBoard, regist, ... 는 .open으로 가면됨
+이것들은 우리가 tiles.xml에서 이미 정했던겁니다요
+
+error 페이지는 tiles를 쓸때 좀 생각해줘야되는게
+tiles는 resolver를 거치지 않으면 안나가. sitemesh는 필터였기때문에 무조건 걸리거나, 무조건 안걸리거나 할수있었음 근데 tiles는 리졸버 안거칠수가 없는거임
+tomcat으로 들어온 에러는 톰캣에서 내보낸단말임. 그래서 resolver를 안거치니까 layout이 안나옴..!
+
+컨트롤러 자체에서 exception을 하나씩 추려서 에러페이지내는거는 너무 중복이다
+그래서 특별한 에러가 아닌이상 컨트롤러에서도 exception을 다 throws할거야
+그러면 그 익셉션을 받아주는 advice에서 반환되는 exception을 잡아서
+에러페이지를 resolver로 넘겨줄 역할을 할거래  >> advice << 이친구가
+그중에 404, 400 에러페이지는 템플릿에 다 담아줘야한대
+
+타일즈는 타일즈 리졸버에게 안보내면! 안나온다!! 
+정해진 레이아웃이 필요하다면 무조건! 리졸버를 통해서 나와야해!!!
+그말은 controller단에서 화면 url을 return해줘야된다는말임!!!
+
+
+에러페이지는 전체템플릿에 관계없이 할거다 하면
+템플릿없이 하라고그러네....(?) 어차피 많은 마크업이 필요한게 아니니까,,
+
+
+
+컨트롤러를 만들때는 얘를 부르는 화면단 .jsp, 그리고 얘가 데이터를 넘겨줄 service
+화면 jsp에 어떻게 데이터를 넘겨줄건가? 이런거 다 고려해야됨
+전화면, 뒤 서비스단, 다음화면 다 고려해야되는거임
+데이터 플로우를 고려할줄알아야돼 미친놈아...!!!
+
+
+스프링에서는 request 객체를 쓰려고하는거를 별로,, 좋아하지않는다고함 권고안한대
+리퀘스트를 쓰면 아 얘가 리졸버를 안쓰고 화면전환을 하려나보구나 하는거지
+근데 우리가 jsp에 데이터를 전달하려고 request를 쓰려고하는거란말여지금
+메서드 시그니처(=선언부)라는거는 메서드의 성격을 보여주는건데
+아래 시그니처만 보면서는 저 request의 목적이 분명하지않아..
+public String list(SearchCriteria cri, HttpServletRequest request) {}
+
+~~>> 원래 우리가 request를 받는이유가
+거기에 심은거 꺼내려고, 거기에 심어서 보내려고, 화면전환하려고 이렇게 세개거든
+근데 이걸 용도별로 정해서 시그니처만 보고도 이게 어떤 목적인지를 파악할수있게하자!
+
+====>>>> 그래서 만들 애가 """"model""""이라는 클래스입니다
+mvc 하면서 배울때 model을 데이터 이동을 위한 집합에 대한 클래스였음
+
+컨트롤러를 거쳐서 반환된 데이터가 디스패쳐를 거쳐 리졸버로 가잖여
+이 경로를 거쳐서 갈수있는 클래스가 모델이라는거다
+디스패처는 컨트롤러가 리턴한 모델을 받아서 리졸버로 보냄
+리졸버는 모델안에 심어져있는걸 하나씩 빼서 지가 리퀘스트에 심어버림
+그러면 컨트롤러는 야 이거 리퀘스트에 심을거다? 하고 모델덩어리를 줘버림
+그럼 디스패쳐도 그거 고대로 뷰리졸버한테 보냄
+그럼 뷰리졸버가 포워딩같은걸 하면서 리퀘스트를 뽑는중에 모델에서 하나씩 뽑아서 리퀘스트에 뽑아버림
+
+====>>>> 근데 이정도라면,, 모델이 있어야하나요? 그런건아닌데 봐봐
+20개의 attr를 리퀘스트 통해서 넘긴다 하면
+request를 20번 setAttr 해야하잖여
+넘 수고스럽지않나요...?
+map으로 싹 넣은다음에 모델로 팍 넘겨주면 지가 20개 알아서 뺸단말여
+
+그래서 이제는 spring에서 request, response 함부로 안만들거임
+왜냐면 스프링은 이친구들을 무조건 화면ㄴ만드는애라고 여긴단말여,,
+
+
+왜 return을 하나도 안쓰면 그냥 넣어줬던 매핑 주소로 날리잖여
+그럴경우에는 내가 request를 써서 작성하고 돌리니까 헤더가 하나도 안붙었음
+심지어 response를 붙여서 넘기면 아예 화면이 안나옴
+이 파라미터를 화면 인자로 본다는거지,,
+
+물론 return으로 url을 넘기면 url을 읽어서 헤더를 알아서 잘붙여주지뭐..
+
+~~~~하여튼~~~~
+이제 파라미터 넘기거나 받거나할거여도
+HttpServletRequest 말고
+Model 칭구를 가져와서 거기에 addAttribute 이런식으로 하게될거임!
+
+--- 근데 
+model에다가 담고 url 화면은 리턴하고 이러고있잖여
+어댑터한테 화면은 이거고 모델은 이거다 하고 내가 확실히 넘겨주자! 
+그러면 내가 준 모델과 뷰를 확실히 쓰게끔 하려고!!
+그래서 만든 객체가 ModelAndView 입니다.....!!  얘가 model, view를 대신하는겨!
+
+mnv.addObject("name", value);
+mnv.setVi‪ewName(url);
+return mnv;
+
+근데 addObject로 name, value 심으면
+jsp에서는 name으로 한번 부르고 그안에 들어있는 pageMaker를 한번 더 부르고 해야돼
+근데 이걸 mnv.addAllObjects(value);
+이렇게 해버리면 이게 request의 attr 구성으로 똑같이 넘어간데
+걍 map으로 넘겨버리는거임 
+그니까 지금 저 dataMap 에는 boardList, pageMaker 이렇게 들어있거든?
+이걸 setAttr("boardList", boardList),  setAttr("pageMaker", pageMaker) 이렇게 넣어주는셈인거여!!!!!!!!
+
+그리고 우리가 보통 파라미터로 받은거를 고대로 리퀘스트로 넘겨주던 그런것들도 있잖여
+근데 파라미터로 받고 setAttr 해주는게 귀찮잖여
+받은걸 그대로 넘길때에는 파라미터에서
+@ModelAttribute("cri") SearchCriteria cri, 
+이렇게하면 cri로 넘어온애를 바로 set해주는거임ㅋㅋㅋㅋㅋㅋ캬 세상좋아졌네
+이름을 따로 안주고 @ModelAttribute SearchCriteria cri,  이렇게 주면
+타입의 앞글자를 소문자로바꾼걸로 해서 받아와버림...!
+그니까 jsp파일에서 searchCriteria.page 이렇게 받아온다는거임....
+attr 이름을 주면 앞글자소문자인 타입으로, 안주면 파라미터 이름으로 넘어간다는거임
+
+
+이 @ModelAttribute 를 그냥 컨트롤러에 바로 써주면
+포워드로 넘어갈떄 (list, detail 뭐건간에) 무조건 모델에 얘를 심어서 넘어감
+attribute 이름을 주고 메서드형태를 만들어서 return하면
+return한값이 value, attr의 이름이 name이 되는거임...!!!
+
+
+
+아 그리고 주소줄에 list.do 이렇게해도 스프링 디스패쳐는 .do 쟤를 안읽어
+list.woirqjeor 이렇게해도 걍 list 까지만 읽는거임
+
+
+~~~~~~ 스프링 file upload ~~~~~
+>> 우선 summernote부분먼저
+글등록 화면까지 열었고요
+일단은 이미지 업/다운로드 하는거부터할게용
+원래대로라면 얘는 화면을 주는게 아니라서 restful방식이거든?
+그래서 @RestController 이렇게해야하는데
+우리는 spring 3.4.2고 rest는 spring 4버전부터 쓸수있다리
+
+원래 서블릿쓸때는 url.properties에다가 이미지 경로를 추가했었ㄱㅓ든?
+근데 우리는 spring이니까 bean등록해야겠지?
+application-context.xml에다가 imgPath를 string bean 등록했습니다
+<bean id="imgPath" class="java.lang.String">
+   <constructor-arg value="c:\\uploadImg\\" />
+</bean>
+
+
+>>>> 일단 연습 먼저 하러 가볼겡
+
+
+
+
+
+
+
+
+
+
+
