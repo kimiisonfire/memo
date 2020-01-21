@@ -1,0 +1,36 @@
+200121_spring_오후
+
+
+
+클릭했을때 이미지를 열리게하고싶다? 그럼 무조건 mime타입 어쩌고해서
+헤더를 설정해야합니듀
+
+무튼 fileupload 패키지에서 할만한거 다했습니다..
+
+
+
+~~~~~~~~~~~~~~그럼 어제 하던거에서 이어서 하면되겠지??~~~~~
+자유게시판의 글등록에서 summernote말입니다
+
+
+request body에 json.stringify 해서 들어온거는
+받을때 @RequestBody를 해주면 
+request의 body를 딱 꺼내서 jackson databind가 관여해서 해당 json데이터의 형태를
+파라미터에 매칭시켜서 넣어줌!!!
+---> 근데 이거 아직 안된다고하네용... 흑흑 
+
+===> 다시 되게는 했음
+일단 ajax쪽에서 content type을 json으로 줬고요
+컨트롤러쪽에서는 @RequestBody Map<String, String> data 이렇게해서 어댑터가 넘긴 json 자료를 map으로 쫘르륵 만들게함
+그리고 map에서 하나씩 빼서 필요한 값으로 넣어주면됩니듀..
+
+
+
+
+
+
+
+
+
+
+
