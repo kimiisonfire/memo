@@ -1,0 +1,41 @@
+200122_spring_오후
+
+
+오후에는 member 다해보겠습니다 후후.,,
+
+
+왜갑자기 그렇게된건지는 모르겠는데 jsp에서 properties를 가져왔고
+그거를 root-context에 넣어줄거임. 얘는 context가 읽으니까 namespace에서 수정
+그리고 아래처럼 쓰면 root context가알아서 프로퍼티 읽어줌~~~~
+<context:property-placeholder location="classpath:com/spring/properties/*.properties"/>
+
+그리고 이 properties에 있던 key값을 ${} ㅇㅣ렇게 쓸수있다고 그르네요
+지금 db.properties가 읽어진거니까 dataSource context에서 ${} 해서 쓸수있어
+관리자화면을 뿌릴건데 거기서 xml을 어떻게 편집할수있겠어
+대신에 이것저것받아서 properties 파일은 수정할수가있잖여!
+
+그래서 properties는 필수고 관리자 factor에 들어가야된대
+
+
+
+무튼 저렇게 읽어와서 context 파일에 bean을 만들어줬으면 autowired할수있쥬
+근데 지금 path가 string이라서 여러개들어있거든 bean에?
+근데 가져올때 타입을 비교해서 가져오잖여
+그래서 이럴땐 autowired를 쓸수가없어 타입만가지고 path들을 어케비교함?
+이럴떈!@@@@!!!!!!
+@Resource(name="picturePath")
+private String picturePath;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
