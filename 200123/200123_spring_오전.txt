@@ -1,0 +1,75 @@
+200123_spring_오전
+
+
+오늘은 오전에 멤버, 자료실 마무리할거고요
+오후에 security 할겁니다
+
+
+우리 회원 등록할때 phone같은경우는 같은 name으로해서 010 / 2222/ 3333 이부분을
+각각 select, input, input 이렇게 받거든? 그래서 들어올때 배열로 들어와버려
+전에 action할때는 request.getParameterValues("phone") 으로 해서 배열로 받았었음
+지금은 그냥 MemberVO member, String[] phone  이렇게 받으면 배열로 들어오니까
+그걸 컨트롤러에서 잘 조절해서 member.setPhone해주면됨
+
+
+메서드의 parameter로 HttpServletResponse를 받으면
+핸들러어댑터가 얘한테 reponse를 주면서 이메서드가 혼자 알아서 화면전환 하려나보구나 하고 판단해줌
+만약에 public void ~~~ (response) 하면 response가 더이상 리졸버로 안가고요
+파라미터에 없으면 아무리 void여도 response를 리졸버로 넘겨줘버림
+
+
+
+자바스크립트는 변수에 할당하면 메모리를 먹게되거든. 완전 java식인거임
+가급적이면 
+var searchType = $('select[name="searchType"]').val();
+jobForm.find("[name='searchType']").val(searchType);
+이렇게 쓰지말고 바로할당해라 이렇게! 
+jobForm.find("[name='searchType']").val( $('select[name="searchType"]').val() );
+그래야 저장안되고 바로 쓰고 사라짐
+
+
+
+화면에서 해결할수있는건 화면에서 해결하자
+예를들어서 우리가 이메일이 nullable이거든? 
+그러면 화면에는 null이라 아예 비어있는 칸으로 나온단말야
+이걸 java단에서 어떻게 구분하려고 하지말고
+그냥 화면에서 ${empty member.email ? '-' : member.email}  이렇게말여
+
+그리고 막 세자리마다 , 찍고싶다 하면 당연히 c:fmt 태그  쓰면 되는거고요
+표현을 어떻게 하면 좋을지는 표현쪽에서 적용해줘라!
+
+
+
+오늘 pds도 계속 하고있는데요 pds 새글 등록(attach 추가한)하는거 
+그거 해보니까 업로드 자체에 감이 조금 잡히네요.... 좋습니다
+
+
+
+그리고 우리가 새창에서 뭘 한다음에 등록하거나하면
+opener를 reload해주고있잖여..
+근데 이거 만약에 뒤에 다른걸하고있느,ㄴ상태에서 등록하면
+뭐 멤버목록이나 pds나 열려있던거가 reload되어버린다는거임..
+그래서 정확히 reload할거를 짚어주면서하려면 절대경로로 해야겠지?
+그래서 request를 파라미터로 받고
+거기서 contextPath를 가져와서 절대경로로 주면된다ㅏㅏㅏ~~!~!~~
+
+근데 자꾸 마크업을 컨트롤러에 도배하기싫으면
+그냥 success, fail 용 jsp를 따로 만들거나 알아서하세요,,,,
+
+
+~~ 400에러가날땐 파라미터를 확인하세요!! ~~
+넘어오는 파라미터를 메서드 선언부의 파라미터로 받아줄수없을때 나는 에러 = 400
+이거는 exception이 안터진단말여... 그니까 400이 나면 파라미터를 봐라ㅏ1!!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
