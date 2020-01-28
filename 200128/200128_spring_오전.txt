@@ -1,0 +1,132 @@
+200128_spring_오전
+
+
+오늘은 spring security 할거라고 하네용,,
+
+시큐리티는 세단계로 나뉘는데 그걸 단계별로할거래
+단계별로 우리가 커스터마이징 할게 있다고 허네요,,
+
+
+각 페이지의 url을 정의하는 index를 만들거랴
+src/main/webapp/WEB-INF/views  여기에 home/member/manager/admin 네개폴더만듬
+그리고 webapp/ 바로 밑에 index.jsp도 만드세용
+
+
+*** 잠시 새로운 패키지 파는거에 대한 얘기
+root-context.xml, servlet-context.xml 이친구들을 src/~~/spring/ 밑에서 꺼내와서
+resources에 com.spring.context 패키지파서 넣어줘
+그리고 당연히 web.xml 수정해주면 됩니다
+
+그리고 servlet-context.xml에다가 view-controller 이부분하는데... 무슨말이지...
+그리고 view 이름을 안주면 그냥 그 url path를 view resolver한테 건내거든
+그걸 인터널 view resolver가 걔를 읽는단말여 
+
+
+
+~~~~~~~~본격 security
+
+인증 = Authentication
+인허가 = Authoritize
+
+인증 :: 3가지의 팩터로 인증을 합니다. 
+팩터 1 ) 누구인가?
+	identification : 고유명. 보통 id 라고 하고요	username
+	key : 암호화. 보통 pw로 대체합니다		password
+
+팩터 2 ) 사용가능한가?
+	기간제
+	사용제재 : 누구인지. 이서비스를 사용할수있는지	enabled
+	인증만료
+	사용만기
+			====> 보통 username, password, enabled 세가지
+
+인허가 :: 권한에 대한 부분. 이 사람이 이기능에 접근할 권한이 있는가?
+  권한 : 사용자 지정한다. 권한은 계승되지 않음. admin이 user, manager의 권한을 갖는다? 아니라는거임 각각의 권한은 독립적으로 운영됨 왜냐면 사용자가 지정하니까..!
+  
+
+
+우리는
+=============================================
+ xml로 권한을 지정해서 하는거, 
+context에서 바로 dao를 거치지않고 sql문을 던져서 가져오는 방법, 
+Authentication Provider를 커스텀해서 root-context에 있는 dao를 가져와서 하는 방법
+=============================================
+이렇게 세가지를 할거임
+여기서 사용만료인지, 제재가되진않았는지를 확인하는 작업이 UserDetailsService 인데요
+이걸통해서 memberVO로 user 안에 추가할거고요 거기에 사용만료여부, 기간제여부 기타등등을 get메서드 ㅇ이미 있는걸 override해서 쓸거라고하네용
+리퀘스트 받아서 넘기면 이후과정에서 authentication을 확인하고 돌아와 response 준대
+AuthenticationFilter가 request, response를 담당한다고허네요..
+
+
+
+pom.xml에 등록해야하는 spring security maven은 세개
+1. security web
+2. 설정을 하게해주는 config
+3. jsp 상에서 해당 web component를 보이게할지말지하는 taglib 
+우리는 3버전이라서 같은버전을 쓰면 된다고허네용
+무튼 pom.xml에 적어서 등록하는중~~
+spring framework 와 버전을 같이한다고해도 properties를 따로주는게좋아
+----> 이거하려고했더니 터지네요.... maven 가져오겠습니다 흑흑..
+jar 가져와서 WEB-INF 밑에 LIB 폴더로 넣었고요 그것을 add build path했음다
+
+!!!!!
+아니 context에서 security-context를 만들어야한다네용
+bean configure 파일 만들었고 거기서 두번째줄의 bean 순서를 바꿨어
+원래 bean 이 가장 위에있었는데 security를 가장 위로올리고 namespace를 beans로 줬어
+그러니까 이 xml 파일 안은 무조건 security라는 네임스페이스가 자동으로 달리는거야
+
+거기에서 http use-expressions~~~ 어쩌고 안에 
+access-denied-handler : 접근 권한이 맞지않아서 내칠때의 페이지를 뭘로할건지
+intercept-url : 해당 url에 오면 권한이 뭔지를 체크하겠다 권한 여부 체크에대한부분
+form-login : 로그인 화면은 뭘로쓸건지 정하는
+logout : 로그아웃 어떻게할건지
+이것들을 지정해주지않으면 spring이 가지고있는 기본 login/logout url을 쓰겠다고 security가 규정해버림
+
+
+~~시나리오~~
+로그인했을때 권한정보가 role_user , role_manager, role_admin 으로 나눌거고요
+각각의 권한마다 url을 구분할겁니다
+
+ * 일단 http~ 먼저할거임
+순서는 특수->범용적인것으로 내려갈거임
+
+access 권한주기 >>>
+- url-pattern="url 패턴" hasAuthority('권한정보')  =  hasRole('권한정보')
+ :: 이 url로 들어왔을때 이 권한을 가지고있는지 확인
+- hasAnyRole('ROLE_USER,ROLE_MANAGER') :: 권한을 여러개 주고싶을떄 하는겨
+- isAuthenticated() :: 로그인만 됐으면 즉 권한이 있는지만 확인했으면 접근가능
+- permitAll :: 모든 사용자 접근 가능 로그인안해도 접근가능
+
+ * authentication 할거임~~
+일단은 db없이 할수있도록 user를 여기서 만들거야
+나중에는 여기에 db연결하는 그런부분이 생기겠지
+
+ * Authentication filter 달기~~
+security-context 여기서 안달고요 여기서 호출하지않고요
+springframework.web에 있는 DelegationFilterProxy가 Authentication filter를 움직이게하기때문에 얘를 필터로 걸거여 -> web.xml에서 Delegation 필터 걸었다이자식아
+(참고로 필터프록시 : 저도 필턴데요 나로인해 다른 필터가 작동되도록 하는거래)
+
+그리고 security-context를 당연히 root context에다가 import 해야하고요
+
+
+만약에 admin한테 여러개의 권한을 주고싶으면
+user-service 에서 여러개 권한을 줄수있잖여
+근데 그렇게하면 아래의 intercetp urld의 access에서 주는것과 꼬여버리니까
+되도록이면 user-service에서는 권한을 무조건 하나씩만주고
+아래에서 어떻게 허용할건지 결정하는게 낫다!!!!
+
+
+
+이거를 jsp에서도 그대로 적용할수가있다!!!
+일단 jsp에 taglib로 security/tags를 추가하고
+<sec:authorize access="!isAuthenticated()">
+   <a href="/security/spring_security_login">로그인</a>
+</sec:authorize>
+이렇게하면 로그인화면을 권한이 확인되지않은경우에만 접근할수있고!!
+<sec:authorize access="isAuthenticated()">
+   <a href="/security/j_spring_security_logout">로그아웃</a>
+</sec:authorize>
+이거는 로그아웃 버튼자체를 로그인이 된 경우에만 할수있게하는겨!!!
+
+
+

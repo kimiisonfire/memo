@@ -1,0 +1,71 @@
+200128_spring_오후
+
+
+우리는
+=============================================
+ xml로 권한을 지정해서 하는거, 
+context에서 바로 dao를 거치지않고 sql문을 던져서 가져오는 방법, 
+Authentication Provider를 커스텀해서 root-context에 있는 dao를 가져와서 하는 방법
+=============================================
+이렇게 세가지를 할거임 지금 xml로 권한지정해서하는건 했다
+
+만약에 쇼핑몰의 관리페이지를 따로만들었다? 했을때는 굳이 db에 넣을필요없잖아
+그래서 그럴땐 관리자를 xml에 박아놓고 쓸수도 있겠쥬
+
+
+security-context 안에서 db로 접근할수있는 그런걸할거야
+일단은 DataSource가 필요하겠지?
+pom.xml먼저 고쳐줄겡 
+repositories에 ojdbc6 repository 추가하고요
+dependency도 ojdbc6, commons-dbcp2
+spring-jdbc도 필요해서 추가했고요
+
+그리고 dataSource-context.xml도 만들고 root-context에 import
+
+이젠 security-context.xml에서 db에서 가져오는 그런거를 할거야
+<jdbc-user-service data-source-ref="dataSource"
+  users-by-username-query=""
+  authorities-by-username-query=""
+/>
+여기에서 users-by-username 쿼리는 사용자의 username만 가져오는쿼리고요
+autho~~는 사용자의 권한만 가져오는 쿼리다 임마
+여기서 select를 할때는 꼭 id as username 이렇게해서 꺼내는방식을 정해줘야해!!!
+왜 jdbc에서 나온 resultSet을 꺼낼때 컬럼의 인덱스 아니면 컬럼명으로 꺼내잖아
+얘는 무조건 컬럼명르로 꺼내는애인거야
+
+저기에 들어가는 쿼리는 다음과같음
+users-by-username-query="select id as username, pwd as password, enabled from member where id=?"
+====> jdbc-user-service의 쿼리문은 pstmt라는것을 알수있겠죠?
+
+
+
+근데 여기서 설정하는 enabled가 받는거는 무조건 true 아니면 1이다
+우리가 enabled를 어? "권한없음" 이렇게쓸수도있잖아
+내가만든 로그인화면을 쓰게될수도있고말여
+그래서 지금부터는 커스텀을 할것이다
+
+일단 나의 login 화면을 만들었어
+화면은 있으니까 여기로 접근할때도 security가 걸리게해야하잔혀
+그래서 security-context에서 form-login 부분도 수정해줘야해
+만약에 무작정 로그인화면으로 들어갔을땐 메인화면이 보여야겠지만
+admin 페이지를 들어가려고하다라 로그인걸려서 admin 로그인하면
+원래 가려고했던 admin 페이지를 가야하지않겠어???
+
+로그인하기<<를 눌렀을때 즉 가려는 목적지가 딱히 없었을때 성공하면 나오는 화면
+= default url
+admin으로 가려고 눌렀는데 로그인에 잡혀 -> 로그인 실패 => 로그인화면띄우고
+성공ㅎㅏ면 admin으로 가려고했던 그 경로로 보내줘야해 = return url
+	--> return url할떄는 성공할때까지 시도했던 url을 계속 파라미터로 돌려야돼
+
+form-login, logout 해봤음다
+
+
+이제 우리가 만든 DAO를 쓰기위해서 커스터마이징할거고요
+login 성공하면 session에 넣ㅇ르겁니다
+이거는 spring_bootstrap쪽에서 할거임
+
+지금 security 하는 과정에서 쓰려고 UserDetails를 impl하는 User 클래스를 만들었고요
+
+뭔가를 많이했는데.. 잘모르겠습니다 예...
+
+
