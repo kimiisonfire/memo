@@ -1,0 +1,117 @@
+200129_spring_오전
+
+
+이제 스프링모듈 몇개만 남았다고 허네요,, 흑흑 
+
+
+
+보통 우리가 naver.com 하고 넘어가는데 사실 naver.com/index.html 이렇게해도 시작페이지로 넘어감
+그래서 보통 webapp q바로 하위에 있는 index 화면페이지는
+사람들이 보통 도메인까지만 치고 들어오니까 그래도 메인 페이지가 열리도록하려면
+index가 시작페이지로 연계시켜주는거지
+index.jsp 안에 location.href="메인화면으로보낼곳" 하면 된다구,,
+
+
+그리고 bootstrap 패키지의 properties에서 web project setting 을 / 로 바꾸고
+톰캣에서 bootstrap 패키지를 뺐다가 멈추고 돌리고 멈추고 다시넣고 돌려봐라
+
+ ~~~~ localhost 이름을 바꾸고싶은데용?
+C:\Windows\System32\drivers\etc 여기에 hosts를 다른데로 복붙하고요
+다음처럼 수정하고요
+192.168.201.32 kimi.go.kr
+192.168.201.20 wanna.go.home
+얘를 원래 문서에 덮어쓰세요!!  그러면 kimi.go.kr로 연결했을때 = localhost 여기로 넘어옵니다 흑흑..
+
+
+security를 적용한뒤로부터 js, css도 다 security가 캐치하거든
+그래서 resources 폴더에 있는것들은 통과가 되도록
+<http pattern="/resources/**" security="none" /> 이거 넣어줬다
+
+
+야 이거좀... 잘 봐라 거의 이해 못하지않았음?
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+
+>>>>>> AOP aspects <<<<<<
+
+Aspects Oriented Programing = 관점 지향 프로그래밍
+(객체지향 = 객체를 부품화해서 조립하는거. 생산성이 매우 높져)
+
+- pointcut(행위) :  "~~를 할 때!" <- 이게 keyword
+- join point : ㅇㅇ을 할때 전후에 수반되는 것들이 있거든  
+  뭐 밥먹기 전! 밥먹은 후! 이런식으로말여. 이걸 잡는걸 pointcut 이라고 합니다
+- advice : ~~를 해라
+
+==> point cut, join point, advice 를 통틀어서 Aspect 라고 합니당
+Aspect : 나열식의 수평적 관점
+
+근데 ~~할때 ~~한다 즉 point cut과 advice가 반복된단말이지?
+
+
+프록시에 서비스를 등록하려면 인터페이스로 하면된다!
+
+트랜젝션은 서비스의 메서드가 실행되기 전으로 가야겠지
+시작하기 전상태에서 >>>커밋을 일단 먼저 시작혀!,<<<
+그래야지 하다가 중간에 뭔일이있으면 롤백으로 서비스시작전으로 돌아갈수있으니까
+
+서비스를 잡아서 트랜잭션을 AOP로 걸어줄거라고하네요
+
+그러면 서비스마다 커밋-잘됐어?-커밋 / 커밋-안됐어?-롤백  이거 서비스마다달거야?
+이거 너무 짜친다이거지
+거기에 행위(service의 메서드들) 전후로(join point) commit을 한다(advice) 라는거!
+로그인 하기(행위, point cut) -> 로그인 한 후!(join point) -> 메뉴를 보여준다(advice)
+
+--> 이게 기본적인 개념이고요
+이게 획기적이라고해서 3버전부터는 maven에 자동으로 들어와있다고 하네용...
+spring-aop-${version} 이렇게요!
+==> 이 aop는 그냥 namespace에서만 사용되는애고
+	실제로 우리가 쓸건 aspect weaver<< 라는친구를 따로 넣어줘야된대
+	jar 받아서 (maven project라서) properties에서 add external jar 해줬음
+
+
+프록시 :
+garbage collector를 demon thread라고 하거든?
+보이지않는데 뒤에서 돌아간다고말여
+얘가 바로 프록시에서 돌아다니는거여!!!
+프록시는 .java나 그런거에 담아서 실행하는 거런게 아니래
+그래서 프록시에 aop를 넣어줄거라는거임
+
+
+일단은 간단한 예제로 연습할겁니다..
+
+
+* 시나리오 : 
+  RepeatService의 메서드를 실행할때마다 TimeAdvisor 클래스를 써서
+  시간을 잴겁니듀. 실행하기 전에 시간한번 재고, 끝나고 시간재서
+  총 소요시간 계산할거에영
+
+>> joinpoint.getSignature().toShortString() == pointcut으로 잡힌 메서드 명 가져오기
+>> joinpoint.proceed() == 해당 관점으로 잡힌 메서드가 실행되는거래
+
+aspect를 걸떄는 해당 메서드를 잡을거임
+pointcut을 가져오는게 ProceedingJoinpoint 임
+얘가 가져온 메서드를 가지고 joinpoint.proceed() --> 하면 메서드가 실행됨!
+그 결과를 담아주면 되는거고
+
+
+aop:config에서 aop:aspect 의 ref == advisor를 지정하는거임 이거 중요하대
+execution = ~~할떄!!
+execution(public * com.spring.service.RepeatService.*(..))
+   com.spring.service.RepeatService에 있는 모든 public한 메서드들을 실행할떄!
+id = publicMethod == 그친구들은 내가 publicMethod라고부를거야
+around = 전후로~~
+pointcut-ref ="이거 할떼ㅐ"  --> 전후로 이거 할때
+method="trace"  == advice의 method...
+
+
+
+
+
+
+
+
+
+
+
