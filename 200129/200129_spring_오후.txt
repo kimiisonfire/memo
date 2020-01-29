@@ -1,0 +1,75 @@
+200129_spring_오후
+
+
+~~ 이제 bootstrap 넘어와서 해볼게용 ~~
+
+1)
+aop에 필요한건
+spring-aop, aopalliance, aspectjweaber
+트랜잭션 namespace = spring tx
+이친구들 jar 있나 보고 없으면 넣으세요
+
+2)
+aop-context.xml 파일 하나 만들고 namespace에 aop, tx 추가하세요
+aop 가 기본 xmlns가 되도록 수정도 했고요
+
+3)
+이제 aop-context를 채워넣을건데요
+우선 트랜젝션 aspect를 사용할건데 이거 이미 스프링에 있는거라서 id만 줍니당
+
+그리고 pointcut expression 정규식! 설명하면
+<pointcut expression="public * com.*.service..*(..))" 
+= public한 메서드. 
+클래스명, 패키지명, 파라미터는 구분하지않고 ..을 씁니다
+method명, 반환타입, 경로는 *을 씁니듀
+
+잠시 위로올라가서 advice를 쓸거야
+메서드 이름이 ㅇㅇㅇ으로 시작하는지 판단해서 tx,에서 거르는애들은 Exception이 발생하면 무조건 rollback하겠다! 하겠슴다 어떤 Excep인지는 별ㄹ로 중요치않음 뭐가됐건 잘 안된거니까
+read/get은 select잖여 근데 read는 조회수를올리거든 그래서 rollback
+propagation은 이 트랜잭션이 다른 ㅇㅇㅇ에 독립적으로 진행할거냐 입니당
+
+
+
+~~~~~ 메일링 할겁니다
+
+네이버기준으로 설명한댜
+환경설정에서 pop3/imap 설정에서
+pop3/smtp를 싸용하겠다고하고요, imap/smtp도 사용하겠다고 합니다
+네이버는 smtp 포트는 465라고하네요 일단 이렇게 설정을 한번 해줘야함
+
+
+기본 메일은 java mail을 쓰는거래 그걸 spring이 도와주는정도여
+spring mail, java mail 이렇게 두개가 들어갈것입니다
+
+
+
+사용자가 url로 메일을 작성할거야 = /toMail < 의 url을 요청하면
+tomcat이 메일 폼을 보내준다구
+그리고 그걸 작성해서 다시 tomcat에게 /sendMail 뭐 이런식으로 다시 보내옴
+toMail은 get, sendMail은 post겠지?
+
+넘어온 sendMail을 command Object로 받아
+그 command 객체를 MimeAttachNotifier에 넘깁니댜
+Mime에서는 command를 smtp 형식으로 만들고요
+	--> 만드는건 Message, MessageHelper(여기엔 setSubtitle, setMessage 뭐
+					이런것들이 들어있음)
+
+이걸 Sender한테 담아서 smtp로 보내
+그럼 smtp에서 reciever한테 알림을 받고요
+그리고 결과를 message로 컨트롤러한테 보낸다네요
+그 메세지를 사용자에게 보낸다네요..
+
+우리는 지금 sender만 될거라고하네요 smtp에 올리는 sender말여..
+
+
+
+
+
+
+
+
+
+
+
+
+
