@@ -1,0 +1,34 @@
+200130_spring_mail
+
+
+RedirectAttributes
+:: redirect하게 attribute를 넘기고싶은거여
+근데 이게 원래 되는겁니까? 안되잖아 리다이렉트면 새로운 리퀘스트가 발생하는데
+쓰다보니까 이게 너무 불편했대
+그래서 리다이렉트치면서 담을수있도록 하는걸 만들어낸거래
+(아니그럼 처음부터 이걸쓰면안되는거였나요.....?)
+
+심는방법
+1) addAttr
+RedirectAttributes rttr
+rttr.addAttribute("msg", "메일을 성공적으로 전송하였습니다.");
+---> 주소줄에 parameter로 넘어갑니다 그럼 ${param.aaa} 이렇게 받아야지
+
+2) flashAttr
+rttr.addFlashAttribute("msg", "메일을 성공적으로 전송하였습니다.");
+---> 얘는 진짜로 request에 담기긴하는데 새로고침하면 날아감
+	진짜 딱 한번만 반짝 쓰고 마는거래 받을땐 ${aaa} 이렇게 받을수있음
+
+
+이야 간지
+
+
+
+
+
+
+
+
+
+
+
