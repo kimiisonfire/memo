@@ -1,0 +1,54 @@
+0204_maven
+
+
+
+~~~~~~~~~~~
+1. jar 파일 복사해서 build Path
+2. java 파일을 컴파일
+3. class 파일에서 사용하는 resources (xml, properties) 올바른 위치에 복사
+3.1. testcode compile  --> 코드에 문제가 없으면 배포, 문제있으면 중지
+4. jar(java archive) / war(web archive) / aar(android archive)
+   war 파일을 b_util/5./webapps 하위에 복사해놓으면 그걸 톰캣이 알아서 풀어줌
+5. 웹프로젝트의 경우 최종 산출물로 war 패키징
+
+===> 1~5의 과정이 매번 반복되니까 이걸 하나의 build로 만든게 maven!
+우리는 이클립스 내부의 embaded maven을 쓰고있거든?
+근데 지누진우쌤이 이걸쓰니까 플러그인문제인지뭔지가 이상해서 안된대
+그래서 maven을 직접 설치하고 이클립스에서 갱신하고 하면 될거라네
+
+apache.maven.org에서 apache-maven 3.6.3 다운로드하고 b_util./maven에 압축풀어!
+bin/mvn 을 써서 maven을 쓰는거거든
+그래서 얘를 환경설정으로 설정할거여
+
+환경변수로  MVN_HOME  :   D:\B_Util\6.maven\apache-maven-3.6.3
+	   Path   :   마지막에 ;%MVN_HOME%\bin; 추가!
+
+cmd에서 mvn -version
+
+
+
+제대로 불러지는지 확인하려고 spring_bootstrap의 lib에 있는 hamcrest 지우려는 그런거를 해볼게용
+D:\A_TeachingMaterial\7.JspSpring\workspace\spring\spring_bootstrap\src\main\webapp\WEB-INF\lib
+여기서 지워볼게용 안지워지니까
+
+그리고 cmd로 spring workspace에 spring_bootstrap까지 가보세요
+그상태로 mvn package 하면 에러가나네요,, 무슨 TLS 버전때문이라는데
+그래서 tls 버전을 지정해주려고
+mvn -Dhttps.protocols=TLSv1.2 package 이렇게해서 버전을 지정해줬음 근데도 안되네?
+
+우리가 hamcrest를 지웠더니 test에서 에러가났음 hamcrest 필요하니까여...
+그래서 테스트를 건너뛰는걸 더해서 maven 을 깔게요
+mvn -Dhttps.protocols=TLSv1.2 -Dmaven.test.skip=true package
+
+지금 뭐하는거냐면 이클립스에서 쓰고있는 embedded maven 말고
+내가 설치한 maven을 쓰도록 하려는 그런거임
+
+
+하여튼 그렇게하니까 되네용
+
+
+
+
+
+
+
