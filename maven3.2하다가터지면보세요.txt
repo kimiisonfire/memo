@@ -1,0 +1,10 @@
+프로젝트중에
+egov 3.2 하다가 maven 잡는게 잘 안될수도있음
+그럴땐 workspace 그대로두고 3.8로 가면 될거라고하네요
+
+근데 3.8은 jdk1.8이라서 걔를 못잡았다고 할수도있음
+
+b_util/jdk1.8이 있잖여
+eclipse/eclipse.ini 이파일을 메모장으로 여시고요
+-vm
+D:\B_Util\2.Java\JDK1.8~~\bin\javaw.exe   까지 써주시고요
