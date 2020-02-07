@@ -1,0 +1,170 @@
+200206_itext_poi
+
+
+pdf로 변환 = itext jar 
+excel로 변환 = POI jar
+->
+클래스의 method를 이용해서 viewer로 만들어지게됨
+
+근데 얘네를 쓰면 꼭 javascript를 out.println으로 만드는것같은 너낌이든단말여..
+itext만해도 테이블로 만들면 와장창됐으니까여
+
+이렇게 viewer를 만드는 작업을 생략할겁니다으
+
+pdf/excel로 만들고자하는 양식을 우선 xml로 만들어
+근데 xml 만드릭도 힘들어서 JasperReport라는걸 쓸거야
+
+** JaspreReport
+db에 있는걸 일정한 양식으로 출력하기 위한 viewer = JasperREport
+db에 접근해서 데이터를 추출해내고 데이터를 일정양식에 추가하고 출력하기위한 툴
+
+하여튼 jasperrreport를 차용할거야 
+db에 접근해서 데이터를 일정 양식에 추가하는 부분만!!!!!! ~~> xml 형식으로 뽑아낼거
+뽑아낸 파일의 확장자 = jrxml
+
+JasperReport.jar 가져올건데요 거기안에 POI, itext, jackson databind가 들어있음
+가져올때 jackson databind를 exclusion할건지 결정해야함
+
+Jasper Report 안에는 jrxml을 읽어오는 reader가있고, report해주는 reporter,
+그걸 방출해주는 ex... 뭐가 있다네용
+
+jasperreport를 이용해서 해당클래스에 경로도 지정하고, 파라미터도 넣어주고
+데이터를 만들어서 넣어놓고.. 뭐 그렇다는데...
+
+최종적으로 pdf, excel이 class viewer로 만들어질건데
+지금 가진 internal resoure 리졸버는 안되고요
+tiles도 해당사항잉없음
+그래서 이걸 하려면 이 class를 view처럼 내보내는 애가 필요한데
+그게 spring의 BeanNamedViewResolver  <- 얘 resolver에 추가하면됨
+이놈의 level을(=order) 1로 해줘 = 가장높은순위
+
+BeanNamedViewResolver   -> tiles -> internal view resolver 순서인거임
+
+
+갱장히 경제적이라고하네요
+java로 pdf/excel 만드는 작업은 갱장히 어렵고, 크기/색상/영역 이런걸 메서드로 잡는게 쉽지않ㅇ기도하고 실행하기전까지 보이지도않고 하여튼 그래
+근데 위의 방식으로 하게되면 결과를 화면으로 미리 보면서 만들기때문에(다운로드 이전에말여) 화면도 볼수있고 뭐 그렇다네요
+
+
+<< jasper다운로드, jasperreport다운로드 >>
+jasperstudio 검색 
+https://community.jaspersoft.com/project/jaspersoft-studio 여기가고요
+release -> 6.9.0 버전선택 -> exe 받으세요
+
+exe는 D:\B_Util\새 폴더\Jaspersoft Studio-6.5.1.final  여기에 install하시고요
+
+실행하면 이클립스랑 비슷한친구가 열립니다.. 이야
+
+
+Repository explorer = datasource 관리
+project exploere = 프로젝트관리..? 뭐여
+
+sampleDB 지우고요
+Data Adapters 에서 create data adapter 에서 Database JDBC Connection 쓸거
+((그러면 나중에 재직증명서를 뗀다 하면
+직원번호만 넣어주면 쿼리가 여기에 심어져있어서 해당하는 재직증명서를 주고 그러는거))
+
+이름은 Oracle : java 
+드라이버 oracle.jdbc.driver.OracleDriver 고르시고고고
+url, username, password 잘맞춰주세요
+
+driverClasspath에서 ojdbc를 넣어줘야함
+add 해서
+D:\B_Util\4.Oracle\app\oracle\product\11.2.0\server\jdbc\lib 경로의
+ojdbc6.jar 선택하고 finish
+
+
+project 익스플로러에서 jasper 프로젝트 만들거임
+jasper report project 선택해서 만들면됨
+
+거기서 new -> jasper report 해서 양식을 고를수가있어..!
+우리는 blue table base 뭐 그런거 골랐음
+이름적고 next해서 data adapter 설정 -> 여기서 jdbc 잡아주면 
+1)
+    내 테이블들이 주룾ㄹ 나오고
+    current에 내가 입력했던거가 잡히겠져?
+    오른쪽에 쿼리문 쓰면됨
+    뭐 select * from member 이렇게말여
+2) 
+    어떤걸 보이게할건지 선택할수있음 
+3) 
+    전부가져오세요 next ! finish! 
+
+화면은 디자인 화면이 나오는데 아래 source 탭 누르면 xml 소스로 볼수있음다
+preview가 안뜨면 크기만 맞춰주면 됩니다ㅣ
+
+
+이렇게저렇게 원하는대로 잘 편집하면됨
+
+그리고 이제 xml 볼건데 이클립스넘아가면 화면 안보이니까 xml파일을 볼줄알아야해
+위에는 다 디자인이고 <subDataset   여기서부터 봐야함 쿼리문있는곳
+그리고 그안에 field로 있는애들이 java에서 변수로 잡히는친구들
+property name이 타입이고, field name이 변수명이됩니다 흑흑.. 거기서 value값이 들어가는거라네요.. ?
+
+   _________변수명_ 
+<field name="ID" class="java.lang.String">
+   <property name="com.jaspersoft.studio.field.label" value="ID"/>
+                ------------------------------타입------     ---값할당--
+
+
+이제 직접 만들어볼거임 blanc A4에다가말여
+
+text field = fields에 있는 내용 넣는거
+static field = 글자넣는거 / 변하는값이 아님
+
+테이블만들때 나오는 Connection = 같은 jdbc 쓰겠다 고르면됨
+
+쿼리문을 조금 바꾸고싶으면 settings - data adaptor -> 여기서 바꿔줘도되고
+뭐 table 안에서 해도된다는데 번거로우니까 source안에서 할게요
+
+타입도 숫자가 항상 big decimal이라서 integer로 바꾸던가 해주면됨
+
+
+한글이 있으면 깨질수있거든 
+그래서 그 셀을 클릭하고 text field 있는곳의 >> ㅋ르릭하면 나오는 advance에서 
+PDF -> 
+PDF Embedded : true / encoding : Identity-H (=이게인코딩) /
+font name : MALGUN.TTF (= 맑은고딕 폰트파일명)
+
+Font ->
+font name = 맑은 고딕 / size = 12
+
+
+
+
+이제 폰트가져올게요...
+C:\Windows\Fonts 에서 맑은고딕 복사하세요 그걸 스프링 src/main/resources에 붙!
+jasper studio에서 작업하던 jrxml 파일 복사해서
+resources의 com.spring.jrxml 패키지 만들고 거기다 붙여넣기하슈
+
+
+이제 pom.xml에 필요한 jar를 가져와서 넣어야하거든
+
+jasperreports maven 검색해서 6.5.1버전 dependency 넣으려고했는데
+역시나 안되네요..^^ㅗ 
+그냥 jar 받아와서 lib 폴더 파고 거기에 넣고 add build path 했음다...
+
+jasperStudio = 6.5.1
+jasperreport = 6.5.1
+poi = 3.17
+jackson databind = 2.9.8
+
+poi 도 필요해서 poi 3.17 쓸거임
+jackson databind도 필요하거든 2.9.8을 해버리네.. 근데 원래 쓰던건 2.7.9.6임
+
+
+이제 컨트롤러만들거임
+@RequestMapping("/list/pdf")
+public String boardListPdf() {
+	String url = "boardListToPDF";
+	return url;
+}
+이렇게 할건데 저 url은 jsp가 아님 클래스로 만들거다...! view 클래스
+
+
+
+
+
+
+
+

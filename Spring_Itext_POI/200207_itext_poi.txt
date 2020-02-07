@@ -1,0 +1,32 @@
+200207_itext_poi
+
+
+
+commons-digester-1.7 jar 넣고요
+commons collections 3.2.1 jar도 넣습니다
+commons-beanutils-1.9.3 도 하세요
+근데 그냥 spring 도 egov 3.8로 바꿨습니다  위에거는 jasper report로 다들어옴
+
+
+다시 JASPERstudio하는중~~~
+
+1. regdate의 형태를 바꿔볼거임 
+지금은 20.1.6 오후 5:07  이렇게 나오고있어
+그래서 regdate부분을 
+new java.text.SimpleDateFormat("yyyy-MM-dd").format($F{REGDATE})
+이렇게 묶어주면됨!
+
+2. null일수있는 자료에대한 판단도 줄거임 - 삼항연산자
+작성자가 null일수도 있다고 가정하고
+$F{WRITER}==null ? "N/A" : $F{WRITER}
+이렇게 바꿔주면됩니다
+
+
+
+
+
+
+
+
+
+
