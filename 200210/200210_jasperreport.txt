@@ -1,0 +1,41 @@
+200210_jasperreport
+
+
+jasper 문법  :  $P{}  =  파라미터
+포맷파일하나 선택해서 쿼리문을 써줄때 아래같이써주고
+select *
+from member
+where id=$P{id}
+이러면 일단 파라미터없다고 뜨는데 일단 넘어가세용
+그리고 outline에서 Parameters->create parameter
+걔 선택해서 오른쪽 Properties에서 name이랑 class만 잘주면됨
+그럼 source쪽에서 확인할수있어
+
+우리가 오늘 이걸로 이미지를 가져와서 필드에 담으려고하는데
+db에는 파일명만있잖여 그래서 일단은 파라미터로 이미지경로를 심어놓고
+먼저 해볼거고 이따 바꿀거라고하네용
+소스에 <parameter name="imgPath" class="java.lang.String"/> 이렇게추가함
+이렇게하면 outline의 파라미터부분에 추가가되어있음다
+
+함 이미지를 추가해볼건데요
+image를 넣고 creation mode는 Absolute Path로 만들어볼게용
+나중엔 이미지경로를 수정할겁니다
+
+main report 뜨는곳 상단의 Dataset and Query Dialog열어서
+read fields 누르면 전부 뜨고
+add눌러서 하나씩 해도 상관없음
+근데 얘가 숫자를 꼭 big decimal로 잡는단말여 이것만 해당데이터에 맞게 수정해줄필요가있음
+
+
+bean등록하는 아이디는 컨트롤러에서 리턴하는 url이여!
+
+
+
+
+
+
+
+
+
+
+
