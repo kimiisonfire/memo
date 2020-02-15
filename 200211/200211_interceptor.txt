@@ -1,0 +1,45 @@
+200211_인터셉터
+
+
+filter : 리퀘스트 들어왔을때 디스패쳐서블릿 오기전에 거치는게 필터
+aspects : 컨트롤러가 서버로 넘길때 거치는거
+
+controller를 가로채는 interceptor 인터셉터
+본격적으로 기능이 실행되기 전!에 뭔가를 하겠다.. 라는건데 
+그리고 스케줄러도 하겠대 스케쥴러 scheduler 
+
+
+이미 mvc안에 들어있는거라 따로 뭘 해줄필요는 없다
+있는 mvc 모듈을 쓰면 된다
+
+extends HandlerInterceptorAdapter 해줘야 인터셉터가 되는거
+다 훅메서드라서 우리한테 필요한거만 가져오면 되는거고
+메서드 pre, post, after 만 가져왔음 lifecycle보려고
+pre : 컨트롤러 실행 전에 호출되는 메서드. 
+      true일 경우 컨트롤러 실행, false일 경우 컨트롤러 작동 안됨
+afterCompletion : 컨트롤러에서 exception이 터졌을경우 그 excep까지 가져오는 메서드
+post : 컨트롤러 실행 후 호출되는 메서드. Model도 가져옴
+
+우리가 쓸 인터셉터를 servlet context에 등록할거야
+등록할떄 mapping => url잡기 = 결국 그 컨트롤러를 잡는거여
+그거의 인터셉터를 beans:bean에 걸어주는겨
+
+로그쓸때 보통 이거 많이쓰는데
+BufferedWriter out = new BufferedWriter(new FileWriter(logFilePath, true));
+true = 이어쓰기
+false = 새로쓰기
+
+
+db에 없는 내용을 이력으로 남기고 싶을때
+그걸 가져와서 뭘 할수도있어서 
+무튼 그럴때 인터셉터 많이들 쓴다
+
+
+
+
+
+
+
+
+
+
